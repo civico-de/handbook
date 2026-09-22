@@ -30,14 +30,17 @@ final class Dependencies {
   }
 
   public static function available(): bool {
-    if (!empty(\Civi::$statics[self::class]['simulateMissing'])) {
+    $statics = \Civi::$statics[self::class] ?? NULL;
+    if (is_array($statics) && !empty($statics['simulateMissing'])) {
       return FALSE;
     }
     return class_exists(MarkdownParser::class) && class_exists(Yaml::class);
   }
 
   public static function message(): string {
-    return E::ts('Die Programmbibliotheken des Handbuchs fehlen (vendor/). Bitte im Verzeichnis der Erweiterung „composer install --no-dev“ ausführen.');
+    return E::ts(
+      'Die Programmbibliotheken des Handbuchs fehlen (vendor/). Bitte im Verzeichnis der Erweiterung „composer install --no-dev“ ausführen.',
+    );
   }
 
 }

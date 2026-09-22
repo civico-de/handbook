@@ -44,7 +44,9 @@ final class Frontmatter {
       ]));
     }
     if ($meta !== NULL && !is_array($meta)) {
-      throw HandbookException::badRequest(E::ts('%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten.', [1 => $name]));
+      throw HandbookException::badRequest(E::ts('%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten.', [
+        1 => $name,
+      ]));
     }
     return $meta ?? [];
   }

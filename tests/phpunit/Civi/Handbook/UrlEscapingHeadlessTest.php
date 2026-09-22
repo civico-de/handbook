@@ -14,8 +14,12 @@ namespace Civi\Handbook;
 final class UrlEscapingHeadlessTest extends HandbookTestCase {
 
   private function view(): View {
-    return new View(Library::fromSystem(), static fn (string $path, array $query, ?string $fragment): string
-      => 'index.php?q=' . $path . '&' . http_build_query($query) . ($fragment === NULL ? '' : '#' . $fragment));
+    return new View(
+      Library::fromSystem(),
+      static fn (string $path, array $query, ?string $fragment): string => (
+        'index.php?q=' . $path . '&' . http_build_query($query) . ($fragment === NULL ? '' : '#' . $fragment)
+      ),
+    );
   }
 
   public function testUrlsAreBuiltRaw(): void {
@@ -38,13 +42,18 @@ final class UrlEscapingHeadlessTest extends HandbookTestCase {
       'handbookToc' => $view->toc(),
       'handbookResults' => $results,
     ]);
-    $this->assertStringContainsString('href="index.php?q=civicrm/handbook&amp;p=extra%2Falpha#erster-abschnitt"', $html);
+    $this->assertStringContainsString(
+      'href="index.php?q=civicrm/handbook&amp;p=extra%2Falpha#erster-abschnitt"',
+      $html,
+    );
     $this->assertStringNotContainsString('&amp;amp;', $html);
   }
 
   public function testContextMarkupEscapesOnce(): void {
-    $markup = (string) ContextHelp::markup(Library::fromSystem()->forRoute('civicrm/dashboard'), static fn (string $path, array $query): string
-      => 'index.php?q=' . $path . '&' . http_build_query($query));
+    $markup = (string) ContextHelp::markup(
+      Library::fromSystem()->forRoute('civicrm/dashboard'),
+      static fn (string $path, array $query): string => 'index.php?q=' . $path . '&' . http_build_query($query),
+    );
     $this->assertStringContainsString('href="index.php?q=civicrm/handbook&amp;p=extra%2Falpha"', $markup);
     $this->assertStringNotContainsString('&amp;amp;', $markup);
   }

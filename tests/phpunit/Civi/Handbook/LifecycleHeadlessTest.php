@@ -33,13 +33,18 @@ final class LifecycleHeadlessTest extends TestCase implements HeadlessInterface 
     $this->assertSame(1, $this->navigationCount());
     $foreign = Navigation::create(FALSE)
       ->setValues(['name' => 'handbook', 'label' => 'Foreign', 'domain_id' => 'current_domain'])
-      ->execute()->single()['id'];
+      ->execute()
+      ->single()['id'];
 
     $manager->disable(['handbook']);
     $manager->uninstall(['handbook']);
     $this->assertSame(\CRM_Extension_Manager::STATUS_UNINSTALLED, $manager->getStatus('handbook'));
     $this->assertSame(0, $this->navigationCount());
-    $this->assertSame(1, Navigation::get(FALSE)->addWhere('id', '=', $foreign)->execute()->count(), 'a record it does not own survives');
+    $this->assertSame(
+      1,
+      Navigation::get(FALSE)->addWhere('id', '=', $foreign)->execute()->count(),
+      'a record it does not own survives',
+    );
 
     $manager->install(['handbook']);
     $this->assertSame(1, $this->navigationCount());

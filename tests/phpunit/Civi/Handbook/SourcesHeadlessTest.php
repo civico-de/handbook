@@ -7,17 +7,20 @@ namespace Civi\Handbook;
 /**
  * @group headless
  * @covers \Civi\Handbook\Sources
+ * @covers \Civi\Handbook\ExtraDir
  */
 final class SourcesHeadlessTest extends HandbookTestCase {
 
   public function testExtensionKeyedLikeTheExtraSourceIsAnErrorNotOverwritten(): void {
     $ownDir = (string) realpath(self::FIXTURES . '/extra');
-    $sources = Sources::build([Sources::EXTRA => ['dir' => $ownDir, 'label' => 'Extension']], (string) realpath(self::FIXTURES));
+    $sources = Sources::build(
+      [Sources::EXTRA => ['dir' => $ownDir, 'label' => 'Extension']],
+      (string) realpath(self::FIXTURES),
+    );
     $this->assertSame(['dir' => $ownDir, 'label' => 'Extension'], $sources->dirs[Sources::EXTRA]);
     $this->assertCount(1, $sources->errors);
     $this->assertStringContainsString(Sources::EXTRA, $sources->errors[0]);
   }
-
 
   public function testRelativeExtraDirIsRejectedOnSave(): void {
     try {

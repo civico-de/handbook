@@ -49,7 +49,11 @@ final class ContextHelp extends AutoSubscriber {
    * pageRun and buildForm fire for every page, form and snippet.
    */
   private static function link(): void {
-    if (isset(\Civi::$statics[self::class]) || !Dependencies::available() || !\CRM_Core_Permission::check(self::PERMISSION)) {
+    if (
+      isset(\Civi::$statics[self::class])
+      || !Dependencies::available()
+      || !\CRM_Core_Permission::check(self::PERMISSION)
+    ) {
       return;
     }
     $path = \CRM_Utils_System::currentPath();
@@ -71,14 +75,19 @@ final class ContextHelp extends AutoSubscriber {
    *   Builds an unescaped Civi URL.
    */
   public static function markup(array $pages, ?\Closure $url = NULL): ?string {
-    $url ??= static fn (string $path, array $query): string => View::defaultUrl($path, $query);
+    $url ??= View::defaultUrl(...);
     if ($pages === []) {
       return NULL;
     }
     $items = '';
     foreach ($pages as $page) {
       $label = E::ts('Handbuch: %1', [1 => $page->title]);
-      $items .= '<li><a href="' . htmlspecialchars($url('civicrm/handbook', ['p' => $page->id])) . '">' . htmlspecialchars($label) . '</a></li>';
+      $items .=
+        '<li><a href="'
+        . htmlspecialchars($url('civicrm/handbook', ['p' => $page->id]))
+        . '">'
+        . htmlspecialchars($label)
+        . '</a></li>';
     }
     return (
       '<nav class="handbook-context" aria-label="'

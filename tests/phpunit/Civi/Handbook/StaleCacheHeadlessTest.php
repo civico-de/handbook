@@ -54,13 +54,8 @@ final class StaleCacheHeadlessTest extends HandbookTestCase {
    * @return list<string>
    */
   private function extraIds(Library $library): array {
-    $ids = [];
-    foreach ($library->pages() as $page) {
-      if ($page->source() === Sources::EXTRA) {
-        $ids[] = $page->id;
-      }
-    }
-    return $ids;
+    $extra = array_filter($library->pages(), static fn (Page $page): bool => $page->source() === Sources::EXTRA);
+    return array_values(array_map(static fn (Page $page): string => $page->id, $extra));
   }
 
 }
