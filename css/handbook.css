@@ -68,3 +68,12 @@
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
+/* Classic theme links (#2786c2 on #f8f8f8) fall below 4.5:1; Riverlea sets its own. */
+.crm-container.handbook a,
+.crm-container .handbook-context a {
+  color: var(--crm-c-link, #1b5e8a);
+}
+/* Links in running text must not rely on colour alone. */
+.crm-container.handbook .handbook-content a {
+  text-decoration: underline;
+}
