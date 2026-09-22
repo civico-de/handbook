@@ -129,7 +129,8 @@ final class Renderer {
       return $url;
     }
     [$path, $fragment] = array_pad(explode('#', $url, 2), 2, NULL);
-    $path = (string) $path;
+    // The page route takes no query of its own; ?… after the filename is dropped.
+    $path = explode('?', (string) $path, 2)[0];
     if (str_ends_with($path, '.md')) {
       $slug = basename($path, '.md');
       return ($this->url)('civicrm/handbook', ['p' => $source . '/' . $slug], $fragment);

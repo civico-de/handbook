@@ -67,4 +67,10 @@ final class RendererTest extends TestCase {
     $this->assertSame(['a', 'a-1'], array_column($outline, 'slug'));
   }
 
+
+  public function testPageLinkWithQueryStringStaysAPageLink(): void {
+    $html = $this->renderer()->render('extra', '[x](other.md?x=1#s)')['html'];
+    $this->assertStringContainsString('href="/civicrm/handbook?p=extra%2Fother#s"', $html);
+  }
+
 }
