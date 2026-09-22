@@ -50,7 +50,7 @@ final class Search {
           'page' => $page,
           'heading' => $section['text'] ?? NULL,
           'anchor' => $section['slug'] ?? NULL,
-          'context' => mb_strimwidth(trim($line), 0, self::CONTEXT, '…'),
+          'context' => mb_strimwidth(PlainText::fromLine($line), 0, self::CONTEXT, '…'),
         ];
       }
     }
