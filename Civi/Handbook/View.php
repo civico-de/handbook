@@ -56,17 +56,28 @@ final class View {
   /**
    * Table of contents: one group per source, pages in display order.
    *
-   * @return list<array{label: string, pages: list<array{id: string, title: string, url: string, current: bool}>}>
+   * @return list<array{label: string, url: string|null, current: bool, pages: list<array{id: string, title: string, url: string, current: bool}>}>
    */
   public function toc(?string $currentId = NULL): array {
     $groups = [];
     foreach ($this->library->pages() as $page) {
       $source = $page->source();
-      $groups[$source] ??= ['label' => $this->library->sources()[$source]['label'] ?? $source, 'pages' => []];
+      $groups[$source] ??= [
+        'label' => $this->library->sources()[$source]['label'] ?? $source,
+        'url' => NULL,
+        'current' => FALSE,
+        'pages' => [],
+      ];
+      $url = ($this->url)('civicrm/handbook', ['p' => $page->id], NULL);
+      if ($page->isLanding()) {
+        $groups[$source]['url'] = $url;
+        $groups[$source]['current'] = $page->id === $currentId;
+        continue;
+      }
       $groups[$source]['pages'][] = [
         'id' => $page->id,
         'title' => $page->title,
-        'url' => ($this->url)('civicrm/handbook', ['p' => $page->id], NULL),
+        'url' => $url,
         'current' => $page->id === $currentId,
       ];
     }

@@ -10,6 +10,8 @@ namespace Civi\Handbook;
  */
 final class Page {
 
+  public const LANDING = 'index';
+
   /**
    * @param list<string> $routes
    */
@@ -23,6 +25,13 @@ final class Page {
 
   public function source(): string {
     return explode('/', $this->id, 2)[0];
+  }
+
+  /**
+   * handbook/index.md: the source's landing page, whose `order` orders the source.
+   */
+  public function isLanding(): bool {
+    return str_ends_with($this->id, '/' . self::LANDING);
   }
 
 }

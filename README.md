@@ -54,6 +54,13 @@ routes:
 A file with invalid YAML, a wrong type, or an invalid filename is left out.
 The problem is listed at the top of the handbook index.
 
+### Landing page and source order
+
+An optional `handbook/index.md` is the source's landing page: the group
+heading in the table of contents links to it, and it is not listed as a
+separate page. Its frontmatter `order` orders the source itself; sources
+without one follow the ordered sources, alphabetically by label.
+
 ### Links and images
 
 - `other-page.md` and `other-page.md#section` point to that page of the same

@@ -59,7 +59,7 @@ final class Library {
   }
 
   /**
-   * All pages, grouped by source in source order, each group sorted by
+   * All pages, grouped by source (landing-page `order`, then label), each group sorted by
    * `order` (pages without one last), then title ignoring case.
    *
    * @return list<\Civi\Handbook\Page>
@@ -75,10 +75,11 @@ final class Library {
       $this->errors = $cached['errors'];
       return $this->pages = $cached['pages'];
     }
-    $pages = [];
+    $groups = [];
     foreach ($this->sources as $source => $info) {
-      array_push($pages, ...$this->scan($source, $info['dir']));
+      $groups[$source] = $this->scan($source, $info['dir']);
     }
+    $pages = Ordering::sources($groups, $this->sources);
     $this->cache?->set($key, ['pages' => $pages, 'errors' => $this->errors]);
     return $this->pages = $pages;
   }
@@ -130,22 +131,12 @@ final class Library {
         $this->errors[] = $e->getMessage();
       }
     }
-    usort($group, self::compare(...));
+    usort($group, Ordering::pages(...));
     return $group;
   }
 
-
   private function cacheKey(): string {
     return 'handbook_pages_' . md5(serialize($this->sources));
-  }
-
-
-  /**
-   * `order` ascending (none last), then title ignoring case, then id.
-   */
-  public static function compare(Page $a, Page $b): int {
-    return [$a->order ?? PHP_INT_MAX, mb_strtolower($a->title), $a->id]
-      <=> [$b->order ?? PHP_INT_MAX, mb_strtolower($b->title), $b->id];
   }
 
 }

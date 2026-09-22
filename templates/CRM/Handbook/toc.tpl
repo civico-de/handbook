@@ -1,6 +1,6 @@
 <nav class="handbook-toc" aria-label="{ts domain="handbook"}Inhaltsverzeichnis{/ts}">
   {foreach from=$handbookToc item=group}
-    <h2>{$group.label|escape}</h2>
+    <h2>{if $group.url}<a href="{$group.url|escape}"{if $group.current} aria-current="page" class="handbook-current"{/if}>{$group.label|escape}</a>{else}{$group.label|escape}{/if}</h2>
     <ul>
       {foreach from=$group.pages item=entry}
         <li><a href="{$entry.url|escape}"{if $entry.current} aria-current="page" class="handbook-current"{/if}>{$entry.title|escape}</a></li>
