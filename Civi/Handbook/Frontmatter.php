@@ -31,7 +31,7 @@ final class Frontmatter {
   }
 
   /**
-   * @return array<mixed>
+   * @return array<string, mixed>
    */
   public static function parse(string $name, ?string $yaml): array {
     try {
@@ -43,12 +43,19 @@ final class Frontmatter {
         2 => $e->getMessage(),
       ]));
     }
-    if ($meta !== NULL && !is_array($meta)) {
+    if ($meta !== NULL && !self::isMap($meta)) {
       throw HandbookException::badRequest(E::ts('%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten.', [
         1 => $name,
       ]));
     }
     return $meta ?? [];
+  }
+
+  /**
+   * @phpstan-assert-if-true array<string, mixed> $value
+   */
+  private static function isMap(mixed $value): bool {
+    return is_array($value) && array_filter(array_keys($value), 'is_int') === [];
   }
 
 }

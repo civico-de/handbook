@@ -39,4 +39,16 @@ final class FrontmatterHeadlessTest extends HandbookTestCase {
     PageLoader::load('s', $this->file("---\nnur ein Satz\n---\nText\n"));
   }
 
+  public function testSequenceYamlIsAPageError(): void {
+    $this->expectException(HandbookException::class);
+    $this->expectExceptionMessage('keine Zuordnung');
+    PageLoader::load('s', $this->file("---\n- title\n- order\n---\nText\n"));
+  }
+
+  public function testNumericKeysAreAPageError(): void {
+    $this->expectException(HandbookException::class);
+    $this->expectExceptionMessage('keine Zuordnung');
+    PageLoader::load('s', $this->file("---\n1: eins\n---\nText\n"));
+  }
+
 }
