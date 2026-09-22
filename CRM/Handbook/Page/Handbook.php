@@ -24,17 +24,20 @@ class CRM_Handbook_Page_Handbook extends CRM_Core_Page {
     $id = View::param('p');
     $library = Library::fromSystem();
     $page = NULL;
+    $body = '';
     try {
       $page = $id === '' ? NULL : $library->find($id);
+      $body = $page === NULL ? '' : $library->body($page);
     }
     catch (HandbookException $e) {
+      $page = NULL;
       CRM_Core_Session::setStatus(E::ts('Diese Handbuchseite gibt es nicht.'), '', 'error');
     }
     (new View($library))->assignChrome($this, '', $page?->id);
     $this->assign('handbookPage', $page === NULL ? NULL : ['id' => $page->id, 'title' => $page->title]);
     CRM_Utils_System::setTitle($page->title ?? E::ts('Handbuch'));
     if ($page !== NULL) {
-      $rendered = (new Renderer())->render($page->source(), $library->body($page));
+      $rendered = (new Renderer())->render($page->source(), $body);
       $this->assign('handbookHtml', $rendered['html']);
       $this->assign(
         'handbookSections',

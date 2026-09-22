@@ -68,7 +68,7 @@ final class Library {
     if ($this->pages !== NULL) {
       return $this->pages;
     }
-    $key = 'handbook_pages_' . md5(serialize($this->sources));
+    $key = $this->cacheKey();
     $cached = $this->cache?->get($key);
     if (is_array($cached) && isset($cached['pages'], $cached['errors'])) {
       /** @var array{pages: list<\Civi\Handbook\Page>, errors: list<string>} $cached */
@@ -106,8 +106,12 @@ final class Library {
    * The Markdown of a page without its frontmatter.
    */
   public function body(Page $page): string {
-    $content = file_get_contents($page->file);
+    $content = is_file($page->file) && is_readable($page->file) ? file_get_contents($page->file) : FALSE;
     if ($content === FALSE) {
+      // The cached list is stale: drop it so the next listing rescans.
+      $this->cache?->delete($this->cacheKey());
+      $this->pages = NULL;
+      $this->errors = [];
       throw HandbookException::notFound("Cannot read {$page->file}");
     }
     return Frontmatter::split($content)[1];
@@ -133,6 +137,11 @@ final class Library {
       ),
     );
     return $group;
+  }
+
+
+  private function cacheKey(): string {
+    return 'handbook_pages_' . md5(serialize($this->sources));
   }
 
 }

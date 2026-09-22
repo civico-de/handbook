@@ -27,7 +27,13 @@ final class Search {
     }
     $hits = [];
     foreach ($this->library->pages() as $page) {
-      $body = $this->library->body($page);
+      try {
+        $body = $this->library->body($page);
+      }
+      catch (HandbookException $e) {
+        // Removed since the page list was cached.
+        continue;
+      }
       $headings = $this->renderer->outline($body);
       foreach (preg_split('/\R/', $body) ?: [] as $index => $line) {
         if (mb_stripos($line, $term) === FALSE) {
