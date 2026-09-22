@@ -1,0 +1,70 @@
+/* Layout only; colours come from the active theme. */
+.handbook-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: center;
+  margin-bottom: 1em;
+}
+.handbook-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  align-items: flex-start;
+}
+.handbook-toc {
+  flex: 0 0 16em;
+}
+.handbook-toc h2 {
+  font-size: 1em;
+  margin: 1em 0 0.3em;
+}
+.handbook-toc ul,
+.handbook-sections ul,
+.handbook-context ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.handbook-toc .handbook-current {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.handbook-page,
+.handbook-results {
+  flex: 1 1 30em;
+  min-width: 0;
+}
+.handbook-sections {
+  border-left: 3px solid currentColor;
+  padding-left: 0.8em;
+  margin-bottom: 1.5em;
+}
+.handbook-sections .handbook-level-3 {
+  padding-left: 1em;
+}
+.handbook-content img {
+  max-width: 100%;
+  height: auto;
+}
+.handbook-context {
+  margin: 0 0 1em;
+}
+.handbook-context a::before {
+  content: "\2139\00a0";
+}
+.handbook a:focus-visible,
+.handbook input:focus-visible,
+.handbook button:focus-visible,
+.handbook-context a:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+.handbook-context-line {
+  margin: 0.2em 0 0.8em;
+}
+.handbook-errors {
+  border: 2px solid currentColor;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+}

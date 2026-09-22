@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<extension key="handbook" type="module">
+  <file>handbook</file>
+  <name>Handbook</name>
+  <description>Renders Markdown user manuals shipped by extensions inside the CiviCRM UI, with search and context links.</description>
+  <license>Proprietary</license>
+  <authors>
+    <author>
+      <name>Johannes Filter</name>
+      <email>hi@jfilter.de</email>
+      <role>Maintainer</role>
+    </author>
+  </authors>
+  <urls>
+    <url desc="Main Extension Page">https://github.com/civico-de/handbook</url>
+    <url desc="Documentation">https://github.com/civico-de/handbook</url>
+    <url desc="Support">https://github.com/civico-de/handbook/issues</url>
+  </urls>
+  <releaseDate>2026-09-22</releaseDate>
+  <version>1.0.0</version>
+  <develStage>stable</develStage>
+  <compatibility mode="semver">
+    <ver>6.15</ver>
+  </compatibility>
+  <php_compatibility mode="list">
+    <ver>8.3</ver>
+    <ver>8.4</ver>
+  </php_compatibility>
+  <smarty_compatibility mode="list">
+    <ver>5</ver>
+  </smarty_compatibility>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
+  <civix>
+    <namespace>CRM/Handbook</namespace>
+    <format>25.10.2</format>
+  </civix>
+  <mixins>
+    <mixin>menu-xml@1.0.0</mixin>
+    <mixin>mgd-php@2.0.0</mixin>
+    <mixin>scan-classes@1.0.0</mixin>
+    <mixin>setting-php@1.0.0</mixin>
+    <mixin>smarty@1.0.3</mixin>
+  </mixins>
+</extension>

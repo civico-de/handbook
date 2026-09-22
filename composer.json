@@ -1,0 +1,29 @@
+{
+    "name": "civico-de/handbook",
+    "description": "Renders Markdown user manuals shipped by extensions inside the CiviCRM UI, with search and context links.",
+    "type": "civicrm-ext",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Johannes Filter",
+            "email": "hi@jfilter.de"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "ext-mbstring": "*",
+        "league/commonmark": "^2.7",
+        "symfony/yaml": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Civi\\": "Civi/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
