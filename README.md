@@ -12,7 +12,9 @@ Proprietary software of civico GmbH, see [LICENSE.txt](LICENSE.txt).
 - The CiviCRM and PHP versions pinned in `info.xml`.
 - Composer dependencies (`league/commonmark`, `symfony/yaml`). `vendor/` is not
   committed. Run `composer install --no-dev` in the extension directory before
-  you enable it. Without `vendor/`, the extension stops with an error.
+  you enable it. Without `vendor/`, System Status shows an error and the
+  handbook screens only show a notice to install the libraries; the rest of
+  the site keeps working.
 
 ## Adding a manual to an extension
 
