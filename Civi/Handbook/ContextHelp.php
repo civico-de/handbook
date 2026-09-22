@@ -10,7 +10,7 @@ use CRM_Handbook_ExtensionUtil as E;
 
 /**
  * Declares the permission and links the pages whose frontmatter `routes`
- * name the current path above the page content.
+ * name the current path above the content of pages and forms.
  */
 final class ContextHelp extends AutoSubscriber {
 
@@ -23,6 +23,7 @@ final class ContextHelp extends AutoSubscriber {
     return [
       'hook_civicrm_permission' => 'onPermission',
       'hook_civicrm_pageRun' => 'onPageRun',
+      'hook_civicrm_buildForm' => 'onBuildForm',
     ];
   }
 
@@ -36,7 +37,18 @@ final class ContextHelp extends AutoSubscriber {
   }
 
   public static function onPageRun(GenericHookEvent $event): void {
-    // pageRun fires for every page and snippet of a request; link once.
+    self::link();
+  }
+
+  public static function onBuildForm(GenericHookEvent $event): void {
+    self::link();
+  }
+
+  /**
+   * Links the pages whose routes name the current path, once per request:
+   * pageRun and buildForm fire for every page, form and snippet.
+   */
+  private static function link(): void {
     if (isset(\Civi::$statics[self::class]) || !Dependencies::available() || !\CRM_Core_Permission::check(self::PERMISSION)) {
       return;
     }

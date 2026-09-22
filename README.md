@@ -107,8 +107,8 @@ Standalone included. Context links are shown only to users who hold it.
 - Search scans the Markdown source line by line, without an index. Hits show
   raw Markdown, and a phrase that spans a line break is not found.
 - Context links match the exact path from `CRM_Utils_System::currentPath()` on
-  pages that fire `hook_civicrm_pageRun`. Pages built from forms (QuickForm)
-  and Angular-only screens get no link.
+  pages (`hook_civicrm_pageRun`) and QuickForm screens (`hook_civicrm_buildForm`),
+  for example `civicrm/event/add`. Angular-only screens get no link.
 - The asset route serves only images whose real path, after following symlinks,
   lies inside the source directory. A request that points outside it gets 400,
   a missing file 404. SVG is not served.

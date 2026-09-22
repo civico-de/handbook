@@ -3,6 +3,7 @@ order: 5
 routes:
   - civicrm/dashboard
   - /civicrm/contact/search/
+  - civicrm/event/add
 ---
 
 # Alpha aus der Überschrift

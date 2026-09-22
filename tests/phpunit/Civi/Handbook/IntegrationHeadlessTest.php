@@ -79,6 +79,18 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     $this->assertStringContainsString('p=extra%2Falpha', $markup);
   }
 
+  public function testContextLinkOnQuickFormScreensOncePerRequest(): void {
+    $this->grant([ContextHelp::PERMISSION]);
+    $_GET['q'] = 'civicrm/event/add';
+    $event = \Civi\Core\Event\GenericHookEvent::create(['formName' => 'CRM_Event_Form_ManageEvent_EventInfo']);
+    ContextHelp::onBuildForm($event);
+    ContextHelp::onBuildForm($event);
+    ContextHelp::onPageRun($event);
+    $markup = $this->regionMarkup();
+    $this->assertSame(1, substr_count($markup, 'class="handbook-context"'));
+    $this->assertStringContainsString('Handbuch: Alpha aus der Überschrift', $markup);
+  }
+
   public function testNoContextLinkWithoutPermissionOrMatch(): void {
     $this->grant(['access CiviCRM']);
     $_GET['q'] = 'civicrm/dashboard';
