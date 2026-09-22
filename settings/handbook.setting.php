@@ -16,6 +16,7 @@ return [
     'description' => E::ts(
       'Absoluter Serverpfad zu einem Verzeichnis mit weiteren Markdown-Anleitungen. Leer lassen, wenn nur Erweiterungen Anleitungen liefern.',
     ),
+    'validate_callback' => 'Civi\\Handbook\\Sources::validateExtraDir',
     'settings_pages' => ['handbook' => ['weight' => 10]],
   ],
 ];

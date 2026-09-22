@@ -67,6 +67,10 @@ final class Sources {
     if ($extra === '') {
       return;
     }
+    if (!self::isAbsolute($extra)) {
+      $this->errors[] = self::relativeMessage($extra);
+      return;
+    }
     // Core does not restrict extension keys, so an extension may be keyed "extra".
     if (isset($this->dirs[self::EXTRA])) {
       $this->errors[] = E::ts('Das zusätzliche Handbuch-Verzeichnis wird nicht gelesen: eine Erweiterung heißt bereits „%1“.', [1 => self::EXTRA]);
@@ -80,6 +84,28 @@ final class Sources {
       return;
     }
     $this->dirs[self::EXTRA] = ['dir' => $dir, 'label' => E::ts('Weitere Anleitungen')];
+  }
+
+
+  /**
+   * Setting validate_callback: empty or an absolute path.
+   *
+   * @throws \CRM_Core_Exception
+   */
+  public static function validateExtraDir(mixed &$value): bool {
+    $path = is_string($value) ? trim($value) : '';
+    if ($path !== '' && !self::isAbsolute($path)) {
+      throw new \CRM_Core_Exception(self::relativeMessage($path));
+    }
+    return TRUE;
+  }
+
+  private static function isAbsolute(string $path): bool {
+    return str_starts_with($path, '/');
+  }
+
+  private static function relativeMessage(string $path): string {
+    return E::ts('Das zusätzliche Handbuch-Verzeichnis muss ein absoluter Pfad sein (beginnt mit /), nicht „%1“.', [1 => $path]);
   }
 
 }

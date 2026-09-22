@@ -82,8 +82,10 @@ The menu entry "Handbuch" sits under **Support**.
 `handbook_extra_dir` (Administer: `civicrm/admin/setting/handbook`) is an
 absolute server path to one more directory of Markdown pages, for manuals that
 do not belong to an extension. Its pages appear as source `extra`. It is empty
-by default. If the path is set but is not a readable directory, the index shows
-an error.
+by default. Saving a relative path is rejected. If the path is set but is not a
+readable directory, the index shows an error. Every Markdown file and image in
+the directory becomes readable to holders of `access handbook`, so point it at
+a directory meant for manuals.
 
 ```bash
 cv vset handbook_extra_dir=/srv/manuals

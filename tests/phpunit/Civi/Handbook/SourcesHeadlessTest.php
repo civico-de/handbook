@@ -18,4 +18,32 @@ final class SourcesHeadlessTest extends HandbookTestCase {
     $this->assertStringContainsString(Sources::EXTRA, $sources->errors[0]);
   }
 
+
+  public function testRelativeExtraDirIsRejectedOnSave(): void {
+    try {
+      \Civi\Api4\Setting::set(FALSE)->addValue('handbook_extra_dir', 'tests/fixtures/extra')->execute();
+      $this->fail('A relative path must be rejected');
+    }
+    catch (\CRM_Core_Exception $e) {
+      $this->assertStringContainsString('absoluter Pfad', $e->getMessage());
+    }
+    $dir = (string) realpath(self::FIXTURES . '/extra');
+    \Civi\Api4\Setting::set(FALSE)->addValue('handbook_extra_dir', $dir)->execute();
+    \Civi\Api4\Setting::set(FALSE)->addValue('handbook_extra_dir', '')->execute();
+    $this->assertSame('', \Civi::settings()->get('handbook_extra_dir'));
+  }
+
+  public function testSettingsFormShowsTheMessage(): void {
+    $meta = \Civi\Core\SettingsMetadata::getMetadata(['name' => ['handbook_extra_dir']]);
+    $errors = \CRM_Admin_Form_Generic::genericSettingsFormRule(['handbook_extra_dir' => 'relative/dir'], [], $meta);
+    $this->assertIsArray($errors);
+    $this->assertStringContainsString('absoluter Pfad', (string) $errors['handbook_extra_dir']);
+  }
+
+  public function testRelativeExtraDirSetBehindTheApiIsAnErrorNotResolved(): void {
+    $sources = Sources::build([], 'tests/fixtures/extra');
+    $this->assertArrayNotHasKey(Sources::EXTRA, $sources->dirs);
+    $this->assertStringContainsString('absoluter Pfad', $sources->errors[0]);
+  }
+
 }
