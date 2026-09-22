@@ -13,15 +13,19 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class Frontmatter {
 
-  private const PATTERN = '/\A---\R(.*?)\R---(?:\R|\z)/s';
+  private const PATTERN = '/\A---\R(?:(.*?)\R)?---(?:\R|\z)/s';
 
   /**
    * @return array{0: string|null, 1: string}
    *   Frontmatter YAML (or NULL) and the body after it.
    */
   public static function split(string $content): array {
+    if (str_starts_with($content, "\u{FEFF}")) {
+      $content = substr($content, 3);
+    }
     if (preg_match(self::PATTERN, $content, $m) === 1) {
-      return [$m[1], substr($content, strlen($m[0]))];
+      $yaml = $m[1] ?? '';
+      return [$yaml === '' ? NULL : $yaml, substr($content, strlen($m[0]))];
     }
     return [NULL, $content];
   }
@@ -39,7 +43,10 @@ final class Frontmatter {
         2 => $e->getMessage(),
       ]));
     }
-    return is_array($meta) ? $meta : [];
+    if ($meta !== NULL && !is_array($meta)) {
+      throw HandbookException::badRequest(E::ts('%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten.', [1 => $name]));
+    }
+    return $meta ?? [];
   }
 
 }
