@@ -130,18 +130,22 @@ final class Library {
         $this->errors[] = $e->getMessage();
       }
     }
-    usort(
-      $group,
-      static fn (Page $a, Page $b): int => (
-        [$a->order ?? PHP_INT_MAX, mb_strtolower($a->title)] <=> [$b->order ?? PHP_INT_MAX, mb_strtolower($b->title)]
-      ),
-    );
+    usort($group, self::compare(...));
     return $group;
   }
 
 
   private function cacheKey(): string {
     return 'handbook_pages_' . md5(serialize($this->sources));
+  }
+
+
+  /**
+   * `order` ascending (none last), then title ignoring case, then id.
+   */
+  public static function compare(Page $a, Page $b): int {
+    return [$a->order ?? PHP_INT_MAX, mb_strtolower($a->title), $a->id]
+      <=> [$b->order ?? PHP_INT_MAX, mb_strtolower($b->title), $b->id];
   }
 
 }

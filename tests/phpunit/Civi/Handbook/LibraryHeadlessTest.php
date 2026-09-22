@@ -103,6 +103,13 @@ final class LibraryHeadlessTest extends HandbookTestCase {
     $this->assertCount(2, $this->extraPages($this->useExtraDir($dir)));
   }
 
+  public function testSameOrderAndTitleSortByIdWhateverTheInputOrder(): void {
+    $a = new Page('extra/a', 'Gleich', 1, [], '/a.md');
+    $b = new Page('extra/b', 'Gleich', 1, [], '/b.md');
+    $this->assertLessThan(0, Library::compare($a, $b));
+    $this->assertGreaterThan(0, Library::compare($b, $a));
+  }
+
   /**
    * @return list<\Civi\Handbook\Page>
    */
