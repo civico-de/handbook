@@ -1,0 +1,39 @@
+$schema: 'https://raw.githubusercontent.com/jfilter/civikitchen/main/packages/civikitchen-scenario-schema/scenario.schema.json'
+version: 1
+scenario:
+  name: handbook
+  image: 'ghcr.io/jfilter/civikitchen:v1'
+  database:
+    image: 'mariadb:11.4'
+  extension:
+    key: handbook
+    path: .
+  credentials_output: file
+  checks:
+    - conform
+    - lint
+    - format
+    - compatibility
+    - dependencies
+    - javascript
+    - test
+    - coverage
+    - lifecycle
+    - smarty
+    - taint
+policy:
+  # Expected values for ckconform (the checker lives in the public civikitchen
+  # image; these values are ours and stay in this private repo).
+  license: Proprietary
+  npm_license: UNLICENSED
+  copyright: 'civico GmbH'
+
+  # Floor is measured coverage minus one (ckcoverage); ratchet up as coverage
+  # grows, never down to make a red build green.
+  coverage:
+    minimum: 91
+
+  # Hooks arrive as scan-class listeners (Civi\Handbook\ContextHelp).
+  hook_style: listener
+  renovate_preset: github>civico-de/renovate
+
