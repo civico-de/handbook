@@ -47,6 +47,15 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     }
   }
 
+  public function testSettingsRouteRequiresAdministerCivicrm(): void {
+    $item = \CRM_Core_Menu::get('civicrm/admin/setting/handbook');
+    $this->assertIsArray($item);
+    $this->grant(['access CiviCRM', ContextHelp::PERMISSION]);
+    $this->assertFalse(\CRM_Core_Permission::checkMenuItem($item));
+    $this->grant(['access CiviCRM', 'administer CiviCRM']);
+    $this->assertTrue(\CRM_Core_Permission::checkMenuItem($item));
+  }
+
   public function testNavigationEntryUnderSupport(): void {
     $item = Navigation::get(FALSE)
       ->addSelect('parent_id.name', 'url', 'permission')

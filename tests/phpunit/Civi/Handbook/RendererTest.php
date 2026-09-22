@@ -59,6 +59,7 @@ final class RendererTest extends TestCase {
     $html = $this->alpha()['html'];
     $this->assertStringNotContainsString('<script', $html);
     $this->assertStringNotContainsString('javascript:', $html);
+    $this->assertStringContainsString('<a>böse</a>', $html, 'the unsafe link keeps its text but loses its href');
   }
 
   public function testOutlineGivesBodyLineNumbers(): void {
@@ -71,6 +72,12 @@ final class RendererTest extends TestCase {
   public function testPageLinkWithQueryStringStaysAPageLink(): void {
     $html = $this->renderer()->render('extra', '[x](other.md?x=1#s)')['html'];
     $this->assertStringContainsString('href="/civicrm/handbook?p=extra%2Fother#s"', $html);
+  }
+
+
+  public function testProtocolRelativeImagesLoadFromTheirOrigin(): void {
+    $html = $this->renderer()->render('extra', '![x](//example.org/x.png)')['html'];
+    $this->assertStringContainsString('src="//example.org/x.png"', $html);
   }
 
 }

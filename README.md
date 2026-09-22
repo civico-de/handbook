@@ -61,6 +61,8 @@ The problem is listed at the top of the handbook index.
 - Relative image paths, such as `images/event-form.png`, are served through
   `civicrm/handbook/asset`.
 - Absolute URLs, `/civicrm/...` paths and `#anchor` links stay as they are.
+  External images, including protocol-relative `//host/...` ones, load from
+  their origin in the reader's browser.
 - Every heading gets a slug id, so `#section` links work from anywhere.
 - Raw HTML in the Markdown is removed, and `javascript:` style links are
   dropped. Tables, strikethrough and autolinks (GitHub Flavored Markdown) are
