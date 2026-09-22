@@ -19,6 +19,7 @@ declare(strict_types = 1);
  *   ck_headless()->sqlFile(__DIR__ . '/fixtures.sql')->apply();
  */
 function ck_headless(): \Civi\Test\CiviEnvBuilder {
+  ck_restore_core_foreign_keys();
   $info = ck_extension_info(dirname(__DIR__, 2));
   $builder = \Civi\Test::headless();
   // One step per extension, never one install() with the whole list: the
@@ -27,7 +28,46 @@ function ck_headless(): \Civi\Test\CiviEnvBuilder {
   foreach ($info->requires->ext ?? [] as $required) {
     $builder = $builder->install([trim((string) $required)]);
   }
-  return $builder->install([trim((string) $info['key'])]);
+  $builder = $builder->install([trim((string) $info['key'])]);
+  // Last step, so it drains what every earlier step queued.
+  $builder = $builder->callback('ck_discard_bootstrap_status', 'ck-discard-bootstrap-status');
+  if (!$builder instanceof \Civi\Test\CiviEnvBuilder) {
+    throw new RuntimeException('ck_headless: callback() did not return the builder');
+  }
+  return $builder;
+}
+
+/**
+ * CoreSchemaStep::getSig() drops the core foreign keys (civicrm-core#36980);
+ * re-running its cached SQL once per process puts them back.
+ * Drop when the supported floor carries that fix.
+ */
+function ck_restore_core_foreign_keys(): void {
+  static $restored = FALSE;
+  if ($restored) {
+    return;
+  }
+  $restored = TRUE;
+  \Civi\Test::asPreInstall(static function (): void {
+    $sql = (new \Civi\Test\CiviEnvBuilder\CoreSchemaStep())->getSql();
+    $database = \Civi\Test::dsn('database');
+    $content = is_array($sql) ? $sql['content'] ?? NULL : NULL;
+    if (!is_string($database) || !is_string($content)) {
+      throw new RuntimeException('ck_headless: no database name or no core schema SQL');
+    }
+    if (\Civi\Test::execute('USE `' . $database . '`;' . "\n" . $content) === FALSE) {
+      throw new RuntimeException('ck_headless: could not restore the core foreign keys');
+    }
+  });
+}
+
+/**
+ * Data::populate() reconciles managed entities before SearchKit's entity types
+ * load, queueing "Unknown entity SearchDisplay" errors in the session.
+ * Drop when the supported floor carries civicrm-core#36991.
+ */
+function ck_discard_bootstrap_status(): void {
+  \CRM_Core_Session::singleton()->getStatus(TRUE);
 }
 
 /**

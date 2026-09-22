@@ -37,3 +37,9 @@ policy:
   hook_style: listener
   renovate_preset: github>civico-de/renovate
 
+  # The scaffold carried 1.0.0 until the first release was cut as 0.1.0;
+  # 1.0.0 was never announced or tagged.
+  untagged_versions:
+    - version: "1.0.0"
+      reason: scaffold placeholder, first release cut as 0.1.0
+
