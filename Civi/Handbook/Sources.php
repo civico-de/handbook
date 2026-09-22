@@ -25,35 +25,51 @@ final class Sources {
   public array $errors = [];
 
   public static function fromSystem(): self {
-    $sources = new self();
+    $extensions = [];
     $mapper = \CRM_Extension_System::singleton()->getMapper();
     foreach ($mapper->getActiveModuleFiles() as $module) {
       $key = is_array($module) ? $module['fullName'] ?? NULL : NULL;
       if (is_string($key)) {
-        $sources->addExtension($mapper, $key);
+        $extensions += self::extension($mapper, $key);
       }
     }
-    ksort($sources->dirs);
     $extra = \Civi::settings()->get('handbook_extra_dir');
-    $sources->addExtra(is_string($extra) ? trim($extra) : '');
+    return self::build($extensions, is_string($extra) ? trim($extra) : '');
+  }
+
+  /**
+   * @param array<string, array{dir: string, label: string}> $extensions
+   *   Extension handbook directories keyed by extension key.
+   */
+  public static function build(array $extensions, string $extra): self {
+    $sources = new self();
+    $sources->dirs = $extensions;
+    ksort($sources->dirs);
+    $sources->addExtra($extra);
     return $sources;
   }
 
-  private function addExtension(\CRM_Extension_Mapper $mapper, string $key): void {
+  /**
+   * @return array<string, array{dir: string, label: string}>
+   */
+  private static function extension(\CRM_Extension_Mapper $mapper, string $key): array {
     try {
       $dir = realpath($mapper->keyToBasePath($key) . '/handbook');
       $label = $mapper->keyToInfo($key)->label;
     }
     catch (\CRM_Extension_Exception $e) {
-      return;
+      return [];
     }
-    if ($dir !== FALSE && is_dir($dir)) {
-      $this->dirs[$key] = ['dir' => $dir, 'label' => is_string($label) ? $label : $key];
-    }
+    return $dir !== FALSE && is_dir($dir) ? [$key => ['dir' => $dir, 'label' => is_string($label) ? $label : $key]] : [];
   }
 
   private function addExtra(string $extra): void {
     if ($extra === '') {
+      return;
+    }
+    // Core does not restrict extension keys, so an extension may be keyed "extra".
+    if (isset($this->dirs[self::EXTRA])) {
+      $this->errors[] = E::ts('Das zusätzliche Handbuch-Verzeichnis wird nicht gelesen: eine Erweiterung heißt bereits „%1“.', [1 => self::EXTRA]);
       return;
     }
     $dir = realpath($extra);
