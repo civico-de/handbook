@@ -37,7 +37,7 @@ final class ContextHelp extends AutoSubscriber {
 
   public static function onPageRun(GenericHookEvent $event): void {
     // pageRun fires for every page and snippet of a request; link once.
-    if (isset(\Civi::$statics[self::class]) || !\CRM_Core_Permission::check(self::PERMISSION)) {
+    if (isset(\Civi::$statics[self::class]) || !Dependencies::available() || !\CRM_Core_Permission::check(self::PERMISSION)) {
       return;
     }
     $path = \CRM_Utils_System::currentPath();

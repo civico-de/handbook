@@ -15,6 +15,9 @@ use Psr\Http\Message\ServerRequestInterface;
 final class AssetRoute {
 
   public static function handle(ServerRequestInterface $request): ResponseInterface {
+    if (!Dependencies::available()) {
+      return new Response(503, ['Content-Type' => 'text/plain'], Dependencies::message());
+    }
     $p = $request->getQueryParams()['p'] ?? '';
     try {
       $asset = (new AssetResolver(Library::fromSystem()))->resolve(is_string($p) ? $p : '');
