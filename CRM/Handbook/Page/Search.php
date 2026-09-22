@@ -25,15 +25,7 @@ class CRM_Handbook_Page_Search extends CRM_Core_Page {
     $library = Library::fromSystem();
     (new View($library))->assignChrome($this, $term);
     CRM_Utils_System::setTitle(E::ts('Handbuch durchsuchen'));
-    $results = [];
-    foreach ((new Search($library, new Renderer()))->run($term) as $hit) {
-      $results[] = [
-        'title' => $hit['page']->title,
-        'heading' => $hit['heading'],
-        'context' => $hit['context'],
-        'url' => CRM_Utils_System::url('civicrm/handbook', ['p' => $hit['page']->id], FALSE, $hit['anchor']),
-      ];
-    }
+    $results = (new View($library))->results((new Search($library, new Renderer()))->run($term));
     $this->assign('handbookResults', $results);
     parent::run();
   }

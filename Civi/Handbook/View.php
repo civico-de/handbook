@@ -11,9 +11,28 @@ use CRM_Handbook_ExtensionUtil as E;
  */
 final class View {
 
+  /**
+   * @var \Closure(string, array<string, string>, string|null): string
+   */
+  private \Closure $url;
+
+  /**
+   * @param (\Closure(string, array<string, string>, string|null): string)|null $url
+   *   Builds an unescaped Civi URL from path, query and fragment.
+   */
   public function __construct(
     private readonly Library $library,
-  ) {}
+    ?\Closure $url = NULL,
+  ) {
+    $this->url = $url ?? self::defaultUrl(...);
+  }
+
+  /**
+   * @param array<string, string> $query
+   */
+  public static function defaultUrl(string $path, array $query, ?string $fragment = NULL): string {
+    return \CRM_Utils_System::url($path, $query, FALSE, $fragment, FALSE);
+  }
 
   /**
    * Search form, stylesheet, errors and table of contents for a screen.
@@ -47,11 +66,27 @@ final class View {
       $groups[$source]['pages'][] = [
         'id' => $page->id,
         'title' => $page->title,
-        'url' => \CRM_Utils_System::url('civicrm/handbook', ['p' => $page->id]),
+        'url' => ($this->url)('civicrm/handbook', ['p' => $page->id], NULL),
         'current' => $page->id === $currentId,
       ];
     }
     return array_values($groups);
+  }
+
+  /**
+   * Search hits as template rows with unescaped links to their sections.
+   *
+   * @param list<array{page: \Civi\Handbook\Page, heading: string|null, anchor: string|null, context: string}> $hits
+   *
+   * @return list<array{title: string, heading: string|null, context: string, url: string}>
+   */
+  public function results(array $hits): array {
+    return array_map(fn (array $hit): array => [
+      'title' => $hit['page']->title,
+      'heading' => $hit['heading'],
+      'context' => $hit['context'],
+      'url' => ($this->url)('civicrm/handbook', ['p' => $hit['page']->id], $hit['anchor']),
+    ], $hits);
   }
 
   /**

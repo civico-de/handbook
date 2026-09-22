@@ -55,16 +55,18 @@ final class ContextHelp extends AutoSubscriber {
 
   /**
    * @param list<\Civi\Handbook\Page> $pages
+   * @param (\Closure(string, array<string, string>): string)|null $url
+   *   Builds an unescaped Civi URL.
    */
-  public static function markup(array $pages): ?string {
+  public static function markup(array $pages, ?\Closure $url = NULL): ?string {
+    $url ??= static fn (string $path, array $query): string => View::defaultUrl($path, $query);
     if ($pages === []) {
       return NULL;
     }
     $items = '';
     foreach ($pages as $page) {
-      $url = \CRM_Utils_System::url('civicrm/handbook', ['p' => $page->id]);
       $label = E::ts('Handbuch: %1', [1 => $page->title]);
-      $items .= '<li><a href="' . $url . '">' . htmlspecialchars($label) . '</a></li>';
+      $items .= '<li><a href="' . htmlspecialchars($url('civicrm/handbook', ['p' => $page->id])) . '">' . htmlspecialchars($label) . '</a></li>';
     }
     return (
       '<nav class="handbook-context" aria-label="'
