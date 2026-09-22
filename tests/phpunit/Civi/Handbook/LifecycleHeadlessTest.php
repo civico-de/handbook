@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
  * brings the entry back.
  *
  * @group headless
- * @coversNothing
  */
 final class LifecycleHeadlessTest extends TestCase implements HeadlessInterface {
 
