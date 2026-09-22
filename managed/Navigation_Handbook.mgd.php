@@ -14,7 +14,7 @@ return [
       'version' => 4,
       'values' => [
         'domain_id' => 'current_domain',
-        'name' => 'handbook',
+        'name' => 'handbook_manual',
         'label' => E::ts('Handbuch'),
         'url' => 'civicrm/handbook',
         'permission' => ['access handbook'],

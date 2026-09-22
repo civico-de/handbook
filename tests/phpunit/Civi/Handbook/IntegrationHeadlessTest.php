@@ -50,7 +50,7 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
   public function testNavigationEntryUnderSupport(): void {
     $item = Navigation::get(FALSE)
       ->addSelect('parent_id.name', 'url', 'permission')
-      ->addWhere('name', '=', 'handbook')
+      ->addWhere('name', '=', 'handbook_manual')
       ->execute()
       ->single();
     $this->assertSame('Support', $item['parent_id.name']);
