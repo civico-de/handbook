@@ -68,10 +68,15 @@
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
-/* Classic theme links (#2786c2 on #f8f8f8) fall below 4.5:1; Riverlea sets its own. */
+/* Riverlea's link colours (dark mode included); fallbacks keep 4.5:1 on the classic theme's #f8f8f8. */
 .crm-container.handbook a,
 .crm-container .handbook-context a {
-  color: var(--crm-c-link, #1b5e8a);
+  color: var(--crm-link-color, #1b5e8a);
+}
+.crm-container.handbook a:hover,
+.crm-container .handbook-context a:hover,
+.crm-container.handbook .handbook-toc .handbook-current {
+  color: var(--crm-link-hover-color, #133f51);
 }
 /* Links in running text must not rely on colour alone. */
 .crm-container.handbook .handbook-content a {

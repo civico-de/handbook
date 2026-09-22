@@ -135,3 +135,12 @@ docker compose -f .docker/docker-compose.yml exec -u www-data app bash -c \
 
 `tests/fixtures/extra/` is a sample extra directory. The extension's own
 `handbook/` directory is both its user manual and the discovery fixture.
+
+`tests/e2e/missing-vendor.sh` checks against the running stack that the site
+keeps working without `vendor/`. `tests/browser/` runs axe-core colour-contrast
+checks of the handbook screens in the classic theme and in Riverlea light and
+dark; it switches the backend theme while it runs and restores it afterwards:
+
+```bash
+npm ci && npx playwright install chromium && npm run test:e2e
+```
