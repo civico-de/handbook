@@ -46,6 +46,14 @@ final class Renderer {
         'id_prefix' => '',
         'fragment_prefix' => '',
       ],
+      // A focusable scroll box, so wide tables scroll on narrow screens and by keyboard.
+      'table' => [
+        'wrap' => [
+          'enabled' => TRUE,
+          'tag' => 'div',
+          'attributes' => ['class' => 'handbook-table', 'tabindex' => '0'],
+        ],
+      ],
     ]);
     $environment->addExtension(new CommonMarkCoreExtension());
     $environment->addExtension(new GithubFlavoredMarkdownExtension());

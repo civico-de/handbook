@@ -195,9 +195,16 @@
   max-width: 100%;
   height: auto;
 }
+.handbook-table {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.handbook-table:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: -3px;
+}
 .handbook-content table {
   border-collapse: collapse;
-  margin: 1em 0;
 }
 .handbook-content th,
 .handbook-content td {
@@ -205,8 +212,7 @@
   padding: 0.35em 0.6em;
   text-align: left;
   vertical-align: top;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .handbook-content pre,
 .handbook-content :not(pre) > code {

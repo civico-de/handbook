@@ -55,6 +55,11 @@ final class RendererTest extends TestCase {
     $this->assertStringContainsString('src="/civicrm/handbook/asset?p=extra%2Fbild.png"', $this->alpha()['html']);
   }
 
+  public function testTablesSitInAFocusableScrollBox(): void {
+    $html = $this->renderer()->render('extra', "| a | b |\n|---|---|\n| 1 | 2 |\n")['html'];
+    $this->assertStringContainsString('<div class="handbook-table" tabindex="0"><table>', $html);
+  }
+
   public function testRawHtmlAndUnsafeLinksAreRemoved(): void {
     $html = $this->alpha()['html'];
     $this->assertStringNotContainsString('<script', $html);
