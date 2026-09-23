@@ -172,9 +172,8 @@ Dev stack, gates and CI follow the civikitchen template:
 
 ```bash
 /path/to/civikitchen/scaffold/ckup -d        # stack in .docker/, free ports
-docker compose -f .docker/docker-compose.yml exec -u www-data app bash -c \
-  'cd /var/www/html/ext/handbook && composer install && CIVICRM_UF=UnitTests ckphpunit \
-   && cklint --all && ckconform && phpstan analyse && ckfmt --check'
+docker compose -f .docker/docker-compose.yml exec -u www-data -w /var/www/html/ext/handbook app composer install
+docker compose -f .docker/docker-compose.yml exec -u www-data -w /var/www/html/ext/handbook app ck ci
 ```
 
 `tests/fixtures/extra/` is a sample extra directory. The extension's own
