@@ -40,6 +40,7 @@ final class PageLoader {
     }
     /** @var array{title: string, order?: int|null, section?: string|null, routes: list<string>} $meta */
     $meta['routes'] = array_map(static fn (string $r): string => trim($r, '/'), $meta['routes']);
+    $meta['section'] = trim($meta['section'] ?? '') ?: NULL;
     return new Page($source . '/' . $slug, $file, $meta);
   }
 

@@ -55,6 +55,9 @@ final class FrontmatterHeadlessTest extends HandbookTestCase {
     $page = PageLoader::load('s', $this->file("---\nsection: Geld\n---\n# Rechnung\n"));
     $this->assertSame('Geld', $page->section);
     $this->assertNull(PageLoader::load('s', $this->file("# Ohne\n"))->section);
+    $this->assertSame('Geld', PageLoader::load('s', $this->file("---\nsection: '  Geld '\n---\n"))->section);
+    $this->assertNull(PageLoader::load('s', $this->file("---\nsection: ''\n---\n"))->section);
+    $this->assertNull(PageLoader::load('s', $this->file("---\nsection: '   '\n---\n"))->section);
   }
 
   /**
