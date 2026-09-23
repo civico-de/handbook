@@ -84,6 +84,17 @@ for (const t of THEMES) {
   });
 }
 
+// Presses Tab until the target has focus; fails after 100 presses.
+async function tabTo(page, target) {
+  for (let i = 0; i < 100; i++) {
+    await page.keyboard.press("Tab");
+    if (await target.evaluate((el) => el === document.activeElement)) {
+      return;
+    }
+  }
+  throw new Error("Tab never reached the target");
+}
+
 test.describe("keyboard and landmarks", () => {
   test.beforeAll(() => {
     setSetting("theme_backend", "minetta");
@@ -104,17 +115,22 @@ test.describe("keyboard and landmarks", () => {
 
   test("a source group opens and closes from the keyboard", async ({ page }) => {
     await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
-    const closed = page.locator(".handbook-group:not([open]) > summary").first();
-    await expect(closed.getByRole("heading", { level: 2 })).toHaveCount(1);
-    await closed.focus();
-    await expect(closed).toBeFocused();
+    const index = await page
+      .locator(".handbook-group")
+      .evaluateAll((groups) => groups.findIndex((g) => !g.open));
+    expect(index).toBeGreaterThanOrEqual(0);
+    const group = page.locator(".handbook-group").nth(index);
+    const summary = group.locator("> summary");
+    await expect(summary.getByRole("heading", { level: 2 })).toHaveCount(1);
+    await page.locator(".handbook-search input").first().focus();
+    await tabTo(page, summary);
     await page.keyboard.press("Enter");
-    await expect(page.locator(".handbook-group:not([open])")).toHaveCount(0);
+    await expect(group).toHaveJSProperty("open", true);
     await page.keyboard.press("Space");
-    await expect(page.locator(".handbook-group:not([open])")).toHaveCount(1);
+    await expect(group).toHaveJSProperty("open", false);
   });
 
-  test("every sidebar section heading sits below its source's h2", async ({ page }) => {
+  test("each sidebar h3 sits in a details whose summary holds an h2", async ({ page }) => {
     await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
     const orphans = await page
       .locator(".handbook-toc h3")
@@ -125,18 +141,30 @@ test.describe("keyboard and landmarks", () => {
     expect(await page.locator(".handbook-toc h3").count()).toBeGreaterThan(0);
   });
 
-  test("narrow screens stack without horizontal scrolling", async ({ page }) => {
-    await page.setViewportSize({ width: 360, height: 800 });
-    for (const route of [
-      "civicrm/handbook",
-      "civicrm/handbook?p=extra/alpha",
-      "civicrm/handbook/search?term=Fixturewort",
-    ]) {
-      await page.goto(loginUrl(route));
-      const overflow = await page
-        .locator(".handbook")
-        .evaluate((el) => el.scrollWidth - el.clientWidth);
-      expect(overflow, route).toBeLessThanOrEqual(0);
+  test("narrow screens have no horizontal page scroll", async ({ page }) => {
+    for (const width of [360, 390]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const route of [
+        "civicrm/handbook",
+        "civicrm/handbook?p=extra/alpha",
+        "civicrm/handbook/search?term=Fixturewort",
+      ]) {
+        await page.goto(loginUrl(route));
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - window.innerWidth,
+        );
+        expect(overflow, `${route} at ${width}px`).toBeLessThanOrEqual(0);
+      }
     }
+  });
+
+  test("a wide table scrolls in its own box and takes focus by Tab", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await page.goto(loginUrl("civicrm/handbook?p=extra/alpha"));
+    const box = page.locator(".handbook-content .handbook-table");
+    expect(await box.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
+    await page.locator(".handbook-content a", { hasText: "Tabellenlink" }).first().focus();
+    await page.keyboard.press("Tab");
+    await expect(box).toBeFocused();
   });
 });

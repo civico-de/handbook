@@ -206,6 +206,11 @@
 .handbook-content table {
   border-collapse: collapse;
 }
+/* The classic theme greys table headers to 2.4:1; use the text colour. */
+.crm-container .handbook-content th {
+  color: inherit;
+  background-color: transparent;
+}
 .handbook-content th,
 .handbook-content td {
   border: 1px solid var(--crm-border-color, #949494);
