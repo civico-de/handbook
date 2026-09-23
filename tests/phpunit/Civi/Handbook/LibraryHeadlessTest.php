@@ -104,6 +104,15 @@ final class LibraryHeadlessTest extends HandbookTestCase {
     $this->assertCount(2, $this->extraPages($this->useExtraDir($dir)));
   }
 
+  public function testListCachedBeforeThePageClassChangedIsNotRead(): void {
+    $dir = $this->tempDir();
+    file_put_contents($dir . '/one.md', "# One\n");
+    $sources = ['s' => ['dir' => $dir, 'label' => 'S']];
+    $cache = new \CRM_Utils_Cache_ArrayCache([]);
+    $cache->set('handbook_pages_' . md5(serialize($sources)), ['pages' => [], 'errors' => []]);
+    $this->assertCount(1, (new Library($sources, [], $cache))->pages());
+  }
+
   public function testSameOrderAndTitleSortByIdWhateverTheInputOrder(): void {
     $a = new Page('extra/a', '/a.md', ['title' => 'Gleich', 'order' => 1]);
     $b = new Page('extra/b', '/b.md', ['title' => 'Gleich', 'order' => 1]);
