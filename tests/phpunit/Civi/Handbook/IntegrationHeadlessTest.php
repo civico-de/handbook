@@ -156,6 +156,10 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
       'only the current source is open',
     );
     $this->assertStringContainsString('<h3 class="handbook-section-name">Schreiben</h3>', $html);
+    $this->assertStringContainsString(
+      '<summary><h2 class="handbook-group-label">Weitere Anleitungen</h2></summary>',
+      $html,
+    );
   }
 
   public function testIndexShowsOneCardPerSourceWithSections(): void {

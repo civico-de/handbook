@@ -105,12 +105,24 @@ test.describe("keyboard and landmarks", () => {
   test("a source group opens and closes from the keyboard", async ({ page }) => {
     await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
     const closed = page.locator(".handbook-group:not([open]) > summary").first();
+    await expect(closed.getByRole("heading", { level: 2 })).toHaveCount(1);
     await closed.focus();
     await expect(closed).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(page.locator(".handbook-group:not([open])")).toHaveCount(0);
     await page.keyboard.press("Space");
     await expect(page.locator(".handbook-group:not([open])")).toHaveCount(1);
+  });
+
+  test("every sidebar section heading sits below its source's h2", async ({ page }) => {
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    const orphans = await page
+      .locator(".handbook-toc h3")
+      .evaluateAll(
+        (hs) => hs.filter((h) => !h.closest("details")?.querySelector("summary > h2")).length,
+      );
+    expect(orphans).toBe(0);
+    expect(await page.locator(".handbook-toc h3").count()).toBeGreaterThan(0);
   });
 
   test("narrow screens stack without horizontal scrolling", async ({ page }) => {

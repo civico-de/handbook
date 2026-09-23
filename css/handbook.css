@@ -52,7 +52,15 @@
   font-weight: bold;
   padding: 0.25em 0;
 }
+/* Inline, so the disclosure marker stays beside the label. */
+.crm-container .handbook-group-label {
+  display: inline;
+  font-size: 1em;
+  font-weight: inherit;
+  margin: 0;
+}
 /* Themes give h2/h3 a banner background; these are small labels, not banners. */
+.crm-container .handbook-group-label,
 .crm-container .handbook-section-name,
 .crm-container .handbook-result-pages h3,
 .crm-container .handbook-card h2,
