@@ -75,16 +75,6 @@ final class Renderer {
   }
 
   /**
-   * Headings with their slug ids and body line numbers, for section lists
-   * and for mapping search hits to anchors.
-   *
-   * @return list<array{level: int, text: string, slug: string, line: int}>
-   */
-  public function outline(string $markdown): array {
-    return self::headings($this->parser->parse($markdown));
-  }
-
-  /**
    * @return list<array{level: int, text: string, slug: string, line: int}>
    */
   private static function headings(Document $document): array {

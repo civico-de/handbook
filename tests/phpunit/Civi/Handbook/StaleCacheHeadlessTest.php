@@ -44,7 +44,7 @@ final class StaleCacheHeadlessTest extends HandbookTestCase {
   }
 
   public function testSearchSkipsVanishedFiles(): void {
-    $hits = (new Search(Library::fromSystem(), new Renderer()))->run('Stichwort');
+    $hits = (new Search(Library::fromSystem(), new RenderCache(NULL)))->run('Stichwort');
     $this->assertSame(['extra/one'], array_map(static fn (array $h): string => $h['page']->id, $hits));
     unset(\Civi::$statics[Library::class]);
     $this->assertSame(['extra/one'], $this->extraIds(Library::fromSystem()));

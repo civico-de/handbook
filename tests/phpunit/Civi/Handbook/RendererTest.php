@@ -62,8 +62,8 @@ final class RendererTest extends TestCase {
     $this->assertStringContainsString('<a>böse</a>', $html, 'the unsafe link keeps its text but loses its href');
   }
 
-  public function testOutlineGivesBodyLineNumbers(): void {
-    $outline = $this->renderer()->outline("Intro\n\n## A\n\ntext\n\n## A\n");
+  public function testHeadingsGiveBodyLineNumbers(): void {
+    $outline = $this->renderer()->render('extra', "Intro\n\n## A\n\ntext\n\n## A\n")['headings'];
     $this->assertSame([3, 7], array_column($outline, 'line'));
     $this->assertSame(['a', 'a-1'], array_column($outline, 'slug'));
   }

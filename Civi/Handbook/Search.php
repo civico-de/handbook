@@ -6,7 +6,7 @@ namespace Civi\Handbook;
 
 /**
  * Case-insensitive substring search over the Markdown of all pages. Each hit
- * names the last heading above it, so results link to that section.
+ * names the last heading above it (from the render cache), so results link to that section.
  */
 final class Search {
 
@@ -14,7 +14,7 @@ final class Search {
 
   public function __construct(
     private readonly Library $library,
-    private readonly Renderer $renderer,
+    private readonly RenderCache $rendered,
   ) {}
 
   /**
@@ -29,12 +29,12 @@ final class Search {
     foreach ($this->library->pages() as $page) {
       try {
         $body = $this->library->body($page);
+        $headings = $this->rendered->page($page, $this->library)['headings'];
       }
       catch (HandbookException $e) {
         // Removed since the page list was cached.
         continue;
       }
-      $headings = $this->renderer->outline($body);
       foreach (preg_split('/\R/', $body) ?: [] as $index => $line) {
         if (mb_stripos($line, $term) === FALSE) {
           continue;
