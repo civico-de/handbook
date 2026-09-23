@@ -15,6 +15,7 @@ use Civi\Api4\Navigation;
  * @covers \CRM_Handbook_Page_Handbook
  * @covers \CRM_Handbook_Page_Search
  * @covers \Civi\Handbook\AssetRoute
+ * @covers \Civi\Handbook\RenderCache
  */
 final class IntegrationHeadlessTest extends HandbookTestCase {
 
@@ -29,6 +30,12 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
    */
   private function grant(array $permissions): void {
     \CRM_Core_Config::singleton()->userPermissionClass->permissions = $permissions;
+  }
+
+  public function testRenderCacheKeysByTheInstalledVersion(): void {
+    $info = simplexml_load_file(dirname(__DIR__, 4) . '/info.xml');
+    $this->assertNotFalse($info);
+    $this->assertSame((string) $info->version, RenderCache::installedVersion());
   }
 
   public function testPermissionIsDeclared(): void {

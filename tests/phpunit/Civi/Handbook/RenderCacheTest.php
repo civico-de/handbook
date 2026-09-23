@@ -85,16 +85,6 @@ final class RenderCacheTest extends TestCase {
     $this->assertSame(2, $this->cache->writes);
   }
 
-  public function testDefaultVersionComesFromInfoXml(): void {
-    $this->write("## Alt\n");
-    $library = new Library(['s' => ['dir' => $this->dir, 'label' => 'S']]);
-    $url = static fn (string $path, array $query, ?string $fragment): string => '/x';
-    $version = (string) simplexml_load_file(dirname(__DIR__, 4) . '/info.xml')->version;
-    (new RenderCache($this->cache, $url))->page($library->find('s/seite'), $library);
-    (new RenderCache($this->cache, $url, $version))->page($library->find('s/seite'), $library);
-    $this->assertSame(1, $this->cache->writes);
-  }
-
   public function testBaseUrlIsPartOfTheKey(): void {
     $this->write("[b](other.md)\n");
     $this->assertStringContainsString('href="/a?p=s%2Fother"', $this->render('/a')['html']);

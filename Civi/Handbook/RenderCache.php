@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
+use CRM_Handbook_ExtensionUtil as E;
+
 /**
  * Renderer output per page, keyed by file path and content hash, the handbook
  * base URL and this extension's version, so edited text and a new release show
@@ -16,33 +18,26 @@ final class RenderCache {
    */
   private \Closure $url;
 
-  private string $version;
-
   /**
    * @param (\Closure(string, array<string, string>, string|null): string)|null $url
    *   Builds an unescaped Civi URL from path, query and fragment.
-   * @param string|null $version
-   *   Defaults to the version in this extension's info.xml.
+   * @param string $version
+   *   Part of the key; fromSystem() passes the installed extension version.
    */
   public function __construct(
     private readonly ?\CRM_Utils_Cache_Interface $cache,
     ?\Closure $url = NULL,
-    ?string $version = NULL,
+    private readonly string $version = '',
   ) {
     $this->url = $url ?? View::defaultUrl(...);
-    $this->version = $version ?? self::extensionVersion();
-  }
-
-  private static function extensionVersion(): string {
-    $info = simplexml_load_file(dirname(__DIR__, 2) . '/info.xml');
-    if ($info === FALSE) {
-      throw new \RuntimeException('handbook: info.xml is unreadable.');
-    }
-    return (string) $info->version;
   }
 
   public static function fromSystem(): self {
-    return new self(\Civi::cache('long'));
+    return new self(\Civi::cache('long'), NULL, self::installedVersion());
+  }
+
+  public static function installedVersion(): string {
+    return (string) \CRM_Extension_System::singleton()->getMapper()->keyToInfo(E::LONG_NAME)->version;
   }
 
   /**
