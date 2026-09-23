@@ -59,8 +59,8 @@ final class Library {
   }
 
   /**
-   * All pages, grouped by source (landing-page `order`, then label), each group sorted by
-   * `order` (pages without one last), then title ignoring case.
+   * All pages in table-of-contents order: grouped by source (landing-page `order`, then
+   * label), within a source as in Ordering::source().
    *
    * @return list<\Civi\Handbook\Page>
    */
@@ -131,8 +131,7 @@ final class Library {
         $this->errors[] = $e->getMessage();
       }
     }
-    usort($group, Ordering::pages(...));
-    return $group;
+    return Ordering::source($group);
   }
 
   private function cacheKey(): string {

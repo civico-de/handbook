@@ -105,23 +105,23 @@ final class LibraryHeadlessTest extends HandbookTestCase {
   }
 
   public function testSameOrderAndTitleSortByIdWhateverTheInputOrder(): void {
-    $a = new Page('extra/a', 'Gleich', 1, [], '/a.md');
-    $b = new Page('extra/b', 'Gleich', 1, [], '/b.md');
+    $a = new Page('extra/a', '/a.md', ['title' => 'Gleich', 'order' => 1]);
+    $b = new Page('extra/b', '/b.md', ['title' => 'Gleich', 'order' => 1]);
     $this->assertLessThan(0, Ordering::pages($a, $b));
     $this->assertGreaterThan(0, Ordering::pages($b, $a));
   }
 
   public function testExplicitMaximumOrderStillSortsBeforeUnordered(): void {
-    $ordered = new Page('extra/z', 'Zuletzt', PHP_INT_MAX, [], '/z.md');
-    $unordered = new Page('extra/a', 'Anfang', NULL, [], '/a.md');
+    $ordered = new Page('extra/z', '/z.md', ['title' => 'Zuletzt', 'order' => PHP_INT_MAX]);
+    $unordered = new Page('extra/a', '/a.md', ['title' => 'Anfang', 'order' => NULL]);
     $this->assertLessThan(0, Ordering::pages($ordered, $unordered));
     $this->assertGreaterThan(0, Ordering::pages($unordered, $ordered));
   }
 
   public function testSourceWithMaximumLandingOrderSortsBeforeSourceWithout(): void {
     $groups = [
-      'a' => [new Page('a/seite', 'Seite', NULL, [], '/a.md')],
-      'z' => [new Page('z/index', 'Start', PHP_INT_MAX, [], '/z.md')],
+      'a' => [new Page('a/seite', '/a.md', ['title' => 'Seite', 'order' => NULL])],
+      'z' => [new Page('z/index', '/z.md', ['title' => 'Start', 'order' => PHP_INT_MAX])],
     ];
     $sources = ['a' => ['dir' => '/a', 'label' => 'A'], 'z' => ['dir' => '/z', 'label' => 'Z']];
     $ids = array_map(static fn (Page $p): string => $p->id, Ordering::sources($groups, $sources));

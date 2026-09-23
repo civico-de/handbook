@@ -12,16 +12,31 @@ final class Page {
 
   public const LANDING = 'index';
 
+  public readonly string $title;
+
+  public readonly ?int $order;
+
+  public readonly ?string $section;
+
   /**
-   * @param list<string> $routes
+   * @var list<string>
+   */
+  public readonly array $routes;
+
+  /**
+   * @param array{title: string, order?: int|null, section?: string|null, routes?: list<string>} $meta
+   *   The frontmatter keys, title resolved.
    */
   public function __construct(
     public readonly string $id,
-    public readonly string $title,
-    public readonly ?int $order,
-    public readonly array $routes,
     public readonly string $file,
-  ) {}
+    array $meta,
+  ) {
+    $this->title = $meta['title'];
+    $this->order = $meta['order'] ?? NULL;
+    $this->section = $meta['section'] ?? NULL;
+    $this->routes = $meta['routes'] ?? [];
+  }
 
   public function source(): string {
     return explode('/', $this->id, 2)[0];

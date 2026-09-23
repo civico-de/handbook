@@ -17,6 +17,29 @@ final class Ordering {
   }
 
   /**
+   * Sorts a source's pages: the landing page first, then the pages grouped by
+   * `section`, each group (unnamed included) placed where its first page sorts.
+   *
+   * @param list<\Civi\Handbook\Page> $pages
+   *
+   * @return list<\Civi\Handbook\Page>
+   */
+  public static function source(array $pages): array {
+    usort($pages, self::pages(...));
+    $landing = [];
+    $groups = [];
+    foreach ($pages as $page) {
+      if ($page->isLanding()) {
+        $landing[] = $page;
+        continue;
+      }
+      // Prefixed so a numeric section name stays a string key.
+      $groups['s' . ($page->section ?? '')][] = $page;
+    }
+    return array_merge($landing, ...array_values($groups));
+  }
+
+  /**
    * Explicit orders before none, so any integer, PHP_INT_MAX included, stays ordered.
    *
    * @return array{bool, int|null, string, string}

@@ -7,7 +7,7 @@ namespace Civi\Handbook;
 use CRM_Handbook_ExtensionUtil as E;
 
 /**
- * Reads one Markdown file: optional YAML frontmatter (title, order, routes),
+ * Reads one Markdown file: optional YAML frontmatter (title, order, section, routes),
  * title fallback to the first H1, then the filename.
  */
 final class PageLoader {
@@ -26,22 +26,21 @@ final class PageLoader {
     }
     [$yaml, $body] = Frontmatter::split((string) file_get_contents($file));
     $meta = Frontmatter::parse($name, $yaml);
-    $title = $meta['title'] ?? self::firstH1($body) ?? $slug;
-    $order = $meta['order'] ?? NULL;
-    $routes = $meta['routes'] ?? [];
-    if (!is_string($title) || $order !== NULL && !is_int($order) || !self::isPathList($routes)) {
-      throw HandbookException::badRequest(E::ts('%1: title muss Text, order eine ganze Zahl und routes eine Liste von Pfaden sein.', [
+    $meta['title'] ??= self::firstH1($body) ?? $slug;
+    $meta['routes'] ??= [];
+    if (
+      !is_string($meta['title'])
+      || !is_int($meta['order'] ?? 0)
+      || !is_string($meta['section'] ?? '')
+      || !self::isPathList($meta['routes'])
+    ) {
+      throw HandbookException::badRequest(E::ts('%1: title und section müssen Text, order eine ganze Zahl und routes eine Liste von Pfaden sein.', [
         1 => $name,
       ]));
     }
-    /** @var list<string> $routes */
-    return new Page(
-      $source . '/' . $slug,
-      $title,
-      $order,
-      array_map(static fn (string $r): string => trim($r, '/'), $routes),
-      $file,
-    );
+    /** @var array{title: string, order?: int|null, section?: string|null, routes: list<string>} $meta */
+    $meta['routes'] = array_map(static fn (string $r): string => trim($r, '/'), $meta['routes']);
+    return new Page($source . '/' . $slug, $file, $meta);
   }
 
   private static function isPathList(mixed $routes): bool {

@@ -51,4 +51,30 @@ final class FrontmatterHeadlessTest extends HandbookTestCase {
     PageLoader::load('s', $this->file("---\n1: eins\n---\nText\n"));
   }
 
+  public function testSectionIsReadAsText(): void {
+    $page = PageLoader::load('s', $this->file("---\nsection: Geld\n---\n# Rechnung\n"));
+    $this->assertSame('Geld', $page->section);
+    $this->assertNull(PageLoader::load('s', $this->file("# Ohne\n"))->section);
+  }
+
+  /**
+   * @return array<string, array{string}>
+   */
+  public static function badSections(): array {
+    return [
+      'number' => ["section: 40\n"],
+      'list' => ["section: [Geld, Buchungen]\n"],
+      'map' => ["section:\n  name: Geld\n"],
+    ];
+  }
+
+  /**
+   * @dataProvider badSections
+   */
+  public function testSectionOfAnotherTypeIsAPageError(string $yaml): void {
+    $this->expectException(HandbookException::class);
+    $this->expectExceptionMessage('section müssen Text');
+    PageLoader::load('s', $this->file("---\n" . $yaml . "---\nText\n"));
+  }
+
 }
