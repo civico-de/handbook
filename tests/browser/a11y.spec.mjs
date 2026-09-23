@@ -12,8 +12,9 @@ const THEMES = [
 ];
 const SCREENS = [
   { name: "index", route: "civicrm/handbook", scope: ".handbook" },
-  { name: "page", route: "civicrm/handbook?p=handbook/benutzen", scope: ".handbook" },
+  { name: "page with sections", route: "civicrm/handbook?p=handbook/benutzen", scope: ".handbook" },
   { name: "search", route: "civicrm/handbook/search?term=Handbuch", scope: ".handbook" },
+  { name: "search results", route: "civicrm/handbook/search?term=Fixturewort", scope: ".handbook" },
   { name: "fixture page", route: "civicrm/handbook?p=extra/alpha", scope: ".handbook" },
   // tests/fixtures/extra/alpha.md links the dashboard: only the context link there is ours.
   { name: "context link", route: "civicrm/dashboard", scope: ".handbook-context" },
@@ -63,3 +64,48 @@ for (const t of THEMES) {
     }
   });
 }
+
+test.describe("keyboard and landmarks", () => {
+  test.beforeAll(() => {
+    setSetting("theme_backend", "minetta");
+    setSetting("riverlea_dark_mode_backend", "light");
+    cv("flush");
+  });
+
+  test("navigation landmarks have distinct labels", async ({ page }) => {
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    const labels = await page
+      .locator(".handbook nav")
+      .evaluateAll((navs) =>
+        navs.map((n) => n.getAttribute("aria-label") ?? n.getAttribute("aria-labelledby")),
+      );
+    expect(labels).toHaveLength(4);
+    expect(new Set(labels).size).toBe(labels.length);
+  });
+
+  test("a source group opens and closes from the keyboard", async ({ page }) => {
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    const closed = page.locator(".handbook-group:not([open]) > summary").first();
+    await closed.focus();
+    await expect(closed).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator(".handbook-group:not([open])")).toHaveCount(0);
+    await page.keyboard.press("Space");
+    await expect(page.locator(".handbook-group:not([open])")).toHaveCount(1);
+  });
+
+  test("narrow screens stack without horizontal scrolling", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    for (const route of [
+      "civicrm/handbook",
+      "civicrm/handbook?p=extra/alpha",
+      "civicrm/handbook/search?term=Fixturewort",
+    ]) {
+      await page.goto(loginUrl(route));
+      const overflow = await page
+        .locator(".handbook")
+        .evaluate((el) => el.scrollWidth - el.clientWidth);
+      expect(overflow, route).toBeLessThanOrEqual(0);
+    }
+  });
+});

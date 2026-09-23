@@ -52,7 +52,18 @@
   font-weight: bold;
   padding: 0.25em 0;
 }
-.handbook-section-name {
+/* Themes give h2/h3 a banner background; these are small labels, not banners. */
+.crm-container .handbook-section-name,
+.crm-container .handbook-result-pages h3,
+.crm-container .handbook-card h2,
+.crm-container .handbook-sections h2 {
+  background: none;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+.crm-container .handbook-section-name {
   font-size: 0.8em;
   font-weight: bold;
   text-transform: uppercase;
@@ -75,13 +86,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 18em), 1fr));
   gap: 1.5em;
+  align-items: start;
 }
 .handbook-card {
   border: 1px solid var(--crm-border-color, #949494);
   border-radius: 4px;
   padding: 1em;
 }
-.handbook-card h2 {
+.crm-container .handbook-card h2 {
   font-size: 1.2em;
   margin: 0 0 0.5em;
 }
@@ -112,7 +124,7 @@
   border-left: 3px solid currentColor;
   padding-left: 0.8em;
 }
-.handbook-sections h2 {
+.crm-container .handbook-sections h2 {
   font-size: 1em;
   margin: 0 0 0.3em;
 }
@@ -178,6 +190,7 @@
   text-align: left;
   vertical-align: top;
   overflow-wrap: anywhere;
+  hyphens: auto;
 }
 .handbook-content pre,
 .handbook-content :not(pre) > code {
@@ -208,7 +221,7 @@
 .handbook-result-pages > li {
   margin-bottom: 1.5em;
 }
-.handbook-result-pages h3 {
+.crm-container .handbook-result-pages h3 {
   font-size: 1.1em;
   margin: 0;
 }
@@ -219,6 +232,12 @@
 .handbook-hits {
   border-left: 3px solid var(--crm-border-color, #949494);
   padding-left: 0.8em;
+}
+.handbook-hits > li + li {
+  margin-top: 0.6em;
+}
+.handbook-hits .handbook-context-line {
+  margin: 0.1em 0 0;
 }
 .handbook-more {
   margin: 0.3em 0 0 1em;
