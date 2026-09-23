@@ -103,6 +103,12 @@ final class SearchHeadlessTest extends HandbookTestCase {
     $this->assertSame(['Wort vorn', 'erstes Wort', 'Wort in B'], array_column($hits, 'context'));
   }
 
+  public function testSectionWithAnEmptySlugKeepsItsOwnHit(): void {
+    // "## 🎉" gets the slug '', the same key text above any heading had.
+    $hits = $this->searchIn("Wort vorn\n\n## 🎉\n\nWort eins\n", 'Wort');
+    $this->assertSame(['Wort vorn', 'Wort eins'], array_column($hits, 'context'));
+  }
+
   public function testResultsAreGroupedByPageWithTheirFirstSections(): void {
     $markdown = "---\nsection: Geld\n---\n# Start\n\n" . str_repeat("## Teil\n\nWort hier\n\nnoch ein Wort\n\n", 7);
     $view = new View(

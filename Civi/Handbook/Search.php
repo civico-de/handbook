@@ -43,7 +43,8 @@ final class Search {
           continue;
         }
         $section = self::sectionAt($headings, $index + 1);
-        $key = $section['slug'] ?? '';
+        // By line: a heading of only emoji or punctuation has an empty slug.
+        $key = $section['line'] ?? 0;
         if (isset($seen[$key])) {
           continue;
         }
