@@ -95,7 +95,7 @@ ordered sources, alphabetically by label.
 |------|---------|
 | `civicrm/handbook` | Index: source errors on top, then one card per source listing its sections and pages. |
 | `civicrm/handbook?p=<id>` | One page. See below. |
-| `civicrm/handbook/search?term=<text>` | Every line containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five hits, each linking to its section, and „und N weitere Treffer“ for the rest. The status line counts hits and pages. |
+| `civicrm/handbook/search?term=<text>` | Every section containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five sections, each linking there with its first matching line, and „und N weitere Abschnitte“ for the rest. The status line counts sections and pages. |
 | `civicrm/handbook/asset?p=<source>/<path>` | An image of a manual (png, jpg, gif, webp). |
 
 A page shows, from left to right on wide screens:

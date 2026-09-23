@@ -125,7 +125,7 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
 
   public function testSearchScreenGroupsHitsByPageAndLinksAnchors(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Search(), ['term' => 'Fixturewort']);
-    $this->assertStringContainsString('<p role="status">2 Treffer auf 2 Seiten für „Fixturewort“</p>', $html);
+    $this->assertStringContainsString('<p role="status">2 Abschnitte auf 2 Seiten für „Fixturewort“</p>', $html);
     $this->assertMatchesRegularExpression(
       '#<h3><a href="[^"]*extra%2Falpha">Alpha aus der Überschrift</a></h3>#',
       $html,

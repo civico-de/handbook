@@ -31,10 +31,11 @@ Seite“ in der Reihenfolge des Inhaltsverzeichnisses weiter.
 
 ## Suchen
 
-Das Suchfeld steht auf jeder Handbuchseite. Die Suche findet jede Zeile, die den
-Begriff enthält, unabhängig von Groß- und Kleinschreibung. Die Treffer sind nach
-Anleitung gruppiert; zu jeder Anleitung stehen die ersten fünf Treffer mit der
-gefundenen Zeile. Jeder Treffer führt direkt zum passenden Abschnitt.
+Das Suchfeld steht auf jeder Handbuchseite. Die Suche findet jeden Abschnitt,
+der den Begriff enthält, unabhängig von Groß- und Kleinschreibung. Die Treffer
+sind nach Anleitung gruppiert; zu jeder Anleitung stehen die ersten fünf
+Abschnitte, jeweils mit der ersten Zeile, die den Begriff enthält. Jeder Treffer
+führt direkt zum passenden Abschnitt.
 
 ![Suchfeld und Trefferliste](bilder/suche.png)
 

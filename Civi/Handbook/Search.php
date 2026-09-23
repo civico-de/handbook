@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Civi\Handbook;
 
 /**
- * Case-insensitive substring search over the Markdown of all pages. Each hit
- * names the last heading above it (from the render cache), so results link to that section.
+ * Case-insensitive substring search over the Markdown of all pages. One hit per
+ * section: the first matching line below a heading (from the render cache), linked to it.
  */
 final class Search {
 
@@ -27,6 +27,7 @@ final class Search {
     }
     $hits = [];
     foreach ($this->library->pages() as $page) {
+      $seen = [];
       try {
         $body = $this->library->body($page);
         $headings = $this->rendered->page($page, $this->library)['headings'];
@@ -39,13 +40,12 @@ final class Search {
         if (mb_stripos($line, $term) === FALSE) {
           continue;
         }
-        $section = NULL;
-        foreach ($headings as $heading) {
-          if ($heading['line'] > ($index + 1)) {
-            break;
-          }
-          $section = $heading;
+        $section = self::sectionAt($headings, $index + 1);
+        $key = $section['slug'] ?? '';
+        if (isset($seen[$key])) {
+          continue;
         }
+        $seen[$key] = TRUE;
         $hits[] = [
           'page' => $page,
           'heading' => $section['text'] ?? NULL,
@@ -55,6 +55,24 @@ final class Search {
       }
     }
     return $hits;
+  }
+
+  /**
+   * The last heading at or above a body line, if any.
+   *
+   * @param list<array{level: int, text: string, slug: string, line: int}> $headings
+   *
+   * @return array{level: int, text: string, slug: string, line: int}|null
+   */
+  private static function sectionAt(array $headings, int $line): ?array {
+    $section = NULL;
+    foreach ($headings as $heading) {
+      if ($heading['line'] > $line) {
+        break;
+      }
+      $section = $heading;
+    }
+    return $section;
   }
 
 }

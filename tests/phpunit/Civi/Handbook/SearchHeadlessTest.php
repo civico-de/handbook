@@ -60,8 +60,17 @@ final class SearchHeadlessTest extends HandbookTestCase {
     $this->assertSame(['Das Handbuch benutzen', 'Mehr zum Handbuch'], array_column($hits, 'context'));
   }
 
-  public function testResultsAreGroupedByPageWithTheirFirstHits(): void {
-    $markdown = "---\nsection: Geld\n---\n# Start\n\n" . str_repeat("## Teil\n\nWort hier\n\n", 7);
+  public function testOneHitPerSectionWithItsFirstMatchingLine(): void {
+    $hits = $this->searchIn(
+      "Wort vorn\n\nWort zwei\n\n## A\n\nerstes Wort\n\nzweites Wort\n\n## B\n\nWort in B\n",
+      'Wort',
+    );
+    $this->assertSame([NULL, 'a', 'b'], array_column($hits, 'anchor'));
+    $this->assertSame(['Wort vorn', 'erstes Wort', 'Wort in B'], array_column($hits, 'context'));
+  }
+
+  public function testResultsAreGroupedByPageWithTheirFirstSections(): void {
+    $markdown = "---\nsection: Geld\n---\n# Start\n\n" . str_repeat("## Teil\n\nWort hier\n\nnoch ein Wort\n\n", 7);
     $view = new View(
       new Library(['s' => ['dir' => '/nonexistent', 'label' => 'Quelle']]),
       static fn (string $path, array $query, ?string $fragment): string => $query['p'] . '#' . $fragment,

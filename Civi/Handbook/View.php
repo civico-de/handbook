@@ -99,8 +99,8 @@ final class View {
   }
 
   /**
-   * Search hits grouped by page, in hit order, with unescaped links to their
-   * sections; `more` counts the hits beyond HITS_PER_PAGE.
+   * Search hits (one per section) grouped by page, in hit order, with unescaped
+   * links to their sections; `more` counts the sections beyond HITS_PER_PAGE.
    *
    * @param list<array{page: \Civi\Handbook\Page, heading: string|null, anchor: string|null, context: string}> $hits
    *

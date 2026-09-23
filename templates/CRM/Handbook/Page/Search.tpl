@@ -7,9 +7,9 @@
       {if $handbookTerm eq ''}
         <p>{ts domain="handbook"}Bitte einen Suchbegriff eingeben.{/ts}</p>
       {elseif $handbookResults}
-        {capture assign=handbookHitsText}{ts domain="handbook" count=$handbookHitCount plural="%count Treffer"}Ein Treffer{/ts}{/capture}
+        {capture assign=handbookSectionsText}{ts domain="handbook" count=$handbookSectionCount plural="%count Abschnitte"}Ein Abschnitt{/ts}{/capture}
         {capture assign=handbookPagesText}{ts domain="handbook" count=$handbookResults|@count plural="%count Seiten"}einer Seite{/ts}{/capture}
-        <p role="status">{ts domain="handbook" 1=$handbookHitsText 2=$handbookPagesText 3=$handbookTerm|escape}%1 auf %2 für „%3“{/ts}</p>
+        <p role="status">{ts domain="handbook" 1=$handbookSectionsText 2=$handbookPagesText 3=$handbookTerm|escape}%1 auf %2 für „%3“{/ts}</p>
         <ol class="handbook-result-pages">
           {foreach from=$handbookResults item=result}
             <li>
@@ -24,7 +24,7 @@
                 {/foreach}
               </ul>
               {if $result.more}
-                <p class="handbook-more">{ts domain="handbook" count=$result.more plural="und %count weitere Treffer"}und ein weiterer Treffer{/ts}</p>
+                <p class="handbook-more">{ts domain="handbook" count=$result.more plural="und %count weitere Abschnitte"}und ein weiterer Abschnitt{/ts}</p>
               {/if}
             </li>
           {/foreach}

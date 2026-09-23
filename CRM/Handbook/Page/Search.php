@@ -28,7 +28,7 @@ class CRM_Handbook_Page_Search extends CRM_Core_Page {
     CRM_Utils_System::setTitle(E::ts('Handbuch durchsuchen'));
     $hits = (new Search($library, RenderCache::fromSystem()))->run($term);
     $this->assign('handbookResults', $view->results($hits));
-    $this->assign('handbookHitCount', count($hits));
+    $this->assign('handbookSectionCount', count($hits));
     parent::run();
   }
 

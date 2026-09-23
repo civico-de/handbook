@@ -41,7 +41,7 @@ final class UrlEscapingHeadlessTest extends HandbookTestCase {
       'handbookTerm' => 'fixturewort',
       'handbookToc' => $view->toc(),
       'handbookResults' => $view->results($hits),
-      'handbookHitCount' => count($hits),
+      'handbookSectionCount' => count($hits),
     ]);
     $this->assertStringContainsString(
       'href="index.php?q=civicrm/handbook&amp;p=extra%2Falpha#erster-abschnitt"',
