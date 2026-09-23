@@ -42,6 +42,7 @@ Frontmatter is optional YAML between two `---` lines at the top of the file:
 ---
 title: Managing events
 order: 10
+section: Events
 routes:
   - civicrm/event/manage
 ---
@@ -51,17 +52,28 @@ routes:
 |----------|-----------------|--------|
 | `title`  | string          | Page title. Without it, the handbook uses the first `# ` heading, then the filename. |
 | `order`  | integer         | Sort key within the extension, ascending. Pages without an order come after the ordered ones. Ties sort by title, ignoring case. |
+| `section` | string         | Groups pages within the extension under this name in the table of contents. |
 | `routes` | list of strings | CiviCRM paths where a "Handbuch: <title>" link appears above the page content. |
 
 A file with invalid YAML, a wrong type, or an invalid filename is left out.
 The problem is listed at the top of the handbook index.
 
+### Sections
+
+Pages with the same `section` are listed together under that name. A section
+sits where its first page sorts (by `order`, then title); its pages keep that
+order among themselves. Pages without a section form an unnamed group, placed
+where its first page sorts. Sections do not change page ids and need no
+subdirectories. For example, orders 10–19 with `section: Setup` and 20–29
+with `section: Events` give two groups in that order.
+
 ### Landing page and source order
 
-An optional `handbook/index.md` is the source's landing page: the group
-heading in the table of contents links to it, and it is not listed as a
-separate page. Its frontmatter `order` orders the source itself; sources
-without one follow the ordered sources, alphabetically by label.
+An optional `handbook/index.md` is the source's landing page. It is the first
+entry of its source in the table of contents, labelled „Übersicht“, and the
+breadcrumb of the other pages links to it. Its `section` is ignored. Its
+frontmatter `order` orders the source itself; sources without one follow the
+ordered sources, alphabetically by label.
 
 ### Links and images
 
@@ -81,10 +93,24 @@ without one follow the ordered sources, alphabetically by label.
 
 | Path | Content |
 |------|---------|
-| `civicrm/handbook` | Index: table of contents grouped by extension, plus source errors. |
-| `civicrm/handbook?p=<id>` | One page, with the table of contents and a list of its sections. |
-| `civicrm/handbook/search?term=<text>` | Every line containing the text, case-insensitive, shown as "Page › section" with the line and a link to the section. |
+| `civicrm/handbook` | Index: source errors on top, then one card per source listing its sections and pages. |
+| `civicrm/handbook?p=<id>` | One page. See below. |
+| `civicrm/handbook/search?term=<text>` | Every line containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five hits, each linking to its section, and „und N weitere Treffer“ for the rest. The status line counts hits and pages. |
 | `civicrm/handbook/asset?p=<source>/<path>` | An image of a manual (png, jpg, gif, webp). |
+
+A page shows, from left to right on wide screens:
+
+- the table of contents: one collapsible group per source, open for the
+  current page's source, section names as small headings. It stays in view
+  and scrolls on its own.
+- the page: a breadcrumb (Handbuch › source › section), the content, and
+  links to the previous and next page in table-of-contents order, landing
+  pages included.
+- „Auf dieser Seite“, the page's `##` and `###` headings, also kept in view.
+
+On narrow screens the three stack in one column, with „Auf dieser Seite“
+above the content. The search screen shows the table of contents with every
+group closed.
 
 The menu entry "Handbuch" sits under **Support**.
 
@@ -111,8 +137,12 @@ Standalone included. Context links are shown only to users who hold it.
 ## Limits
 
 - The handbook caches the page list until the next system flush (`cv flush`).
-  New or renamed files, and changes to `title`, `order` or `routes`, show up
-  after a flush. Changes to page text show up immediately.
+  New or renamed files, and changes to `title`, `order`, `section` or
+  `routes`, show up after a flush.
+- Rendered pages are cached in CiviCRM's `long` cache, keyed by file path,
+  modification time, size and the site's handbook URL. Changes to page text
+  show up immediately, and search reads the section headings from the same
+  cache. Older entries stay until the next flush.
 - Search scans the Markdown source line by line, without an index. Hits show
   raw Markdown, and a phrase that spans a line break is not found.
 - Context links match the exact path from `CRM_Utils_System::currentPath()` on

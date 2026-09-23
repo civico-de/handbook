@@ -9,16 +9,32 @@ section: Lesen
 Das Handbuch sammelt die Bedienungsanleitungen aller installierten Erweiterungen.
 Sie öffnen es über **Support › Handbuch**.
 
+## Übersicht
+
+Die Startseite zeigt für jede Erweiterung eine Karte mit ihren Anleitungen,
+gruppiert nach Themen. Gibt es Fehler in einer Anleitung, stehen sie oben.
+
 ## Inhaltsverzeichnis
 
-Links stehen alle Anleitungen, gruppiert nach der Erweiterung, die sie mitbringt.
-Über jeder Anleitung listet ein kurzes Verzeichnis ihre Abschnitte auf.
+Links neben jeder Anleitung steht das Inhaltsverzeichnis. Jede Erweiterung ist
+eine Gruppe, die Sie mit einem Klick auf ihren Namen auf- und zuklappen. Offen
+ist die Gruppe der Anleitung, die Sie gerade lesen. Der erste Eintrag
+„Übersicht“ führt zur Startseite der Erweiterung, falls sie eine hat. Kleine
+Überschriften teilen längere Handbücher in Themen.
+
+## Eine Anleitung lesen
+
+Über der Anleitung zeigt ein Pfad, wo Sie sind: Handbuch › Erweiterung › Thema.
+Rechts daneben, auf schmalen Bildschirmen darüber, listet „Auf dieser Seite“
+die Abschnitte der Anleitung. Unten führen „Vorherige Seite“ und „Nächste
+Seite“ in der Reihenfolge des Inhaltsverzeichnisses weiter.
 
 ## Suchen
 
 Das Suchfeld steht auf jeder Handbuchseite. Die Suche findet jede Zeile, die den
-Begriff enthält, unabhängig von Groß- und Kleinschreibung. Jeder Treffer führt
-direkt zum passenden Abschnitt.
+Begriff enthält, unabhängig von Groß- und Kleinschreibung. Die Treffer sind nach
+Anleitung gruppiert; zu jeder Anleitung stehen die ersten fünf Treffer mit der
+gefundenen Zeile. Jeder Treffer führt direkt zum passenden Abschnitt.
 
 ![Suchfeld und Trefferliste](bilder/suche.png)
 
