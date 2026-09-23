@@ -60,7 +60,7 @@ final class PageNavHeadlessTest extends HandbookTestCase {
     $this->assertSame(
       [
         ['label' => 'Handbuch', 'url' => '/civicrm/handbook'],
-        ['label' => 'Zulu', 'url' => '/civicrm/handbook?p=zulu/index'],
+        ['label' => 'Zulu-Handbuch', 'url' => '/civicrm/handbook?p=zulu/index'],
         ['label' => 'Erste Schritte', 'url' => NULL],
       ],
       $this->nav->breadcrumb($this->library->find('zulu/seite')),
@@ -69,12 +69,11 @@ final class PageNavHeadlessTest extends HandbookTestCase {
 
   public function testBreadcrumbOfALandingPageOrASourceWithoutOne(): void {
     $this->assertSame(
-      ['label' => 'Zulu', 'url' => NULL],
+      ['label' => 'Zulu-Handbuch', 'url' => NULL],
       $this->nav->breadcrumb($this->library->find('zulu/index'))[1],
     );
     $crumbs = $this->nav->breadcrumb($this->library->find('alpha/seite'));
-    $this->assertCount(2, $crumbs);
-    $this->assertNull($crumbs[1]['url']);
+    $this->assertSame(['label' => 'Zweiter Name', 'url' => NULL], $crumbs[1]);
   }
 
 }

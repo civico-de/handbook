@@ -71,9 +71,11 @@ with `section: Events` give two groups in that order.
 
 An optional `handbook/index.md` is the source's landing page. It is the first
 entry of its source in the table of contents, labelled „Übersicht“, and the
-breadcrumb of the other pages links to it. Its `section` is ignored. Its
-frontmatter `order` orders the source itself; sources without one follow the
-ordered sources, alphabetically by label.
+breadcrumb of the other pages links to it. Its `section` is ignored. Its title
+names the source in the table of contents, breadcrumb and search results;
+without a landing page, the name is the extension's label, or „Weitere
+Anleitungen“ for the extra directory. Its frontmatter `order` orders the source
+itself; sources without one follow the ordered sources, alphabetically by name.
 
 ### Links and images
 

@@ -86,7 +86,7 @@ final class View {
       }
       $toc[] = [
         'source' => (string) $source,
-        'label' => $this->library->sources()[$source]['label'] ?? (string) $source,
+        'label' => Ordering::sourceName($pages, $this->library->sources(), (string) $source),
         'open' => $openAll || in_array($currentId, array_map(static fn (Page $p): string => $p->id, $pages), TRUE),
         'landing' => $landing,
         'sections' => array_map(fn (array $group): array => [
@@ -113,7 +113,10 @@ final class View {
     }
     return array_map(function (array $pageHits): array {
       $page = $pageHits[0]['page'];
-      $place = [$this->library->sources()[$page->source()]['label'] ?? $page->source(), $page->section];
+      $place = [
+        Ordering::sourceName($this->library->pages(), $this->library->sources(), $page->source()),
+        $page->section,
+      ];
       return [
         'title' => $page->title,
         'place' => implode(' › ', array_filter($place, 'is_string')),

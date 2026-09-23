@@ -40,7 +40,7 @@ final class PageNav {
     $crumbs = [
       ['label' => E::ts('Handbuch'), 'url' => ($this->url)('civicrm/handbook', [], NULL)],
       [
-        'label' => $this->library->sources()[$page->source()]['label'] ?? $page->source(),
+        'label' => Ordering::sourceName($this->library->pages(), $this->library->sources(), $page->source()),
         'url' => $landing === [] ? NULL : $this->pageUrl(reset($landing)),
       ],
     ];

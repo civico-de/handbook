@@ -32,12 +32,20 @@ final class SourceOrderHeadlessTest extends HandbookTestCase {
     $this->assertSame(['zulu', 'beta', 'alpha'], $sources);
   }
 
+  public function testLandingTitleNamesTheSourceElseItsLabel(): void {
+    $library = $this->library();
+    $name = static fn (string $source): string => Ordering::sourceName($library->pages(), $library->sources(), $source);
+    $this->assertSame('Zulu-Handbuch', $name('zulu'));
+    $this->assertSame('Beta ohne Order', $name('beta'));
+    $this->assertSame('Zweiter Name', $name('alpha'));
+  }
+
   public function testLandingPageIsTheOverviewEntryNotAListedPage(): void {
     $toc = (new View(
       $this->library(),
       static fn (string $path, array $query): string => '/' . $path . '?p=' . $query['p'],
     ))->toc('zulu/index');
-    $this->assertSame('Zulu', $toc[0]['label']);
+    $this->assertSame('Zulu-Handbuch', $toc[0]['label']);
     $this->assertSame('/civicrm/handbook?p=zulu/index', $toc[0]['landing']['url'] ?? NULL);
     $this->assertTrue($toc[0]['landing']['current'] ?? NULL);
     $this->assertTrue($toc[0]['open']);

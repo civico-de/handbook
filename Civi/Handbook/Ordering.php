@@ -49,8 +49,8 @@ final class Ordering {
   }
 
   /**
-   * Orders page groups by their landing page's `order` (none last), then label
-   * ignoring case, then source key, and flattens them.
+   * Orders page groups by their landing page's `order` (none last), then the
+   * landing title or source label ignoring case, then source key, and flattens them.
    *
    * @param array<string, list<\Civi\Handbook\Page>> $groups
    * @param array<string, array{dir: string, label: string}> $sources
@@ -60,19 +60,31 @@ final class Ordering {
   public static function sources(array $groups, array $sources): array {
     $keys = [];
     foreach ($groups as $source => $group) {
-      $keys[$source] = self::key(self::landingOrder($group), $sources[$source]['label'] ?? $source, $source);
+      $keys[$source] = self::key(self::landing($group)?->order, self::sourceName($group, $sources, $source), $source);
     }
     uksort($groups, static fn (string $a, string $b): int => $keys[$a] <=> $keys[$b]);
     return array_merge(...array_values($groups));
   }
 
   /**
+   * Display name of a source: its landing page's title, else its label.
+   *
+   * @param list<\Civi\Handbook\Page> $pages
+   *   Pages of any sources.
+   * @param array<string, array{dir: string, label: string}> $sources
+   */
+  public static function sourceName(array $pages, array $sources, string $source): string {
+    $own = array_values(array_filter($pages, static fn (Page $p): bool => $p->source() === $source));
+    return self::landing($own)->title ?? $sources[$source]['label'] ?? $source;
+  }
+
+  /**
    * @param list<\Civi\Handbook\Page> $group
    */
-  private static function landingOrder(array $group): ?int {
+  private static function landing(array $group): ?Page {
     foreach ($group as $page) {
       if ($page->isLanding()) {
-        return $page->order;
+        return $page;
       }
     }
     return NULL;

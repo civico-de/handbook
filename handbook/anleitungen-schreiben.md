@@ -34,7 +34,7 @@ Praktisch ist, Themen in Zehnerschritten zu nummerieren: `order` 10 bis 19
 für das erste Thema, 20 bis 29 für das zweite.
 
 Eine Datei `index.md` ist die Startseite der Erweiterung. Sie steht als
-„Übersicht“ ganz oben in ihrer Gruppe.
+„Übersicht“ ganz oben in ihrer Gruppe, und ihr Titel ist der Name der Gruppe.
 
 ## Seiten verknüpfen
 
