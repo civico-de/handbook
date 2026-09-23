@@ -167,6 +167,11 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     $this->assertSame(2, substr_count($html, '<section class="handbook-card"'));
     $this->assertStringContainsString('<h2 id="handbook-card-extra">Weitere Anleitungen</h2>', $html);
     $this->assertStringContainsString('<h3 class="handbook-section-name">Lesen</h3>', $html);
+    $this->assertDoesNotMatchRegularExpression(
+      '#<ul class="handbook-toc-list">\s*</ul>#',
+      $html,
+      'no empty list for a source without landing page',
+    );
     $this->assertStringNotContainsString('<details', $html);
   }
 
