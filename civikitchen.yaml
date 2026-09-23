@@ -31,7 +31,7 @@ policy:
   # Floor is measured coverage minus one (ckcoverage); ratchet up as coverage
   # grows, never down to make a red build green.
   coverage:
-    minimum: 91
+    minimum: 93
 
   # Hooks arrive as scan-class listeners (Civi\Handbook\ContextHelp).
   hook_style: listener
