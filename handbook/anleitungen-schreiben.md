@@ -50,4 +50,5 @@ Bilder liegen neben den Markdown-Dateien und werden relativ eingebunden.
 
 Geänderter Text erscheint sofort. Neue oder umbenannte Dateien und geänderte
 Kopfdaten erscheinen erst, nachdem der Cache von CiviCRM geleert wurde, etwa
-mit `cv flush`.
+mit `cv flush`. Das gilt auch für einen Titel, der aus der ersten Überschrift
+`# ` stammt.

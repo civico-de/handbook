@@ -25,8 +25,10 @@ ist die Gruppe der Anleitung, die Sie gerade lesen. Der erste Eintrag
 ## Eine Anleitung lesen
 
 Über der Anleitung zeigt ein Pfad, wo Sie sind: Handbuch › Erweiterung › Thema.
-Rechts daneben, auf schmalen Bildschirmen darüber, listet „Auf dieser Seite“
-die Abschnitte der Anleitung. Unten führen „Vorherige Seite“ und „Nächste
+„Auf dieser Seite“ listet die Abschnitte der Anleitung. Auf sehr breiten
+Bildschirmen steht die Liste rechts neben dem Text und bleibt beim Scrollen
+sichtbar, sonst steht sie über dem Text. Auf schmalen Bildschirmen steht
+das Inhaltsverzeichnis über allem. Unten führen „Vorherige Seite“ und „Nächste
 Seite“ in der Reihenfolge des Inhaltsverzeichnisses weiter.
 
 ## Suchen

@@ -52,7 +52,7 @@ routes:
 |----------|-----------------|--------|
 | `title`  | string          | Page title. Without it, the handbook uses the first `# ` heading, then the filename. |
 | `order`  | integer         | Sort key within the extension, ascending. Pages without an order come after the ordered ones. Ties sort by title, ignoring case. |
-| `section` | string         | Groups pages within the extension under this name in the table of contents. |
+| `section` | string         | Groups pages within the extension under this name in the table of contents. Surrounding spaces are ignored; a blank value counts as no section. |
 | `routes` | list of strings | CiviCRM paths where a "Handbuch: <title>" link appears above the page content. |
 
 A file with invalid YAML, a wrong type, or an invalid filename is left out.
@@ -98,7 +98,7 @@ ordered sources, alphabetically by label.
 | `civicrm/handbook/search?term=<text>` | Every section containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five sections, each linking there with its first matching line, and „und N weitere Abschnitte“ for the rest. The status line counts sections and pages. |
 | `civicrm/handbook/asset?p=<source>/<path>` | An image of a manual (png, jpg, gif, webp). |
 
-A page shows, from left to right on wide screens:
+A page has three parts:
 
 - the table of contents: one collapsible group per source, open for the
   current page's source, section names as small headings. It stays in view
@@ -106,11 +106,18 @@ A page shows, from left to right on wide screens:
 - the page: a breadcrumb (Handbuch › source › section), the content, and
   links to the previous and next page in table-of-contents order, landing
   pages included.
-- „Auf dieser Seite“, the page's `##` and `###` headings, also kept in view.
+- „Auf dieser Seite“, the page's `##` and `###` headings.
 
-On narrow screens the three stack in one column, with „Auf dieser Seite“
-above the content. The search screen shows the table of contents with every
-group closed.
+The layout follows the screen width:
+
+- below 64em, one column: table of contents, then „Auf dieser Seite“, then
+  the content.
+- from 64em, the table of contents on the left and the page beside it, with
+  „Auf dieser Seite“ above the content.
+- from 90em, three columns: table of contents, content, and „Auf dieser Seite“
+  on the right, kept in view.
+
+The search screen shows the table of contents with every group closed.
 
 The menu entry "Handbuch" sits under **Support**.
 
@@ -138,14 +145,18 @@ Standalone included. Context links are shown only to users who hold it.
 
 - The handbook caches the page list until the next system flush (`cv flush`).
   New or renamed files, and changes to `title`, `order`, `section` or
-  `routes`, show up after a flush.
+  `routes`, show up after a flush. The same holds for a title taken from the
+  first `# ` heading.
 - Rendered pages are cached in CiviCRM's `long` cache, keyed by file path,
   content hash, the site's handbook URL and the extension version. Changes to
   page text and a new release of the extension show up immediately, and search
   reads the section headings from the same cache. Older entries stay until the
   next flush.
-- Search scans the Markdown source line by line, without an index. Hits show
-  raw Markdown, and a phrase that spans a line break is not found.
+- Search scans the Markdown source line by line, without an index, and shows
+  one hit per section. The matching line is shown as plain text: emphasis,
+  code, links, list and quote markers are removed, a table row shows its cells
+  joined by „ · “, and table separator rows are never shown. A phrase that
+  spans a line break is not found.
 - Context links match the exact path from `CRM_Utils_System::currentPath()` on
   pages (`hook_civicrm_pageRun`) and QuickForm screens (`hook_civicrm_buildForm`),
   for example `civicrm/event/add`. Angular-only screens get no link.
