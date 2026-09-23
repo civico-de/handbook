@@ -174,7 +174,15 @@
   font-size: 0.85em;
 }
 
-/* Rendered Markdown. */
+/* Rendered Markdown. Themes strip list markers inside .crm-container; restore the browser's. */
+.crm-container .handbook-content :is(ul, ol) {
+  list-style: revert;
+  padding: revert;
+  margin: revert;
+}
+.crm-container .handbook-content li {
+  display: list-item;
+}
 .handbook-content img {
   max-width: 100%;
   height: auto;

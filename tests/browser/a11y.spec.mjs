@@ -65,6 +65,25 @@ for (const t of THEMES) {
   });
 }
 
+for (const t of THEMES) {
+  test(`content lists keep their markers in ${t.name}`, async ({ page }) => {
+    setSetting("theme_backend", t.theme);
+    setSetting("riverlea_dark_mode_backend", t.dark);
+    cv("flush");
+    await page.goto(loginUrl("civicrm/handbook?p=extra/alpha"));
+    const style = (sel) =>
+      page
+        .locator(sel)
+        .first()
+        .evaluate((el) => {
+          const s = getComputedStyle(el);
+          return [s.listStyleType, parseFloat(s.paddingInlineStart) > 0];
+        });
+    expect(await style(".handbook-content ul")).toEqual(["disc", true]);
+    expect(await style(".handbook-content ul ol")).toEqual(["decimal", true]);
+  });
+}
+
 test.describe("keyboard and landmarks", () => {
   test.beforeAll(() => {
     setSetting("theme_backend", "minetta");
