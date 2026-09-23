@@ -284,6 +284,11 @@
   outline: 3px solid currentColor;
   outline-offset: 2px;
 }
+/* Inside the scrolling sidebars an outer ring would be clipped. */
+.handbook-toc a:focus-visible,
+.handbook-sections a:focus-visible {
+  outline-offset: -3px;
+}
 .handbook-context-line {
   margin: 0.2em 0 0.8em;
 }

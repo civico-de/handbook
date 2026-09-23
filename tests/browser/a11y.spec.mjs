@@ -130,6 +130,16 @@ test.describe("keyboard and landmarks", () => {
     await expect(group).toHaveJSProperty("open", false);
   });
 
+  test("focus rings in the scrolling sidebars sit inside the link", async ({ page }) => {
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    for (const sel of [".handbook-toc a", ".handbook-sections a"]) {
+      const link = page.locator(sel).first();
+      await page.locator(".handbook-search input").first().focus();
+      await tabTo(page, link);
+      expect(await link.evaluate((el) => getComputedStyle(el).outlineOffset), sel).toBe("-3px");
+    }
+  });
+
   test("each sidebar h3 sits in a details whose summary holds an h2", async ({ page }) => {
     await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
     const orphans = await page
