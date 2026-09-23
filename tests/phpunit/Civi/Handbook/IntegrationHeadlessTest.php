@@ -123,10 +123,47 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     $this->assertStringContainsString('extra/kaputt.md', $html);
   }
 
-  public function testSearchScreenLinksHitsToAnchors(): void {
+  public function testSearchScreenGroupsHitsByPageAndLinksAnchors(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Search(), ['term' => 'Fixturewort']);
-    $this->assertStringContainsString('Alpha aus der Überschrift › Erster Abschnitt', $html);
-    $this->assertStringContainsString('#erster-abschnitt', $html);
+    $this->assertStringContainsString('<p role="status">2 Treffer auf 2 Seiten für „Fixturewort“</p>', $html);
+    $this->assertMatchesRegularExpression(
+      '#<h3><a href="[^"]*extra%2Falpha">Alpha aus der Überschrift</a></h3>#',
+      $html,
+    );
+    $this->assertStringContainsString('<p class="handbook-result-place">Weitere Anleitungen</p>', $html);
+    $this->assertMatchesRegularExpression(
+      '#<a href="[^"]*extra%2Falpha\#erster-abschnitt">Erster Abschnitt</a>#',
+      $html,
+    );
+  }
+
+  public function testPageHasBreadcrumbSectionsPagerAndCollapsibleToc(): void {
+    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'handbook/anleitungen-schreiben']);
+    $this->assertMatchesRegularExpression(
+      '#<nav class="handbook-breadcrumb" aria-label="Pfad im Handbuch">\s*<ol>\s*<li><a href="[^"]*civicrm/handbook">Handbuch</a></li>#',
+      $html,
+    );
+    $this->assertStringContainsString('<li>Schreiben</li>', $html);
+    $this->assertStringContainsString('<h2 id="handbook-sections-heading">Auf dieser Seite</h2>', $html);
+    $this->assertMatchesRegularExpression(
+      '#rel="prev" href="[^"]*handbook%2Fbenutzen"><span class="handbook-pager-dir">Vorherige Seite</span> Das Handbuch benutzen</a>#',
+      $html,
+    );
+    $this->assertMatchesRegularExpression('#rel="next" href="[^"]*extra%2Falpha">#', $html);
+    $this->assertSame(
+      1,
+      substr_count($html, '<details class="handbook-group" open>'),
+      'only the current source is open',
+    );
+    $this->assertStringContainsString('<h3 class="handbook-section-name">Schreiben</h3>', $html);
+  }
+
+  public function testIndexShowsOneCardPerSourceWithSections(): void {
+    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), []);
+    $this->assertSame(2, substr_count($html, '<section class="handbook-card"'));
+    $this->assertStringContainsString('<h2 id="handbook-card-extra">Weitere Anleitungen</h2>', $html);
+    $this->assertStringContainsString('<h3 class="handbook-section-name">Lesen</h3>', $html);
+    $this->assertStringNotContainsString('<details', $html);
   }
 
   /**

@@ -1,6 +1,7 @@
 ---
 title: Das Handbuch benutzen
 order: 1
+section: Lesen
 ---
 
 # Das Handbuch benutzen

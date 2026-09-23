@@ -23,7 +23,7 @@ final class UrlEscapingHeadlessTest extends HandbookTestCase {
   }
 
   public function testUrlsAreBuiltRaw(): void {
-    $url = $this->view()->toc()[0]['pages'][0]['url'];
+    $url = $this->view()->toc()[0]['sections'][0]['pages'][0]['url'];
     $this->assertSame('index.php?q=civicrm/handbook&p=handbook%2Fbenutzen', $url);
   }
 
@@ -35,12 +35,13 @@ final class UrlEscapingHeadlessTest extends HandbookTestCase {
 
   public function testSearchResultsEscapeOnce(): void {
     $view = $this->view();
-    $results = $view->results((new Search(Library::fromSystem(), new Renderer()))->run('fixturewort'));
+    $hits = (new Search(Library::fromSystem(), new RenderCache(NULL)))->run('fixturewort');
     $html = \CRM_Core_Smarty::singleton()->fetchWith('CRM/Handbook/Page/Search.tpl', [
       'handbookSearch' => View::searchForm(),
       'handbookTerm' => 'fixturewort',
       'handbookToc' => $view->toc(),
-      'handbookResults' => $results,
+      'handbookResults' => $view->results($hits),
+      'handbookHitCount' => count($hits),
     ]);
     $this->assertStringContainsString(
       'href="index.php?q=civicrm/handbook&amp;p=extra%2Falpha#erster-abschnitt"',

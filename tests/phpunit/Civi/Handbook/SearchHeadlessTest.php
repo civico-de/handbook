@@ -15,7 +15,7 @@ final class SearchHeadlessTest extends HandbookTestCase {
    * @return list<array{page: \Civi\Handbook\Page, heading: string|null, anchor: string|null, context: string}>
    */
   private function search(string $term): array {
-    return (new Search(Library::fromSystem(), new Renderer()))->run($term);
+    return (new Search(Library::fromSystem(), new RenderCache(NULL)))->run($term);
   }
 
   public function testCaseInsensitiveHitsNameTheirSection(): void {
@@ -60,19 +60,39 @@ final class SearchHeadlessTest extends HandbookTestCase {
     $this->assertSame(['Das Handbuch benutzen', 'Mehr zum Handbuch'], array_column($hits, 'context'));
   }
 
+  public function testResultsAreGroupedByPageWithTheirFirstHits(): void {
+    $markdown = "---\nsection: Geld\n---\n# Start\n\n" . str_repeat("## Teil\n\nWort hier\n\n", 7);
+    $view = new View(
+      new Library(['s' => ['dir' => '/nonexistent', 'label' => 'Quelle']]),
+      static fn (string $path, array $query, ?string $fragment): string => $query['p'] . '#' . $fragment,
+    );
+    $results = $view->results([
+      ...$this->searchIn($markdown, 'Wort'),
+      ...$this->searchIn("# Zwei\n\nWort\n", 'Wort', 'zwei'),
+    ]);
+    $this->assertCount(2, $results);
+    $this->assertSame('Start', $results[0]['title']);
+    $this->assertSame('Quelle › Geld', $results[0]['place']);
+    $this->assertCount(View::HITS_PER_PAGE, $results[0]['hits']);
+    $this->assertSame(2, $results[0]['more']);
+    $this->assertSame(['s/seite#teil', 's/seite#teil-1'], array_slice(array_column($results[0]['hits'], 'url'), 0, 2));
+    $this->assertSame('Quelle', $results[1]['place']);
+    $this->assertSame(0, $results[1]['more']);
+  }
+
   /**
    * @return list<array{page: \Civi\Handbook\Page, heading: string|null, anchor: string|null, context: string}>
    */
-  private function searchIn(string $markdown, string $term): array {
+  private function searchIn(string $markdown, string $term, string $slug = 'seite'): array {
     $dir = sys_get_temp_dir() . '/handbook-search-' . bin2hex(random_bytes(4));
     mkdir($dir);
-    file_put_contents($dir . '/seite.md', $markdown);
+    file_put_contents($dir . '/' . $slug . '.md', $markdown);
     $library = new Library(['s' => ['dir' => $dir, 'label' => 'S']]);
     try {
-      return (new Search($library, new Renderer()))->run($term);
+      return (new Search($library, new RenderCache(NULL)))->run($term);
     }
     finally {
-      unlink($dir . '/seite.md');
+      unlink($dir . '/' . $slug . '.md');
       rmdir($dir);
     }
   }

@@ -7,12 +7,25 @@
       {if $handbookTerm eq ''}
         <p>{ts domain="handbook"}Bitte einen Suchbegriff eingeben.{/ts}</p>
       {elseif $handbookResults}
-        <p role="status">{ts domain="handbook" count=$handbookResults|@count plural="%count Treffer für „%1“" 1=$handbookTerm|escape}Ein Treffer für „%1“{/ts}</p>
-        <ol>
+        {capture assign=handbookHitsText}{ts domain="handbook" count=$handbookHitCount plural="%count Treffer"}Ein Treffer{/ts}{/capture}
+        {capture assign=handbookPagesText}{ts domain="handbook" count=$handbookResults|@count plural="%count Seiten"}einer Seite{/ts}{/capture}
+        <p role="status">{ts domain="handbook" 1=$handbookHitsText 2=$handbookPagesText 3=$handbookTerm|escape}%1 auf %2 für „%3“{/ts}</p>
+        <ol class="handbook-result-pages">
           {foreach from=$handbookResults item=result}
             <li>
-              <a href="{$result.url|escape}">{$result.title|escape}{if $result.heading} › {$result.heading|escape}{/if}</a>
-              <p class="handbook-context-line">{$result.context|escape}</p>
+              <h3><a href="{$result.url|escape}">{$result.title|escape}</a></h3>
+              <p class="handbook-result-place">{$result.place|escape}</p>
+              <ul class="handbook-hits">
+                {foreach from=$result.hits item=hit}
+                  <li>
+                    <a href="{$hit.url|escape}">{if $hit.heading}{$hit.heading|escape}{else}{$result.title|escape}{/if}</a>
+                    <p class="handbook-context-line">{$hit.context|escape}</p>
+                  </li>
+                {/foreach}
+              </ul>
+              {if $result.more}
+                <p class="handbook-more">{ts domain="handbook" count=$result.more plural="und %count weitere Treffer"}und ein weiterer Treffer{/ts}</p>
+              {/if}
             </li>
           {/foreach}
         </ol>

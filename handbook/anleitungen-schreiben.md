@@ -1,6 +1,7 @@
 ---
 title: Anleitungen schreiben
 order: 2
+section: Schreiben
 ---
 
 # Anleitungen schreiben

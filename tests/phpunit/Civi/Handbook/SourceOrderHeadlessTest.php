@@ -32,16 +32,18 @@ final class SourceOrderHeadlessTest extends HandbookTestCase {
     $this->assertSame(['zulu', 'beta', 'alpha'], $sources);
   }
 
-  public function testGroupHeadingLinksToTheLandingPageWhichIsNotListed(): void {
+  public function testLandingPageIsTheOverviewEntryNotAListedPage(): void {
     $toc = (new View(
       $this->library(),
       static fn (string $path, array $query): string => '/' . $path . '?p=' . $query['p'],
     ))->toc('zulu/index');
     $this->assertSame('Zulu', $toc[0]['label']);
-    $this->assertSame('/civicrm/handbook?p=zulu/index', $toc[0]['url']);
-    $this->assertTrue($toc[0]['current']);
-    $this->assertSame(['zulu/seite'], array_column($toc[0]['pages'], 'id'));
-    $this->assertNull($toc[2]['url'], 'alpha has no landing page');
+    $this->assertSame('/civicrm/handbook?p=zulu/index', $toc[0]['landing']['url'] ?? NULL);
+    $this->assertTrue($toc[0]['landing']['current'] ?? NULL);
+    $this->assertTrue($toc[0]['open']);
+    $this->assertFalse($toc[1]['open'], 'only the current source is open');
+    $this->assertSame(['zulu/seite'], array_column($toc[0]['sections'][0]['pages'], 'id'));
+    $this->assertNull($toc[2]['landing'], 'alpha has no landing page');
   }
 
   public function testLandingPageRenders(): void {
