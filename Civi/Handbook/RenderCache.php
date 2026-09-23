@@ -5,8 +5,9 @@ declare(strict_types = 1);
 namespace Civi\Handbook;
 
 /**
- * Renderer output per page, cached by file path, mtime, size and the handbook
- * base URL, so edited text shows at once. A hit never builds the CommonMark environment.
+ * Renderer output per page, keyed by file path and content hash, the handbook
+ * base URL and this extension's version, so edited text and a new release show
+ * at once. A hit never builds the CommonMark environment.
  */
 final class RenderCache {
 
@@ -15,15 +16,29 @@ final class RenderCache {
    */
   private \Closure $url;
 
+  private string $version;
+
   /**
    * @param (\Closure(string, array<string, string>, string|null): string)|null $url
    *   Builds an unescaped Civi URL from path, query and fragment.
+   * @param string|null $version
+   *   Defaults to the version in this extension's info.xml.
    */
   public function __construct(
     private readonly ?\CRM_Utils_Cache_Interface $cache,
     ?\Closure $url = NULL,
+    ?string $version = NULL,
   ) {
     $this->url = $url ?? View::defaultUrl(...);
+    $this->version = $version ?? self::extensionVersion();
+  }
+
+  private static function extensionVersion(): string {
+    $info = simplexml_load_file(dirname(__DIR__, 2) . '/info.xml');
+    if ($info === FALSE) {
+      throw new \RuntimeException('handbook: info.xml is unreadable.');
+    }
+    return (string) $info->version;
   }
 
   public static function fromSystem(): self {
@@ -56,9 +71,9 @@ final class RenderCache {
     . md5(serialize([
       $page->id,
       $page->file,
-      filemtime($page->file),
-      filesize($page->file),
+      hash_file('xxh128', $page->file),
       ($this->url)('civicrm/handbook', [], NULL),
+      $this->version,
     ]));
   }
 

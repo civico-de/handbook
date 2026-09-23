@@ -140,9 +140,10 @@ Standalone included. Context links are shown only to users who hold it.
   New or renamed files, and changes to `title`, `order`, `section` or
   `routes`, show up after a flush.
 - Rendered pages are cached in CiviCRM's `long` cache, keyed by file path,
-  modification time, size and the site's handbook URL. Changes to page text
-  show up immediately, and search reads the section headings from the same
-  cache. Older entries stay until the next flush.
+  content hash, the site's handbook URL and the extension version. Changes to
+  page text and a new release of the extension show up immediately, and search
+  reads the section headings from the same cache. Older entries stay until the
+  next flush.
 - Search scans the Markdown source line by line, without an index. Hits show
   raw Markdown, and a phrase that spans a line break is not found.
 - Context links match the exact path from `CRM_Utils_System::currentPath()` on
