@@ -55,14 +55,16 @@ final class Sources {
   private static function extension(\CRM_Extension_Mapper $mapper, string $key): array {
     try {
       $dir = realpath($mapper->keyToBasePath($key) . '/handbook');
+      if ($dir === FALSE || !is_dir($dir)) {
+        return [];
+      }
+      // keyToInfo() parses info.xml, and this runs on every CiviCRM page.
       $label = $mapper->keyToInfo($key)->label;
     }
     catch (\CRM_Extension_Exception $e) {
       return [];
     }
-    return (
-      $dir !== FALSE && is_dir($dir) ? [$key => ['dir' => $dir, 'label' => is_string($label) ? $label : $key]] : []
-    );
+    return [$key => ['dir' => $dir, 'label' => is_string($label) ? $label : $key]];
   }
 
   private function addExtra(string $extra): void {
