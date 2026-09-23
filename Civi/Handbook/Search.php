@@ -37,7 +37,9 @@ final class Search {
         continue;
       }
       foreach (preg_split('/\R/', $body) ?: [] as $index => $line) {
-        if (mb_stripos($line, $term) === FALSE) {
+        // A table separator row or rule has no text to show.
+        $context = mb_stripos($line, $term) === FALSE ? '' : PlainText::fromLine($line);
+        if ($context === '') {
           continue;
         }
         $section = self::sectionAt($headings, $index + 1);
@@ -50,7 +52,7 @@ final class Search {
           'page' => $page,
           'heading' => $section['text'] ?? NULL,
           'anchor' => $section['slug'] ?? NULL,
-          'context' => mb_strimwidth(PlainText::fromLine($line), 0, self::CONTEXT, '…'),
+          'context' => mb_strimwidth($context, 0, self::CONTEXT, '…'),
         ];
       }
     }

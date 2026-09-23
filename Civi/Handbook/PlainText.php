@@ -10,12 +10,29 @@ namespace Civi\Handbook;
 final class PlainText {
 
   /**
-   * A Markdown line as plain text: heading markers, emphasis, code spans and
-   * link/image syntax reduced to their text.
+   * A Markdown line as plain text: quote, list and heading markers dropped, a
+   * table row as its cells joined by " · ", emphasis, code spans and link/image
+   * syntax reduced to their text. Rules and table separator rows give ''.
    */
   public static function fromLine(string $line): string {
-    $line = preg_replace('/^\s{0,3}#{1,6}(?:\s+|$)|\s+#+\s*$/', '', trim($line)) ?? $line;
+    $line = preg_replace('/^(?:>\s?)+/', '', trim($line)) ?? $line;
+    if (preg_match('/^\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?$|^([-*_=])(?:\s*\1){2,}$/', $line) === 1) {
+      return '';
+    }
+    if (str_starts_with($line, '|')) {
+      return self::row($line);
+    }
+    $line = preg_replace('/^(?:[-*+]|\d{1,9}[.)])\s+|^\s{0,3}#{1,6}(?:\s+|$)|\s+#+\s*$/', '', $line) ?? $line;
     return self::inline($line);
+  }
+
+  /**
+   * Non-empty cells of a table row, split on unescaped pipes.
+   */
+  private static function row(string $line): string {
+    $cells = preg_split('/(?<!\\\\)\|/', $line) ?: [];
+    $cells = array_map(static fn (string $cell): string => self::inline(str_replace('\\|', '|', trim($cell))), $cells);
+    return implode(' · ', array_filter($cells, static fn (string $cell): bool => $cell !== ''));
   }
 
   private static function inline(string $text): string {

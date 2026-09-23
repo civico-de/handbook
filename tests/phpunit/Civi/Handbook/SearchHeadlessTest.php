@@ -55,6 +55,40 @@ final class SearchHeadlessTest extends HandbookTestCase {
     );
   }
 
+  /**
+   * @return array<string, array{string, string}>
+   */
+  public static function blockLines(): array {
+    return [
+      'bullet' => ['- Punkt mit **Wort**', 'Punkt mit Wort'],
+      'star bullet' => ['* Punkt', 'Punkt'],
+      'numbered' => ['3. Schritt drei', 'Schritt drei'],
+      'numbered with paren' => ['12) Schritt', 'Schritt'],
+      'indented nested' => ['    - tiefer', 'tiefer'],
+      'quote' => ['> Hinweis: `cv flush`', 'Hinweis: cv flush'],
+      'nested quote with list' => ['> > - zitiert', 'zitiert'],
+      'table row' => ['| CRM | Workshops *und* Kurse | [Link](x.md) |', 'CRM · Workshops und Kurse · Link'],
+      'table row with empty and escaped cells' => ['| a \\| b | | c |', 'a | b · c'],
+      'table separator' => ['|---|:---:|--:|', ''],
+      'table separator with spaces' => ['| --- | --- |', ''],
+      'rule' => ['* * *', ''],
+      'emphasis at line start stays text' => ['*kursiv* am Anfang', 'kursiv am Anfang'],
+      'year is no list marker without space' => ['2024.Jahr', '2024.Jahr'],
+    ];
+  }
+
+  /**
+   * @dataProvider blockLines
+   */
+  public function testBlockMarkdownIsStripped(string $line, string $expected): void {
+    $this->assertSame($expected, PlainText::fromLine($line));
+  }
+
+  public function testSeparatorRowIsNeverAHit(): void {
+    $hits = $this->searchIn("| Spalte | Wert |\n|---|---|\n| a - b | c |\n", '-');
+    $this->assertSame(['a - b · c'], array_column($hits, 'context'));
+  }
+
   public function testHitOnAHeadingShowsTheHeadingText(): void {
     $hits = $this->searchIn("# Das Handbuch benutzen\n\nText.\n\n## Mehr zum Handbuch ##\n", 'Handbuch');
     $this->assertSame(['Das Handbuch benutzen', 'Mehr zum Handbuch'], array_column($hits, 'context'));
