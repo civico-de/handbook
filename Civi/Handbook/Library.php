@@ -134,15 +134,25 @@ final class Library {
     return Ordering::source($group);
   }
 
-  /**
-   * Includes Page's property names, so a changed Page class never unserializes a stale shape.
-   */
   private function cacheKey(): string {
-    $shape = array_map(
-      static fn (\ReflectionProperty $p): string => $p->getName(),
-      (new \ReflectionClass(Page::class))->getProperties(),
+    return self::pagesKey(
+      $this->sources,
+      array_map(
+        static fn (\ReflectionProperty $p): string => $p->getName(),
+        (new \ReflectionClass(Page::class))->getProperties(),
+      ),
     );
-    return 'handbook_pages_' . md5(serialize([$this->sources, $shape]));
+  }
+
+  /**
+   * Cache key of the page list. It includes Page's property names, so a changed
+   * Page class never unserializes a stale shape.
+   *
+   * @param array<string, array{dir: string, label: string}> $sources
+   * @param list<string> $pageProperties
+   */
+  public static function pagesKey(array $sources, array $pageProperties): string {
+    return 'handbook_pages_' . md5(serialize([$sources, $pageProperties]));
   }
 
 }

@@ -113,6 +113,18 @@ final class LibraryHeadlessTest extends HandbookTestCase {
     $this->assertCount(1, (new Library($sources, [], $cache))->pages());
   }
 
+  public function testPageListKeyDependsOnThePageProperties(): void {
+    $sources = ['s' => ['dir' => '/d', 'label' => 'S']];
+    $this->assertNotSame(
+      Library::pagesKey($sources, ['id', 'file', 'title', 'order', 'routes']),
+      Library::pagesKey($sources, ['id', 'file', 'title', 'order', 'section', 'routes']),
+    );
+    $this->assertSame(
+      Library::pagesKey($sources, ['id', 'title']),
+      Library::pagesKey($sources, ['id', 'title']),
+    );
+  }
+
   public function testSameOrderAndTitleSortByIdWhateverTheInputOrder(): void {
     $a = new Page('extra/a', '/a.md', ['title' => 'Gleich', 'order' => 1]);
     $b = new Page('extra/b', '/b.md', ['title' => 'Gleich', 'order' => 1]);
