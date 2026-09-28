@@ -16,8 +16,8 @@
     <url desc="Documentation">https://github.com/civico-de/handbook</url>
     <url desc="Support">https://github.com/civico-de/handbook/issues</url>
   </urls>
-  <releaseDate>2026-09-22</releaseDate>
-  <version>0.1.0</version>
+  <releaseDate>2026-09-28</releaseDate>
+  <version>0.1.1</version>
   <develStage>beta</develStage>
   <compatibility mode="semver">
     <ver>6.15</ver>
