@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.2",
         "ext-mbstring": "*",
         "league/commonmark": "^2.7",
         "symfony/yaml": "^7.3"
