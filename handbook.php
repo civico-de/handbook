@@ -2,11 +2,9 @@
 
 declare(strict_types = 1);
 
-// phpcs:disable PSR1.Files.SideEffects
 require_once 'handbook.civix.php';
 // A missing vendor/ disables the screens and shows in system status.
 \Civi\Handbook\Dependencies::load(__DIR__ . '/vendor/autoload.php');
-// phpcs:enable
 
 /**
  * Lifecycle glue only; behaviour lives in Civi\Handbook listeners.
