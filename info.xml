@@ -3,17 +3,18 @@
   <file>handbook</file>
   <name>Handbook</name>
   <description>Renders Markdown user manuals shipped by extensions inside the CiviCRM UI, with search and context links.</description>
-  <license>Proprietary</license>
+  <license>AGPL-3.0-or-later</license>
   <authors>
     <author>
-      <name>Johannes Filter</name>
-      <email>hi@jfilter.de</email>
+      <name>Johannes Filter (civico GmbH)</name>
+      <email>johannes@civico.de</email>
       <role>Maintainer</role>
     </author>
   </authors>
   <urls>
     <url desc="Main Extension Page">https://github.com/civico-de/handbook</url>
-    <url desc="Documentation">https://github.com/civico-de/handbook</url>
+    <url desc="Documentation">https://civico-de.github.io/handbook/</url>
+    <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
     <url desc="Support">https://github.com/civico-de/handbook/issues</url>
   </urls>
   <releaseDate>2026-09-28</releaseDate>

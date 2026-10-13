@@ -2,7 +2,7 @@
   "name": "handbook-browser-tests",
   "private": true,
   "description": "Accessibility checks of the handbook screens, run against a civikitchen stack.",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "test:e2e": "playwright test"
   },

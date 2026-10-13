@@ -22,10 +22,8 @@ scenario:
     - smarty
     - taint
 policy:
-  # Expected values for ckconform (the checker lives in the public civikitchen
-  # image; these values are ours and stay in this private repo).
-  license: Proprietary
-  npm_license: UNLICENSED
+  license: AGPL-3.0-or-later
+  npm_license: AGPL-3.0-or-later
   copyright: 'civico GmbH'
 
   # Floor is measured coverage minus one (ckcoverage); ratchet up as coverage
