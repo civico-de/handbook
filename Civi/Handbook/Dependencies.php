@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
-use CRM_Handbook_ExtensionUtil as E;
 use Civi\Handbook\Vendor\League\CommonMark\Parser\MarkdownParser;
 use Civi\Handbook\Vendor\Symfony\Component\Yaml\Yaml;
+use CRM_Handbook_ExtensionUtil as E;
 
 /**
  * The Composer libraries in vendor/. Missing ones disable the handbook
