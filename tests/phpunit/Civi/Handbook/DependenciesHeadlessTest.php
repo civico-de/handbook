@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
-use Symfony\Component\Yaml\Yaml;
+use Civi\Handbook\Vendor\Symfony\Component\Yaml\Yaml;
 
 /**
  * Missing Composer libraries must not break the site: screens explain, the

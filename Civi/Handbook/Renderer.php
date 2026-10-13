@@ -4,18 +4,18 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
-use League\CommonMark\Node\Block\Document;
-use League\CommonMark\Node\NodeIterator;
-use League\CommonMark\Node\StringContainerHelper;
-use League\CommonMark\Parser\MarkdownParser;
-use League\CommonMark\Renderer\HtmlRenderer;
+use Civi\Handbook\Vendor\League\CommonMark\Environment\Environment;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Inline\Image;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use Civi\Handbook\Vendor\League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
+use Civi\Handbook\Vendor\League\CommonMark\Node\Block\Document;
+use Civi\Handbook\Vendor\League\CommonMark\Node\NodeIterator;
+use Civi\Handbook\Vendor\League\CommonMark\Node\StringContainerHelper;
+use Civi\Handbook\Vendor\League\CommonMark\Parser\MarkdownParser;
+use Civi\Handbook\Vendor\League\CommonMark\Renderer\HtmlRenderer;
 
 /**
  * Markdown to HTML: raw HTML stripped, unsafe links dropped, headings carry

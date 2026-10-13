@@ -99,6 +99,29 @@ runs a command in it. The extension's own
 page title, section or order can break a test. `tests/fixtures/extra/` is a
 sample extra directory.
 
+### Prefixed libraries
+
+PHP has one class table per process: if two extensions bundle different
+versions of a library, the first copy loaded serves both. Every
+`composer install` therefore runs [Strauss](https://github.com/BrianHenryIE/strauss)
+over `vendor/` (`.civikitchen/strauss.php`, managed by civikitchen's
+`ckinit`). It moves league/commonmark, symfony/yaml and everything they pull
+in under `Civi\Handbook\Vendor\`, for example
+`Civi\Handbook\Vendor\League\CommonMark\Environment\Environment`, and renames
+the global function `trigger_deprecation()` to
+`civi_handbook_vendor_trigger_deprecation()`. Code in this extension imports
+the prefixed names. The unprefixed names do not load.
+
+- `psr/event-dispatcher` is prefixed as well. Handbook never passes
+  CommonMark's dispatcher to core or gets one from it, so a private copy of the
+  interfaces costs nothing.
+- `composer.json` replaces `symfony/polyfill-ctype` and
+  `symfony/polyfill-php80`. Handbook requires PHP 8.2 and ext-ctype, so both
+  would be no-ops.
+- The PSR-7 and PSR-3 names in `AssetRoute` and `StatusCheck` stay
+  unprefixed and are not bundled. They come from core: core passes in the
+  request, takes the response and reads the check severity.
+
 Two checks run against the running stack. `tests/e2e/missing-vendor.sh` checks
 that the site keeps working without the Composer libraries. `tests/browser/`
 runs axe-core colour-contrast checks of the handbook screens in the classic

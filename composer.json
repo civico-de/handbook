@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=8.2",
+        "ext-ctype": "*",
         "ext-mbstring": "*",
         "league/commonmark": "^2.7",
         "symfony/yaml": "^7.3"
@@ -18,12 +19,42 @@
     "require-dev": {
         "phpunit/phpunit": "^9.6"
     },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-php80": "*"
+    },
     "autoload": {
         "psr-4": {
             "Civi\\": "Civi/"
         }
     },
     "config": {
+        "platform": {
+            "php": "8.2.0"
+        },
         "sort-packages": true
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor",
+            "namespace_prefix": "Civi\\Handbook\\Vendor\\",
+            "classmap_prefix": "Civi_Handbook_Vendor_",
+            "packages": [
+                "league/commonmark",
+                "symfony/yaml"
+            ]
+        }
+    },
+    "scripts": {
+        "prefix-namespaces": [
+            "@php .civikitchen/strauss.php",
+            "@composer dump-autoload"
+        ],
+        "post-install-cmd": [
+            "@prefix-namespaces"
+        ],
+        "post-update-cmd": [
+            "@prefix-namespaces"
+        ]
     }
 }

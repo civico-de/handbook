@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Civi\Handbook;
 
 use CRM_Handbook_ExtensionUtil as E;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
+use Civi\Handbook\Vendor\Symfony\Component\Yaml\Exception\ParseException;
+use Civi\Handbook\Vendor\Symfony\Component\Yaml\Yaml;
 
 /**
  * YAML frontmatter between two `---` lines at the top of a Markdown file.
