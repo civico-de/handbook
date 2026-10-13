@@ -24,6 +24,7 @@ final class LibraryHeadlessTest extends HandbookTestCase {
     $ids = array_map(static fn (Page $p): string => $p->id, $library->pages());
     $this->assertSame(
       [
+        'handbook/index',
         'handbook/using',
         'handbook/writing-manuals',
         'extra/alpha',
