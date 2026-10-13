@@ -28,7 +28,7 @@ final class PageNav {
   }
 
   /**
-   * Handbuch › source › section; the source links to its landing page, if it has one.
+   * Handbook › source › section; the source links to its landing page, if it has one.
    *
    * @return list<array{label: string, url: string|null}>
    */
@@ -38,7 +38,7 @@ final class PageNav {
       static fn (Page $p): bool => $p->source() === $page->source() && $p->isLanding() && $p->id !== $page->id,
     );
     $crumbs = [
-      ['label' => E::ts('Handbuch'), 'url' => ($this->url)('civicrm/handbook', [], NULL)],
+      ['label' => E::ts('Handbook'), 'url' => ($this->url)('civicrm/handbook', [], NULL)],
       [
         'label' => Ordering::sourceName($this->library->pages(), $this->library->sources(), $page->source()),
         'url' => $landing === [] ? NULL : $this->pageUrl(reset($landing)),

@@ -12,9 +12,9 @@ return [
     'default' => '',
     'is_domain' => 1,
     'is_contact' => 0,
-    'title' => E::ts('Zusätzliches Handbuch-Verzeichnis'),
+    'title' => E::ts('Extra handbook directory'),
     'description' => E::ts(
-      'Absoluter Serverpfad zu einem Verzeichnis mit weiteren Markdown-Anleitungen. Leer lassen, wenn nur Erweiterungen Anleitungen liefern.',
+      'Absolute server path to a directory of further Markdown manuals. Leave it empty if only extensions ship manuals.',
     ),
     'validate_callback' => 'Civi\\Handbook\\ExtraDir::validate',
     'settings_pages' => ['handbook' => ['weight' => 10]],

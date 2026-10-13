@@ -77,19 +77,19 @@ final class Sources {
     }
     // Core does not restrict extension keys, so an extension may be keyed "extra".
     if (isset($this->dirs[self::EXTRA])) {
-      $this->errors[] = E::ts('Das zusätzliche Handbuch-Verzeichnis wird nicht gelesen: eine Erweiterung heißt bereits „%1“.', [
+      $this->errors[] = E::ts('The extra handbook directory is not read: an extension is already named “%1”.', [
         1 => self::EXTRA,
       ]);
       return;
     }
     $dir = realpath($extra);
     if ($dir === FALSE || !is_dir($dir) || !is_readable($dir)) {
-      $this->errors[] = E::ts('Das zusätzliche Handbuch-Verzeichnis „%1“ ist kein lesbares Verzeichnis.', [
+      $this->errors[] = E::ts('The extra handbook directory “%1” is not a readable directory.', [
         1 => $extra,
       ]);
       return;
     }
-    $this->dirs[self::EXTRA] = ['dir' => $dir, 'label' => E::ts('Weitere Anleitungen')];
+    $this->dirs[self::EXTRA] = ['dir' => $dir, 'label' => E::ts('More manuals')];
   }
 
 }

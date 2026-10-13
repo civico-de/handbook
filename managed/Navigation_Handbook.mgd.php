@@ -15,7 +15,7 @@ return [
       'values' => [
         'domain_id' => 'current_domain',
         'name' => 'handbook_manual',
-        'label' => E::ts('Handbuch'),
+        'label' => E::ts('Handbook'),
         'url' => 'civicrm/handbook',
         'permission' => ['access handbook'],
         'parent_id.name' => 'Support',

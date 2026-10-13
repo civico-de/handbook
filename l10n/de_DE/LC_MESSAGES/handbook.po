@@ -1,0 +1,182 @@
+# German translation of the handbook extension.
+#
+# Sources: E::ts() literals in PHP and {ts domain="handbook"} blocks in
+# templates/. CiviCRM reads only the .mo: recompile it after every edit with
+# `msgfmt --check --statistics -o handbook.mo handbook.po`. Keep each msgid
+# and msgstr on one line: the tests read the file that way.
+msgid ""
+msgstr ""
+"Project-Id-Version: handbook\n"
+"PO-Revision-Date: 2026-10-13\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Civi/Handbook/ContextHelp.php
+msgid "Handbook: read manuals"
+msgstr "Handbuch: Anleitungen lesen"
+
+#: Civi/Handbook/ContextHelp.php
+msgid "Open and search the handbook of user manuals."
+msgstr "Das Handbuch mit den Bedienungsanleitungen öffnen und durchsuchen."
+
+#: Civi/Handbook/ContextHelp.php
+msgid "Handbook: %1"
+msgstr "Handbuch: %1"
+
+#: Civi/Handbook/ContextHelp.php
+msgid "Manuals for this page"
+msgstr "Anleitungen zu dieser Seite"
+
+#: Civi/Handbook/Dependencies.php
+msgid "The handbook libraries are missing (vendor/). Run “composer install --no-dev” in the extension directory."
+msgstr "Die Programmbibliotheken des Handbuchs fehlen (vendor/). Bitte im Verzeichnis der Erweiterung „composer install --no-dev“ ausführen."
+
+#: Civi/Handbook/ExtraDir.php
+msgid "The extra handbook directory must be an absolute path (starting with /), not “%1”."
+msgstr "Das zusätzliche Handbuch-Verzeichnis muss ein absoluter Pfad sein (beginnt mit /), nicht „%1“."
+
+#: Civi/Handbook/Frontmatter.php
+msgid "%1: frontmatter is not valid YAML (%2)."
+msgstr "%1: Frontmatter ist kein gültiges YAML (%2)."
+
+#: Civi/Handbook/Frontmatter.php
+msgid "%1: frontmatter is not a map of keys to values."
+msgstr "%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten."
+
+#: Civi/Handbook/Library.php Civi/Handbook/PageLoader.php
+msgid "%1: invalid file name."
+msgstr "%1: ungültiger Dateiname."
+
+#: Civi/Handbook/Library.php
+msgid "%1: translation without the default page %2."
+msgstr "%1: Übersetzung ohne die Standardseite %2."
+
+#: Civi/Handbook/PageLoader.php
+msgid "%1: title and section must be text, order a whole number and routes a list of paths."
+msgstr "%1: title und section müssen Text, order eine ganze Zahl und routes eine Liste von Pfaden sein."
+
+#: Civi/Handbook/Sources.php
+msgid "The extra handbook directory is not read: an extension is already named “%1”."
+msgstr "Das zusätzliche Handbuch-Verzeichnis wird nicht gelesen: eine Erweiterung heißt bereits „%1“."
+
+#: Civi/Handbook/Sources.php
+msgid "The extra handbook directory “%1” is not a readable directory."
+msgstr "Das zusätzliche Handbuch-Verzeichnis „%1“ ist kein lesbares Verzeichnis."
+
+#: Civi/Handbook/Sources.php
+msgid "More manuals"
+msgstr "Weitere Anleitungen"
+
+#: Civi/Handbook/StatusCheck.php
+msgid "Handbook: libraries missing"
+msgstr "Handbuch: Programmbibliotheken fehlen"
+
+#: Civi/Handbook/MenuTitles.php Civi/Handbook/PageNav.php
+#: CRM/Handbook/Page/Handbook.php CRM/Handbook/Page/Search.php
+#: managed/Navigation_Handbook.mgd.php
+msgid "Handbook"
+msgstr "Handbuch"
+
+#: Civi/Handbook/MenuTitles.php
+msgid "Handbook image"
+msgstr "Handbuch-Bild"
+
+#: Civi/Handbook/MenuTitles.php
+msgid "Handbook settings"
+msgstr "Handbuch-Einstellungen"
+
+#: CRM/Handbook/Page/Handbook.php
+msgid "This handbook page does not exist."
+msgstr "Diese Handbuchseite gibt es nicht."
+
+#: Civi/Handbook/MenuTitles.php CRM/Handbook/Page/Search.php
+#: templates/CRM/Handbook/chrome.tpl
+msgid "Search the handbook"
+msgstr "Handbuch durchsuchen"
+
+#: settings/handbook.setting.php
+msgid "Extra handbook directory"
+msgstr "Zusätzliches Handbuch-Verzeichnis"
+
+#: settings/handbook.setting.php
+msgid "Absolute server path to a directory of further Markdown manuals. Leave it empty if only extensions ship manuals."
+msgstr "Absoluter Serverpfad zu einem Verzeichnis mit weiteren Markdown-Anleitungen. Leer lassen, wenn nur Erweiterungen Anleitungen liefern."
+
+#: templates/CRM/Handbook/chrome.tpl
+msgid "Search"
+msgstr "Suchen"
+
+#: templates/CRM/Handbook/toc-lists.tpl
+msgid "Overview"
+msgstr "Übersicht"
+
+#: templates/CRM/Handbook/toc.tpl templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Contents"
+msgstr "Inhaltsverzeichnis"
+
+#: templates/CRM/Handbook/toc.tpl templates/CRM/Handbook/Page/Handbook.tpl
+msgid "There are no manuals yet."
+msgstr "Es sind noch keine Anleitungen vorhanden."
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Location in the handbook"
+msgstr "Pfad im Handbuch"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "On this page"
+msgstr "Auf dieser Seite"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Previous and next page"
+msgstr "Vorherige und nächste Seite"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Previous page"
+msgstr "Vorherige Seite"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Next page"
+msgstr "Nächste Seite"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "Errors in the handbook:"
+msgstr "Fehler im Handbuch:"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "Please enter a search term."
+msgstr "Bitte einen Suchbegriff eingeben."
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "One section"
+msgid_plural "%count sections"
+msgstr[0] "Ein Abschnitt"
+msgstr[1] "%count Abschnitte"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "one page"
+msgid_plural "%count pages"
+msgstr[0] "einer Seite"
+msgstr[1] "%count Seiten"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "%1 on %2 for “%3”"
+msgstr "%1 auf %2 für „%3“"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "and one more section"
+msgid_plural "and %count more sections"
+msgstr[0] "und ein weiterer Abschnitt"
+msgstr[1] "und %count weitere Abschnitte"
+
+#: templates/CRM/Handbook/Page/Search.tpl
+msgid "No results for “%1”."
+msgstr "Keine Treffer für „%1“."

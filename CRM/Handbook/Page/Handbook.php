@@ -18,7 +18,7 @@ class CRM_Handbook_Page_Handbook extends CRM_Core_Page {
   public function run(): void {
     if (!Dependencies::available()) {
       $this->assign('handbookFatal', Dependencies::message());
-      CRM_Utils_System::setTitle(E::ts('Handbuch'));
+      CRM_Utils_System::setTitle(E::ts('Handbook'));
       parent::run();
       return;
     }
@@ -32,10 +32,10 @@ class CRM_Handbook_Page_Handbook extends CRM_Core_Page {
     }
     catch (HandbookException $e) {
       $page = NULL;
-      CRM_Core_Session::setStatus(E::ts('Diese Handbuchseite gibt es nicht.'), '', 'error');
+      CRM_Core_Session::setStatus(E::ts('This handbook page does not exist.'), '', 'error');
     }
     (new View($library))->assignChrome($this, '', $page?->id, $page === NULL);
-    CRM_Utils_System::setTitle($page->title ?? E::ts('Handbuch'));
+    CRM_Utils_System::setTitle($page->title ?? E::ts('Handbook'));
     $this->assign('handbookPage', $page === NULL ? NULL : ['id' => $page->id, 'title' => $page->title]);
     if ($page !== NULL && $rendered !== NULL) {
       $nav = new PageNav($library);

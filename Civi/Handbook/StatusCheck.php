@@ -30,7 +30,7 @@ final class StatusCheck extends AutoSubscriber {
     $messages[] = new \CRM_Utils_Check_Message(
       'handbook_dependencies',
       Dependencies::message(),
-      E::ts('Handbuch: Programmbibliotheken fehlen'),
+      E::ts('Handbook: libraries missing'),
       LogLevel::ERROR,
       'fa-book',
     );

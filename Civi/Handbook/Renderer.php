@@ -130,7 +130,8 @@ final class Renderer {
     // The page route takes no query of its own; ?… after the filename is dropped.
     $path = explode('?', (string) $path, 2)[0];
     if (str_ends_with($path, '.md')) {
-      $slug = basename($path, '.md');
+      // A link to a language variant names the page: events.de.md is events.
+      $slug = PageName::slug(basename($path));
       return ($this->url)('civicrm/handbook', ['p' => $source . '/' . $slug], $fragment);
     }
     return $this->imageUrl($source, $url);

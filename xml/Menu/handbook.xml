@@ -3,25 +3,25 @@
   <item>
     <path>civicrm/handbook</path>
     <page_callback>CRM_Handbook_Page_Handbook</page_callback>
-    <title>Handbuch</title>
+    <title>Handbook</title>
     <access_arguments>access handbook</access_arguments>
   </item>
   <item>
     <path>civicrm/handbook/search</path>
     <page_callback>CRM_Handbook_Page_Search</page_callback>
-    <title>Handbuch durchsuchen</title>
+    <title>Search the handbook</title>
     <access_arguments>access handbook</access_arguments>
   </item>
   <item>
     <path>civicrm/handbook/asset</path>
     <page_callback>Civi\Handbook\AssetRoute::handle</page_callback>
-    <title>Handbuch-Bild</title>
+    <title>Handbook image</title>
     <access_arguments>access handbook</access_arguments>
   </item>
   <item>
     <path>civicrm/admin/setting/handbook</path>
     <page_callback>CRM_Admin_Form_Generic</page_callback>
-    <title>Handbuch-Einstellungen</title>
+    <title>Handbook settings</title>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
 </menu>

@@ -8,47 +8,34 @@ use CRM_Handbook_ExtensionUtil as E;
 
 /**
  * Reads one Markdown file: optional YAML frontmatter (title, order, section, routes),
- * title fallback to the first H1, then the filename.
+ * title fallback to the first H1, then the filename. A language variant
+ * builds on its default page.
  */
 final class PageLoader {
 
-  private const SLUG = '/^[A-Za-z0-9][A-Za-z0-9._-]*$/';
-
   /**
+   * @param \Civi\Handbook\Page|null $default
+   *   The default page a variant builds on: the variant's own frontmatter keys
+   *   win, the others come from $default; its title follows the variant's heading.
+   *
    * @throws \Civi\Handbook\HandbookException
-   *   With a German message naming the file when it cannot be a page.
+   *   With a message naming the file when it cannot be a page.
    */
-  public static function load(string $source, string $file): Page {
-    $slug = basename($file, '.md');
+  public static function load(string $source, string $file, ?Page $default = NULL): Page {
     $name = $source . '/' . basename($file);
-    if (preg_match(self::SLUG, $slug) !== 1) {
-      throw HandbookException::badRequest(E::ts('%1: ungültiger Dateiname.', [1 => $name]));
+    $parsed = PageName::parse(basename($file));
+    if ($parsed === NULL) {
+      throw HandbookException::badRequest(E::ts('%1: invalid file name.', [1 => $name]));
     }
     [$yaml, $body] = Frontmatter::split((string) file_get_contents($file));
-    $meta = Frontmatter::parse($name, $yaml);
-    $meta['title'] ??= self::firstH1($body) ?? $slug;
-    $meta['routes'] ??= [];
-    if (
-      !is_string($meta['title'])
-      || !is_int($meta['order'] ?? 0)
-      || !is_string($meta['section'] ?? '')
-      || !self::isPathList($meta['routes'])
-    ) {
-      throw HandbookException::badRequest(E::ts('%1: title und section müssen Text, order eine ganze Zahl und routes eine Liste von Pfaden sein.', [
-        1 => $name,
-      ]));
-    }
-    /** @var array{title: string, order?: int|null, section?: string|null, routes: list<string>} $meta */
-    $meta['routes'] = array_map(static fn (string $r): string => trim($r, '/'), $meta['routes']);
-    $meta['section'] = trim($meta['section'] ?? '') ?: NULL;
-    return new Page($source . '/' . $slug, $file, $meta);
-  }
-
-  private static function isPathList(mixed $routes): bool {
-    return (
-      is_array($routes)
-      && array_is_list($routes)
-      && array_filter($routes, static fn (mixed $r): bool => !is_string($r)) === []
+    $own = Frontmatter::parse($name, $yaml);
+    $meta = $own;
+    $meta['title'] ??= self::firstH1($body) ?? $default->title ?? $parsed[0];
+    $meta = PageMeta::validate($name, $meta);
+    return new Page(
+      $source . '/' . $parsed[0],
+      $file,
+      $default === NULL ? $meta : PageMeta::inherit($meta, $own, $default),
     );
   }
 

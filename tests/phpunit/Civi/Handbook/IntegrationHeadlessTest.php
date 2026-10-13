@@ -82,7 +82,7 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     ContextHelp::onPageRun($event);
     $markup = $this->regionMarkup();
     $this->assertSame(1, substr_count($markup, 'class="handbook-context"'));
-    $this->assertStringContainsString('Handbuch: Alpha aus der Überschrift', $markup);
+    $this->assertStringContainsString('Handbook: Alpha aus der Überschrift', $markup);
     $this->assertStringContainsString('p=extra%2Falpha', $markup);
   }
 
@@ -95,7 +95,7 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
     ContextHelp::onPageRun($event);
     $markup = $this->regionMarkup();
     $this->assertSame(1, substr_count($markup, 'class="handbook-context"'));
-    $this->assertStringContainsString('Handbuch: Alpha aus der Überschrift', $markup);
+    $this->assertStringContainsString('Handbook: Alpha aus der Überschrift', $markup);
   }
 
   public function testNoContextLinkWithoutPermissionOrMatch(): void {
@@ -118,26 +118,26 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
 
   public function testUnknownPageShowsIndexWithError(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'extra/missing']);
-    $this->assertStringContainsString('Das Handbuch benutzen', $html);
+    $this->assertStringContainsString('Using the handbook', $html);
     $this->assertStringNotContainsString('aria-current', $html);
-    $this->assertStringContainsString('Diese Handbuchseite gibt es nicht.', $html);
+    $this->assertStringContainsString('This handbook page does not exist.', $html);
   }
 
   public function testIndexListsSourcesAndErrors(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), []);
-    $this->assertStringContainsString('Weitere Anleitungen', $html);
-    $this->assertStringContainsString('Das Handbuch benutzen', $html);
+    $this->assertStringContainsString('More manuals', $html);
+    $this->assertStringContainsString('Using the handbook', $html);
     $this->assertStringContainsString('extra/kaputt.md', $html);
   }
 
   public function testSearchScreenGroupsHitsByPageAndLinksAnchors(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Search(), ['term' => 'Fixturewort']);
-    $this->assertStringContainsString('<p role="status">2 Abschnitte auf 2 Seiten für „Fixturewort“</p>', $html);
+    $this->assertStringContainsString('<p role="status">2 sections on 2 pages for “Fixturewort”</p>', $html);
     $this->assertMatchesRegularExpression(
       '#<h3><a href="[^"]*extra%2Falpha">Alpha aus der Überschrift</a></h3>#',
       $html,
     );
-    $this->assertStringContainsString('<p class="handbook-result-place">Weitere Anleitungen</p>', $html);
+    $this->assertStringContainsString('<p class="handbook-result-place">More manuals</p>', $html);
     $this->assertMatchesRegularExpression(
       '#<a href="[^"]*extra%2Falpha\#erster-abschnitt">Erster Abschnitt</a>#',
       $html,
@@ -145,15 +145,15 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
   }
 
   public function testPageHasBreadcrumbSectionsPagerAndCollapsibleToc(): void {
-    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'handbook/anleitungen-schreiben']);
+    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'handbook/writing-manuals']);
     $this->assertMatchesRegularExpression(
-      '#<nav class="handbook-breadcrumb" aria-label="Pfad im Handbuch">\s*<ol>\s*<li><a href="[^"]*civicrm/handbook">Handbuch</a></li>#',
+      '#<nav class="handbook-breadcrumb" aria-label="Location in the handbook">\s*<ol>\s*<li><a href="[^"]*civicrm/handbook">Handbook</a></li>#',
       $html,
     );
-    $this->assertStringContainsString('<li>Schreiben</li>', $html);
-    $this->assertStringContainsString('<h2 id="handbook-sections-heading">Auf dieser Seite</h2>', $html);
+    $this->assertStringContainsString('<li>Writing</li>', $html);
+    $this->assertStringContainsString('<h2 id="handbook-sections-heading">On this page</h2>', $html);
     $this->assertMatchesRegularExpression(
-      '#rel="prev" href="[^"]*handbook%2Fbenutzen"><span class="handbook-pager-dir">Vorherige Seite</span> Das Handbuch benutzen</a>#',
+      '#rel="prev" href="[^"]*handbook%2Fusing"><span class="handbook-pager-dir">Previous page</span> Using the handbook</a>#',
       $html,
     );
     $this->assertMatchesRegularExpression('#rel="next" href="[^"]*extra%2Falpha">#', $html);
@@ -162,9 +162,9 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
       substr_count($html, '<details class="handbook-group" open>'),
       'only the current source is open',
     );
-    $this->assertStringContainsString('<h3 class="handbook-section-name">Schreiben</h3>', $html);
+    $this->assertStringContainsString('<h3 class="handbook-section-name">Writing</h3>', $html);
     $this->assertStringContainsString(
-      '<summary><h2 class="handbook-group-label">Weitere Anleitungen</h2></summary>',
+      '<summary><h2 class="handbook-group-label">More manuals</h2></summary>',
       $html,
     );
   }
@@ -172,14 +172,49 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
   public function testIndexShowsOneCardPerSourceWithSections(): void {
     $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), []);
     $this->assertSame(2, substr_count($html, '<section class="handbook-card"'));
-    $this->assertStringContainsString('<h2 id="handbook-card-extra">Weitere Anleitungen</h2>', $html);
-    $this->assertStringContainsString('<h3 class="handbook-section-name">Lesen</h3>', $html);
+    $this->assertStringContainsString('<h2 id="handbook-card-extra">More manuals</h2>', $html);
+    $this->assertStringContainsString('<h3 class="handbook-section-name">Reading</h3>', $html);
     $this->assertDoesNotMatchRegularExpression(
       '#<ul class="handbook-toc-list">\s*</ul>#',
       $html,
       'no empty list for a source without landing page',
     );
     $this->assertStringNotContainsString('<details', $html);
+  }
+
+  public function testGermanSiteShowsTheGermanInterfaceAndManual(): void {
+    $this->useLocale('de_DE');
+    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'handbook/writing-manuals']);
+    $this->assertMatchesRegularExpression(
+      '#<nav class="handbook-breadcrumb" aria-label="Pfad im Handbuch">\s*<ol>\s*<li><a href="[^"]*civicrm/handbook">Handbuch</a></li>#',
+      $html,
+    );
+    $this->assertStringContainsString('<label for="handbook-term">Handbuch durchsuchen</label>', $html);
+    $this->assertStringContainsString('<li>Schreiben</li>', $html);
+    $this->assertStringContainsString('<h2 id="handbook-sections-heading">Auf dieser Seite</h2>', $html);
+    $this->assertStringContainsString('<h2 id="seiten-verknüpfen">Seiten verknüpfen</h2>', $html);
+    $this->assertMatchesRegularExpression(
+      '#rel="prev" href="[^"]*handbook%2Fusing"><span class="handbook-pager-dir">Vorherige Seite</span> Das Handbuch benutzen</a>#',
+      $html,
+    );
+    $this->assertStringContainsString(
+      '<summary><h2 class="handbook-group-label">Weitere Anleitungen</h2></summary>',
+      $html,
+    );
+
+    $_GET = [];
+    $html = $this->runPage(new \CRM_Handbook_Page_Search(), ['term' => 'Fixturewort']);
+    $this->assertStringContainsString('<p role="status">2 Abschnitte auf 2 Seiten für „Fixturewort“</p>', $html);
+
+    $_GET = [];
+    $html = $this->runPage(new \CRM_Handbook_Page_Handbook(), ['p' => 'extra/missing']);
+    $this->assertStringContainsString('Diese Handbuchseite gibt es nicht.', $html);
+    $this->assertStringContainsString('<h3 class="handbook-section-name">Lesen</h3>', $html);
+
+    $this->grant([ContextHelp::PERMISSION]);
+    $_GET = ['q' => 'civicrm/dashboard'];
+    ContextHelp::onPageRun(new \Civi\Core\Event\GenericHookEvent());
+    $this->assertStringContainsString('Handbuch: Alpha aus der Überschrift', $this->regionMarkup());
   }
 
   /**

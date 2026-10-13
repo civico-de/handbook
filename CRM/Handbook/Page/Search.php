@@ -17,7 +17,7 @@ class CRM_Handbook_Page_Search extends CRM_Core_Page {
   public function run(): void {
     if (!Dependencies::available()) {
       $this->assign('handbookFatal', Dependencies::message());
-      CRM_Utils_System::setTitle(E::ts('Handbuch'));
+      CRM_Utils_System::setTitle(E::ts('Handbook'));
       parent::run();
       return;
     }
@@ -25,7 +25,7 @@ class CRM_Handbook_Page_Search extends CRM_Core_Page {
     $library = Library::fromSystem();
     $view = new View($library);
     $view->assignChrome($this, $term);
-    CRM_Utils_System::setTitle(E::ts('Handbuch durchsuchen'));
+    CRM_Utils_System::setTitle(E::ts('Search the handbook'));
     $hits = (new Search($library, RenderCache::fromSystem()))->run($term);
     $this->assign('handbookResults', $view->results($hits));
     $this->assign('handbookSectionCount', count($hits));

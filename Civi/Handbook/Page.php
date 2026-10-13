@@ -5,8 +5,9 @@ declare(strict_types = 1);
 namespace Civi\Handbook;
 
 /**
- * One manual page: a Markdown file of a source directory. The id is
- * `<source>/<slug>`, the slug being the filename without `.md`.
+ * One manual page: a Markdown file of a source directory, the language variant
+ * for the reader's locale if there is one. The id is `<source>/<slug>`, the
+ * slug being the filename without locale suffix and `.md`.
  */
 final class Page {
 

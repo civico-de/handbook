@@ -7,9 +7,9 @@ namespace Civi\Handbook;
 use CRM_Handbook_ExtensionUtil as E;
 
 /**
- * Renderer output per page, keyed by file path and content hash, the handbook
- * base URL and this extension's version, so edited text and a new release show
- * at once. A hit never builds the CommonMark environment.
+ * Renderer output per page, keyed by file path and content hash, the reader's
+ * locale, the handbook base URL and this extension's version, so edited text
+ * and a new release show at once. A hit never builds the CommonMark environment.
  */
 final class RenderCache {
 
@@ -48,7 +48,7 @@ final class RenderCache {
    */
   public function page(Page $page, Library $library): array {
     clearstatcache(TRUE, $page->file);
-    $key = is_file($page->file) ? $this->key($page) : NULL;
+    $key = is_file($page->file) ? $this->key($page, $library->locale()) : NULL;
     $cached = $key === NULL ? NULL : $this->cache?->get($key);
     if (is_array($cached) && is_string($cached['html'] ?? NULL) && is_array($cached['headings'] ?? NULL)) {
       /** @var array{html: string, headings: list<array{level: int, text: string, slug: string, line: int}>} $cached */
@@ -61,12 +61,13 @@ final class RenderCache {
     return $rendered;
   }
 
-  private function key(Page $page): string {
+  private function key(Page $page, string $locale): string {
     return 'handbook_render_'
     . md5(serialize([
       $page->id,
       $page->file,
       hash_file('xxh128', $page->file),
+      $locale,
       ($this->url)('civicrm/handbook', [], NULL),
       $this->version,
     ]));

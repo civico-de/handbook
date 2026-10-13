@@ -7,9 +7,12 @@ namespace Civi\Handbook;
 /**
  * @group headless
  * @covers \Civi\Handbook\Library
+ * @covers \Civi\Handbook\Variants
+ * @covers \Civi\Handbook\PageName
  * @covers \Civi\Handbook\Ordering
  * @covers \Civi\Handbook\Page
  * @covers \Civi\Handbook\PageLoader
+ * @covers \Civi\Handbook\PageMeta
  * @covers \Civi\Handbook\Frontmatter
  * @covers \Civi\Handbook\Sources
  */
@@ -21,8 +24,8 @@ final class LibraryHeadlessTest extends HandbookTestCase {
     $ids = array_map(static fn (Page $p): string => $p->id, $library->pages());
     $this->assertSame(
       [
-        'handbook/benutzen',
-        'handbook/anleitungen-schreiben',
+        'handbook/using',
+        'handbook/writing-manuals',
         'extra/alpha',
         'extra/ohne-titel',
         'extra/zeta',
@@ -33,7 +36,7 @@ final class LibraryHeadlessTest extends HandbookTestCase {
 
   public function testTitleFallsBackToFirstHeadingThenFilename(): void {
     $library = Library::fromSystem();
-    $this->assertSame('Das Handbuch benutzen', $library->find('handbook/benutzen')->title);
+    $this->assertSame('Using the handbook', $library->find('handbook/using')->title);
     $this->assertSame('Alpha aus der Überschrift', $library->find('extra/alpha')->title);
     $this->assertSame('Zeta ohne Kopfdaten', $library->find('extra/zeta')->title);
     $this->assertSame('ohne-titel', $library->find('extra/ohne-titel')->title);
@@ -116,12 +119,12 @@ final class LibraryHeadlessTest extends HandbookTestCase {
   public function testPageListKeyDependsOnThePageProperties(): void {
     $sources = ['s' => ['dir' => '/d', 'label' => 'S']];
     $this->assertNotSame(
-      Library::pagesKey($sources, ['id', 'file', 'title', 'order', 'routes']),
-      Library::pagesKey($sources, ['id', 'file', 'title', 'order', 'section', 'routes']),
+      Library::pagesKey($sources, 'en_US', ['id', 'file', 'title', 'order', 'routes']),
+      Library::pagesKey($sources, 'en_US', ['id', 'file', 'title', 'order', 'section', 'routes']),
     );
     $this->assertSame(
-      Library::pagesKey($sources, ['id', 'title']),
-      Library::pagesKey($sources, ['id', 'title']),
+      Library::pagesKey($sources, 'en_US', ['id', 'title']),
+      Library::pagesKey($sources, 'en_US', ['id', 'title']),
     );
   }
 

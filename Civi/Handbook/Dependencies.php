@@ -39,7 +39,7 @@ final class Dependencies {
 
   public static function message(): string {
     return E::ts(
-      'Die Programmbibliotheken des Handbuchs fehlen (vendor/). Bitte im Verzeichnis der Erweiterung „composer install --no-dev“ ausführen.',
+      'The handbook libraries are missing (vendor/). Run “composer install --no-dev” in the extension directory.',
     );
   }
 

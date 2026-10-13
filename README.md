@@ -25,6 +25,7 @@ myextension/
   handbook/
     getting-started.md
     events.md
+    events.de.md
     images/
       event-form.png
 ```
@@ -32,7 +33,9 @@ myextension/
 The handbook reads only the `*.md` files directly in `handbook/`, not in its
 subdirectories. Each file is one page. Its id is `<extension key>/<filename
 without .md>`, for example `myextension/events`. A filename must match
-`[A-Za-z0-9][A-Za-z0-9._-]*.md`.
+`[A-Za-z0-9][A-Za-z0-9._-]*.md`. A name with a locale suffix, such as
+`events.de.md`, is a translation of a page, not a page of its own (see
+Languages).
 
 ### Frontmatter
 
@@ -53,7 +56,7 @@ routes:
 | `title`  | string          | Page title. Without it, the handbook uses the first `# ` heading, then the filename. |
 | `order`  | integer         | Sort key within the extension, ascending. Pages without an order come after the ordered ones. Ties sort by title, ignoring case. |
 | `section` | string         | Groups pages within the extension under this name in the table of contents. Surrounding spaces are ignored; a blank value counts as no section. |
-| `routes` | list of strings | CiviCRM paths where a "Handbuch: <title>" link appears above the page content. |
+| `routes` | list of strings | CiviCRM paths where a "Handbook: <title>" link appears above the page content. |
 
 A file with invalid YAML, a wrong type, or an invalid filename is left out.
 The problem is listed at the top of the handbook index.
@@ -70,11 +73,11 @@ with `section: Events` give two groups in that order.
 ### Landing page and source order
 
 An optional `handbook/index.md` is the source's landing page. It is the first
-entry of its source in the table of contents, labelled „Übersicht“, and the
+entry of its source in the table of contents, labelled "Overview", and the
 breadcrumb of the other pages links to it. Its `section` is ignored. Its title
 names the source in the table of contents, breadcrumb and search results;
-without a landing page, the name is the extension's label, or „Weitere
-Anleitungen“ for the extra directory. Its frontmatter `order` orders the source
+without a landing page, the name is the extension's label, or "More
+manuals" for the extra directory. Its frontmatter `order` orders the source
 itself; sources without one follow the ordered sources, alphabetically by name.
 
 ### Links and images
@@ -91,13 +94,57 @@ itself; sources without one follow the ordered sources, alphabetically by name.
   dropped. Tables, strikethrough and autolinks (GitHub Flavored Markdown) are
   supported.
 
+### Languages
+
+`events.md` is the default page. `events.<locale>.md` is its translation,
+where the locale is a language code (`de`) or a language and region
+(`de_DE`): the last dot segment before `.md` must match
+`^[a-z]{2}(_[A-Z]{2})?$`. Any other dotted name is an ordinary page, so
+`notes.v1.2.md` and `events.DE.md` keep their full names, and
+`notes.v1.2.de.md` translates `notes.v1.2.md`. This is the suffix layout that
+static site generators use for translations, so the same directory can feed a
+website, where the default page is the page without a suffix.
+
+A reader sees the file for their CiviCRM locale: the full locale first
+(`events.de_DE.md` for `de_DE`), then the language (`events.de.md`), then the
+default page. A reader with `de_AT` gets `events.de.md`, never
+`events.de_DE.md`.
+
+- A translation keeps the page id, `myextension/events`, and links to it name
+  the default file: write `events.md`, not `events.de.md`.
+- Frontmatter keys of the translation override the default page's, key by
+  key. `order`, `section` and `routes` it leaves out come from the default
+  page. Its title comes from its own frontmatter, then its first `# `
+  heading, then the default page's title.
+- Translations share the images of their source.
+- Search reads the files the reader sees, so a German reader searches the
+  German text.
+- A translation without its default page, a broken translation and a broken
+  default page are listed as errors on the index in every locale. A broken
+  translation is left out and the reader gets the next file in line; a broken
+  default page leaves out the whole page.
+
+## Interface language
+
+The interface strings are English. `l10n/de_DE/LC_MESSAGES/handbook.po` holds
+the German translation; CiviCRM reads the compiled `handbook.mo` next to it.
+After editing the `.po`, recompile it:
+
+```bash
+msgfmt --check --statistics -o handbook.mo handbook.po
+```
+
+Route titles (page title, breadcrumb, settings screen) and the menu label are
+stored when the menu is rebuilt, so they follow the site's locale at the last
+`cv flush`, not each reader's.
+
 ## Screens
 
 | Path | Content |
 |------|---------|
 | `civicrm/handbook` | Index: source errors on top, then one card per source listing its sections and pages. |
 | `civicrm/handbook?p=<id>` | One page. See below. |
-| `civicrm/handbook/search?term=<text>` | Every section containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five sections, each linking there with its first matching line, and „und N weitere Abschnitte“ for the rest. The status line counts sections and pages. |
+| `civicrm/handbook/search?term=<text>` | Every section containing the text, case-insensitive, grouped by page: the page title with "source › section", then up to five sections, each linking there with its first matching line, and "and N more sections" for the rest. The status line counts sections and pages. |
 | `civicrm/handbook/asset?p=<source>/<path>` | An image of a manual (png, jpg, gif, webp). |
 
 A page has three parts:
@@ -105,23 +152,23 @@ A page has three parts:
 - the table of contents: one collapsible group per source, open for the
   current page's source, section names as small headings. It stays in view
   and scrolls on its own.
-- the page: a breadcrumb (Handbuch › source › section), the content, and
+- the page: a breadcrumb (Handbook › source › section), the content, and
   links to the previous and next page in table-of-contents order, landing
   pages included.
-- „Auf dieser Seite“, the page's `##` and `###` headings.
+- "On this page", the page's `##` and `###` headings.
 
 The layout follows the screen width:
 
-- below 64em, one column: table of contents, then „Auf dieser Seite“, then
+- below 64em, one column: table of contents, then "On this page", then
   the content.
 - from 64em, the table of contents on the left and the page beside it, with
-  „Auf dieser Seite“ above the content.
-- from 90em, three columns: table of contents, content, and „Auf dieser Seite“
+  "On this page" above the content.
+- from 90em, three columns: table of contents, content, and "On this page"
   on the right, kept in view.
 
 The search screen shows the table of contents with every group closed.
 
-The menu entry "Handbuch" sits under **Support**.
+The menu entry "Handbook" sits under **Support**.
 
 ## Setting
 
@@ -145,19 +192,19 @@ Standalone included. Context links are shown only to users who hold it.
 
 ## Limits
 
-- The handbook caches the page list until the next system flush (`cv flush`).
+- The handbook caches the page list per locale until the next system flush (`cv flush`).
   New or renamed files, and changes to `title`, `order`, `section` or
   `routes`, show up after a flush. The same holds for a title taken from the
   first `# ` heading.
 - Rendered pages are cached in CiviCRM's `long` cache, keyed by file path,
-  content hash, the site's handbook URL and the extension version. Changes to
+  content hash, locale, the site's handbook URL and the extension version. Changes to
   page text and a new release of the extension show up immediately, and search
   reads the section headings from the same cache. Older entries stay until the
   next flush.
 - Search scans the Markdown source line by line, without an index, and shows
   one hit per section. The matching line is shown as plain text: emphasis,
   code, links, list and quote markers are removed, a table row shows its cells
-  joined by „ · “, and table separator rows are never shown. A phrase that
+  joined by " · ", and table separator rows are never shown. A phrase that
   spans a line break is not found.
 - Context links match the exact path from `CRM_Utils_System::currentPath()` on
   pages (`hook_civicrm_pageRun`) and QuickForm screens (`hook_civicrm_buildForm`),
@@ -177,7 +224,8 @@ docker compose -f .docker/docker-compose.yml exec -u www-data -w /var/www/html/e
 ```
 
 `tests/fixtures/extra/` is a sample extra directory. The extension's own
-`handbook/` directory is both its user manual and the discovery fixture.
+`handbook/` directory is both its user manual, in English with German
+translations, and the discovery fixture.
 
 `tests/e2e/missing-vendor.sh` checks against the running stack that the site
 keeps working without `vendor/`. `tests/browser/` runs axe-core colour-contrast

@@ -1,6 +1,5 @@
 ---
 title: Anleitungen schreiben
-order: 2
 section: Schreiben
 ---
 
@@ -40,11 +39,24 @@ Eine Datei `index.md` ist die Startseite der Erweiterung. Sie steht als
 
 Unter `routes` stehen die CiviCRM-Pfade, auf denen ein Link zu dieser Anleitung
 erscheinen soll. Links auf andere Seiten schreiben Sie als relativen Pfad, etwa
-[zurück zur Übersicht](benutzen.md).
+[zurück zum Lesen](using.md).
 
 ## Bilder
 
 Bilder liegen neben den Markdown-Dateien und werden relativ eingebunden.
+
+## Sprachen
+
+Die Datei `events.md` ist die Seite in der Standardsprache. Übersetzungen
+liegen daneben als `events.de.md` für Deutsch oder `events.de_DE.md` für
+Deutsch in Deutschland. Das Handbuch zeigt die Fassung, die zur
+CiviCRM-Sprache der Lesenden passt: erst die mit dem vollen Gebietsschema,
+dann die mit der Sprache, sonst `events.md`. Alle Fassungen haben dieselbe Seiten-ID, Links
+wie `events.md` gelten also für jede Sprache.
+
+Kopfdaten einer Übersetzung ersetzen die der Standardseite; was fehlt, wird
+übernommen. Meist genügen `title` und `section`. Bilder teilen sich alle
+Fassungen.
 
 ## Wann Änderungen sichtbar werden
 

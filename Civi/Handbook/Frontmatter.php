@@ -38,13 +38,13 @@ final class Frontmatter {
       $meta = $yaml === NULL ? [] : Yaml::parse($yaml);
     }
     catch (ParseException $e) {
-      throw HandbookException::badRequest(E::ts('%1: Frontmatter ist kein gültiges YAML (%2).', [
+      throw HandbookException::badRequest(E::ts('%1: frontmatter is not valid YAML (%2).', [
         1 => $name,
         2 => $e->getMessage(),
       ]));
     }
     if ($meta !== NULL && !self::isMap($meta)) {
-      throw HandbookException::badRequest(E::ts('%1: Frontmatter ist keine Zuordnung von Schlüsseln zu Werten.', [
+      throw HandbookException::badRequest(E::ts('%1: frontmatter is not a map of keys to values.', [
         1 => $name,
       ]));
     }

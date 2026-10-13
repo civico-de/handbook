@@ -59,7 +59,7 @@ final class PageNavHeadlessTest extends HandbookTestCase {
   public function testBreadcrumbLinksTheLandingPageAndNamesTheSection(): void {
     $this->assertSame(
       [
-        ['label' => 'Handbuch', 'url' => '/civicrm/handbook'],
+        ['label' => 'Handbook', 'url' => '/civicrm/handbook'],
         ['label' => 'Zulu-Handbuch', 'url' => '/civicrm/handbook?p=zulu/index'],
         ['label' => 'Erste Schritte', 'url' => NULL],
       ],

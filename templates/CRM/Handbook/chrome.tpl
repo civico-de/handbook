@@ -3,7 +3,7 @@
   {foreach from=$handbookSearch.hidden key=name item=value}
     <input type="hidden" name="{$name|escape}" value="{$value|escape}">
   {/foreach}
-  <label for="handbook-term">{ts domain="handbook"}Handbuch durchsuchen{/ts}</label>
+  <label for="handbook-term">{ts domain="handbook"}Search the handbook{/ts}</label>
   <input type="search" id="handbook-term" name="term" value="{$handbookTerm|escape}" class="crm-form-text">
-  <button type="submit" class="crm-button btn btn-primary">{ts domain="handbook"}Suchen{/ts}</button>
+  <button type="submit" class="crm-button btn btn-primary">{ts domain="handbook"}Search{/ts}</button>
 </form>

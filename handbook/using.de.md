@@ -1,6 +1,5 @@
 ---
 title: Das Handbuch benutzen
-order: 1
 section: Lesen
 ---
 
@@ -39,10 +38,15 @@ sind nach Anleitung gruppiert; zu jeder Anleitung stehen die ersten fünf
 Abschnitte, jeweils mit der ersten Zeile, die den Begriff enthält. Jeder Treffer
 führt direkt zum passenden Abschnitt.
 
-![Suchfeld und Trefferliste](bilder/suche.png)
+![Suchfeld](images/search.png)
 
 ## Hinweise auf anderen Seiten
 
 Gehört eine Anleitung zu einer bestimmten CiviCRM-Seite, erscheint dort oben ein
 Link „Handbuch: …“. Wie das eingerichtet wird, steht in
-[Anleitungen schreiben](anleitungen-schreiben.md#seiten-verknüpfen).
+[Anleitungen schreiben](writing-manuals.md#seiten-verknüpfen).
+
+## Sprachen
+
+Das Handbuch zeigt jede Anleitung in Ihrer CiviCRM-Sprache, wenn die
+Erweiterung eine Übersetzung mitliefert, sonst in ihrer Standardsprache.

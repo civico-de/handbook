@@ -8,6 +8,7 @@ namespace Civi\Handbook;
  * @group headless
  * @covers \Civi\Handbook\Frontmatter
  * @covers \Civi\Handbook\PageLoader
+ * @covers \Civi\Handbook\PageMeta
  */
 final class FrontmatterHeadlessTest extends HandbookTestCase {
 
@@ -35,19 +36,19 @@ final class FrontmatterHeadlessTest extends HandbookTestCase {
 
   public function testScalarYamlIsAPageError(): void {
     $this->expectException(HandbookException::class);
-    $this->expectExceptionMessage('keine Zuordnung');
+    $this->expectExceptionMessage('not a map');
     PageLoader::load('s', $this->file("---\nnur ein Satz\n---\nText\n"));
   }
 
   public function testSequenceYamlIsAPageError(): void {
     $this->expectException(HandbookException::class);
-    $this->expectExceptionMessage('keine Zuordnung');
+    $this->expectExceptionMessage('not a map');
     PageLoader::load('s', $this->file("---\n- title\n- order\n---\nText\n"));
   }
 
   public function testNumericKeysAreAPageError(): void {
     $this->expectException(HandbookException::class);
-    $this->expectExceptionMessage('keine Zuordnung');
+    $this->expectExceptionMessage('not a map');
     PageLoader::load('s', $this->file("---\n1: eins\n---\nText\n"));
   }
 
@@ -76,7 +77,7 @@ final class FrontmatterHeadlessTest extends HandbookTestCase {
    */
   public function testSectionOfAnotherTypeIsAPageError(string $yaml): void {
     $this->expectException(HandbookException::class);
-    $this->expectExceptionMessage('section müssen Text');
+    $this->expectExceptionMessage('section must be text');
     PageLoader::load('s', $this->file("---\n" . $yaml . "---\nText\n"));
   }
 

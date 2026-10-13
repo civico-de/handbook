@@ -24,12 +24,12 @@ final class UrlEscapingHeadlessTest extends HandbookTestCase {
 
   public function testUrlsAreBuiltRaw(): void {
     $url = $this->view()->toc()[0]['sections'][0]['pages'][0]['url'];
-    $this->assertSame('index.php?q=civicrm/handbook&p=handbook%2Fbenutzen', $url);
+    $this->assertSame('index.php?q=civicrm/handbook&p=handbook%2Fusing', $url);
   }
 
   public function testTocEscapesOnce(): void {
     $html = \CRM_Core_Smarty::singleton()->fetchWith('CRM/Handbook/toc.tpl', ['handbookToc' => $this->view()->toc()]);
-    $this->assertStringContainsString('href="index.php?q=civicrm/handbook&amp;p=handbook%2Fbenutzen"', $html);
+    $this->assertStringContainsString('href="index.php?q=civicrm/handbook&amp;p=handbook%2Fusing"', $html);
     $this->assertStringNotContainsString('&amp;amp;', $html);
   }
 

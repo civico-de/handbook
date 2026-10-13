@@ -106,7 +106,7 @@
   margin: 0 0 0.5em;
 }
 
-/* Page: breadcrumb, content, "Auf dieser Seite", previous and next. */
+/* Page: breadcrumb, content, "On this page", previous and next. */
 .handbook-breadcrumb ol {
   display: flex;
   flex-wrap: wrap;

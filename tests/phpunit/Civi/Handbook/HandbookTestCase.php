@@ -10,11 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Headless base: the extension installed, the extra directory pointing at
- * tests/fixtures/extra, and the per-request library reset.
+ * tests/fixtures/extra, and the per-request library and locale reset.
  */
 abstract class HandbookTestCase extends TestCase implements HeadlessInterface, TransactionalInterface {
 
   public const FIXTURES = __DIR__ . '/../../../fixtures';
+
+  private ?\Civi\Core\Locale $savedLocale = NULL;
 
   public function setUpHeadless(): \Civi\Test\CiviEnvBuilder {
     return ck_headless()->apply();
@@ -26,8 +28,24 @@ abstract class HandbookTestCase extends TestCase implements HeadlessInterface, T
   }
 
   protected function tearDown(): void {
+    $this->savedLocale?->apply();
+    $this->savedLocale = NULL;
     unset(\Civi::$statics[Library::class], \Civi::$statics[ContextHelp::class]);
     parent::tearDown();
+  }
+
+  /**
+   * Switches ts() and the reader's locale. Applied as is: negotiate() would
+   * fall back to en_US on a site without core's catalogue for $locale.
+   */
+  protected function useLocale(string $locale): void {
+    $this->savedLocale ??= \Civi\Core\Locale::detect();
+    (new \Civi\Core\Locale([
+      'nominal' => $locale,
+      'ts' => $locale,
+      'moneyFormat' => $locale,
+      'uf' => $locale,
+    ]))->apply();
   }
 
   protected function useExtraDir(string $dir): Library {

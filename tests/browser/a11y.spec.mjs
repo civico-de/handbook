@@ -12,8 +12,8 @@ const THEMES = [
 ];
 const SCREENS = [
   { name: "index", route: "civicrm/handbook", scope: ".handbook" },
-  { name: "page with sections", route: "civicrm/handbook?p=handbook/benutzen", scope: ".handbook" },
-  { name: "search", route: "civicrm/handbook/search?term=Handbuch", scope: ".handbook" },
+  { name: "page with sections", route: "civicrm/handbook?p=handbook/using", scope: ".handbook" },
+  { name: "search", route: "civicrm/handbook/search?term=Handbook", scope: ".handbook" },
   { name: "search results", route: "civicrm/handbook/search?term=Fixturewort", scope: ".handbook" },
   { name: "fixture page", route: "civicrm/handbook?p=extra/alpha", scope: ".handbook" },
   // tests/fixtures/extra/alpha.md links the dashboard: only the context link there is ours.
@@ -103,7 +103,7 @@ test.describe("keyboard and landmarks", () => {
   });
 
   test("navigation landmarks have distinct labels", async ({ page }) => {
-    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/writing-manuals"));
     const labels = await page
       .locator(".handbook nav")
       .evaluateAll((navs) =>
@@ -114,7 +114,7 @@ test.describe("keyboard and landmarks", () => {
   });
 
   test("a source group opens and closes from the keyboard", async ({ page }) => {
-    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/writing-manuals"));
     const index = await page
       .locator(".handbook-group")
       .evaluateAll((groups) => groups.findIndex((g) => !g.open));
@@ -131,7 +131,7 @@ test.describe("keyboard and landmarks", () => {
   });
 
   test("focus rings in the scrolling sidebars sit inside the link", async ({ page }) => {
-    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/writing-manuals"));
     for (const sel of [".handbook-toc a", ".handbook-sections a"]) {
       const link = page.locator(sel).first();
       await page.locator(".handbook-search input").first().focus();
@@ -141,7 +141,7 @@ test.describe("keyboard and landmarks", () => {
   });
 
   test("each sidebar h3 sits in a details whose summary holds an h2", async ({ page }) => {
-    await page.goto(loginUrl("civicrm/handbook?p=handbook/anleitungen-schreiben"));
+    await page.goto(loginUrl("civicrm/handbook?p=handbook/writing-manuals"));
     const orphans = await page
       .locator(".handbook-toc h3")
       .evaluateAll(

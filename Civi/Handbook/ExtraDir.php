@@ -29,7 +29,7 @@ final class ExtraDir {
   }
 
   public static function relativeMessage(string $path): string {
-    return E::ts('Das zusätzliche Handbuch-Verzeichnis muss ein absoluter Pfad sein (beginnt mit /), nicht „%1“.', [
+    return E::ts('The extra handbook directory must be an absolute path (starting with /), not “%1”.', [
       1 => $path,
     ]);
   }

@@ -38,7 +38,7 @@ final class StaleCacheHeadlessTest extends HandbookTestCase {
       $html = (string) ob_get_clean();
       unset($_GET['p']);
     }
-    $this->assertStringContainsString('Diese Handbuchseite gibt es nicht.', $html);
+    $this->assertStringContainsString('This handbook page does not exist.', $html);
     unset(\Civi::$statics[Library::class]);
     $this->assertSame(['extra/one'], $this->extraIds(Library::fromSystem()));
   }

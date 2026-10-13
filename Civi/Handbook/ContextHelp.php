@@ -31,8 +31,8 @@ final class ContextHelp extends AutoSubscriber {
     /** @var array<string, array<string, mixed>> $permissions */
     $permissions = &$event->permissions;
     $permissions['access handbook'] = [
-      'label' => E::ts('Handbuch: Anleitungen lesen'),
-      'description' => E::ts('Das Handbuch mit den Bedienungsanleitungen öffnen und durchsuchen.'),
+      'label' => E::ts('Handbook: read manuals'),
+      'description' => E::ts('Open and search the handbook of user manuals.'),
     ];
   }
 
@@ -81,7 +81,7 @@ final class ContextHelp extends AutoSubscriber {
     }
     $items = '';
     foreach ($pages as $page) {
-      $label = E::ts('Handbuch: %1', [1 => $page->title]);
+      $label = E::ts('Handbook: %1', [1 => $page->title]);
       $items .=
         '<li><a href="'
         . htmlspecialchars($url('civicrm/handbook', ['p' => $page->id]))
@@ -91,7 +91,7 @@ final class ContextHelp extends AutoSubscriber {
     }
     return (
       '<nav class="handbook-context" aria-label="'
-      . htmlspecialchars(E::ts('Anleitungen zu dieser Seite'))
+      . htmlspecialchars(E::ts('Manuals for this page'))
       . '"><ul>'
       . $items
       . '</ul></nav>'

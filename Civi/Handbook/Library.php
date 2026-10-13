@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Civi\Handbook;
 
 /**
- * All manual pages of all sources, with the file list cached until the next
- * system flush.
+ * All manual pages of all sources as a reader of one locale sees them, with
+ * the file list cached per locale until the next system flush.
  */
 final class Library {
 
@@ -25,20 +25,33 @@ final class Library {
    *   Readable source directories keyed by source name.
    * @param list<string> $sourceErrors
    *   Problems with configured sources, shown on the index.
+   * @param string $locale
+   *   The reader's CiviCRM locale; it picks the language variant of each page.
    */
   public function __construct(
     private readonly array $sources,
     private readonly array $sourceErrors = [],
     private readonly ?\CRM_Utils_Cache_Interface $cache = NULL,
+    private readonly string $locale = 'en_US',
   ) {}
 
+  /**
+   * The library for the current user's locale, once per request and locale.
+   */
   public static function fromSystem(): self {
-    if (!isset(\Civi::$statics[self::class])) {
+    $locale = \CRM_Core_I18n::getLocale();
+    /** @var array<string, self> $libraries */
+    $libraries = \Civi::$statics[self::class] ?? [];
+    if (!isset($libraries[$locale])) {
       $sources = Sources::fromSystem();
-      \Civi::$statics[self::class] = new self($sources->dirs, $sources->errors, \Civi::cache('long'));
+      $libraries[$locale] = new self($sources->dirs, $sources->errors, \Civi::cache('long'), $locale);
+      \Civi::$statics[self::class] = $libraries;
     }
-    /** @var self */
-    return \Civi::$statics[self::class];
+    return $libraries[$locale];
+  }
+
+  public function locale(): string {
+    return $this->locale;
   }
 
   /**
@@ -75,11 +88,13 @@ final class Library {
       $this->errors = $cached['errors'];
       return $this->pages = $cached['pages'];
     }
+    $variants = new Variants($this->locale);
     $groups = [];
     foreach ($this->sources as $source => $info) {
-      $groups[$source] = $this->scan($source, $info['dir']);
+      $groups[$source] = $variants->scan($source, $info['dir']);
     }
     $pages = Ordering::sources($groups, $this->sources);
+    $this->errors = $variants->errors;
     $this->cache?->set($key, ['pages' => $pages, 'errors' => $this->errors]);
     return $this->pages = $pages;
   }
@@ -118,25 +133,10 @@ final class Library {
     return Frontmatter::split($content)[1];
   }
 
-  /**
-   * @return list<\Civi\Handbook\Page>
-   */
-  private function scan(string $source, string $dir): array {
-    $group = [];
-    foreach (glob($dir . '/*.md') ?: [] as $file) {
-      try {
-        $group[] = PageLoader::load($source, $file);
-      }
-      catch (HandbookException $e) {
-        $this->errors[] = $e->getMessage();
-      }
-    }
-    return Ordering::source($group);
-  }
-
   private function cacheKey(): string {
     return self::pagesKey(
       $this->sources,
+      $this->locale,
       array_map(
         static fn (\ReflectionProperty $p): string => $p->getName(),
         (new \ReflectionClass(Page::class))->getProperties(),
@@ -145,14 +145,14 @@ final class Library {
   }
 
   /**
-   * Cache key of the page list. It includes Page's property names, so a changed
-   * Page class never unserializes a stale shape.
+   * Cache key of the page list for one locale. It includes Page's property
+   * names, so a changed Page class never unserializes a stale shape.
    *
    * @param array<string, array{dir: string, label: string}> $sources
    * @param list<string> $pageProperties
    */
-  public static function pagesKey(array $sources, array $pageProperties): string {
-    return 'handbook_pages_' . md5(serialize([$sources, $pageProperties]));
+  public static function pagesKey(array $sources, string $locale, array $pageProperties): string {
+    return 'handbook_pages_' . md5(serialize([$sources, $locale, $pageProperties]));
   }
 
 }

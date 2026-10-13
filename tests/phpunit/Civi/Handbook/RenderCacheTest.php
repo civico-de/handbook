@@ -56,8 +56,12 @@ final class RenderCacheTest extends TestCase {
   /**
    * @return array{html: string, headings: list<array{level: int, text: string, slug: string, line: int}>}
    */
-  private function render(string $base = '/civicrm/handbook', string $version = '1.0'): array {
-    $library = new Library(['s' => ['dir' => $this->dir, 'label' => 'S']]);
+  private function render(
+    string $base = '/civicrm/handbook',
+    string $version = '1.0',
+    string $locale = 'en_US',
+  ): array {
+    $library = new Library(['s' => ['dir' => $this->dir, 'label' => 'S']], [], NULL, $locale);
     $url = static fn (string $path, array $query, ?string $fragment): string => $base . '?' . http_build_query($query);
     return (new RenderCache($this->cache, $url, $version))->page($library->find('s/seite'), $library);
   }
@@ -82,6 +86,14 @@ final class RenderCacheTest extends TestCase {
     $this->render(version: '1.0');
     $this->render(version: '1.1');
     $this->render(version: '1.0');
+    $this->assertSame(2, $this->cache->writes);
+  }
+
+  public function testLocaleIsPartOfTheKey(): void {
+    $this->write("## Alt\n");
+    $this->render(locale: 'en_US');
+    $this->render(locale: 'de_DE');
+    $this->render(locale: 'en_US');
     $this->assertSame(2, $this->cache->writes);
   }
 
