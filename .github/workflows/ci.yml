@@ -35,7 +35,7 @@ permissions:
 # No inputs: the workflow reads the extension key from info.xml itself.
 jobs:
   ci:
-    uses: jfilter/civikitchen/.github/workflows/extension-ci.yml@v1
+    uses: civico-de/civikitchen/.github/workflows/extension-ci.yml@v1
 # END CIVIKITCHEN MANAGED caller
     # `playwright` runs tests/browser/: axe-core contrast checks of the
     # handbook screens in the classic theme and in Riverlea light and dark.
