@@ -3,6 +3,7 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
+import { test as base } from "@playwright/test";
 
 const ROOT = path.join(import.meta.dirname, "..", "..");
 const COMPOSE = process.env.CK_COMPOSE_FILE
@@ -40,3 +41,17 @@ export const setSetting = (name, value) =>
 
 // One-time authx login link for the admin user; its host is the site URL.
 export const loginUrl = (route) => JSON.parse(cv("url", "-L", "--user=admin", route));
+
+// The browser reaches the site only: an off-site URL in a fixture (an image on
+// example.org) would hold the `load` event for as long as that host stalls.
+let site;
+export const test = base.extend({
+  context: async ({ context }, use) => {
+    site ??= new URL(JSON.parse(cv("url", "civicrm"))).origin;
+    await context.route(
+      (url) => url.origin !== site,
+      (route) => route.abort("blockedbyclient"),
+    );
+    await use(context);
+  },
+});

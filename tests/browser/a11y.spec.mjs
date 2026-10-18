@@ -2,8 +2,8 @@
 // in Riverlea light and dark. Scoped to the extension's own markup: the footer
 // and the search button (a plain core-styled button) are theme styling.
 import AxeBuilder from "@axe-core/playwright";
-import { test, expect } from "@playwright/test";
-import { cv, getSetting, setSetting, loginUrl } from "./stack.mjs";
+import { expect } from "@playwright/test";
+import { cv, getSetting, setSetting, loginUrl, test } from "./stack.mjs";
 
 const THEMES = [
   { name: "classic", theme: "greenwich", dark: "light" },
