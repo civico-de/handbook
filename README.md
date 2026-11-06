@@ -6,7 +6,9 @@ Handbook collects them in one table of contents, renders them, searches them,
 and links each page from the CiviCRM screens it describes.
 
 The user manual is at <https://civico-de.github.io/handbook/>. Licensed under
-AGPL-3.0-or-later, see [LICENSE.txt](LICENSE.txt).
+AGPL-3.0-or-later, see [LICENSE.txt](LICENSE.txt). Report bugs in the
+[issue tracker](https://github.com/civico-de/handbook/issues). Report security issues by email
+to security@civico.de, not in a public issue; see [SECURITY.md](SECURITY.md).
 
 ## Requirements
 
