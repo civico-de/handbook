@@ -42,7 +42,7 @@ final class PlainText {
       preg_replace_callback(
         $pattern,
         static fn (array $m): string => match (TRUE) {
-          ($m[1] ?? '') !== '' => trim($m[2]),
+          $m[1] !== '' => trim($m[2]),
           ($m[4] ?? '') !== '' => self::inline($m[5]),
           ($m[6] ?? '') !== '' => self::inline($m[7]),
           default => self::inline($m[3] ?? ''),
