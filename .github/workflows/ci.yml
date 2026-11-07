@@ -41,3 +41,4 @@ jobs:
     # handbook screens in the classic theme and in Riverlea light and dark.
     with:
       playwright: true
+      e2e: tests/e2e/missing-vendor.sh
