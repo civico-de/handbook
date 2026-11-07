@@ -13,14 +13,19 @@ EXT=/var/www/html/ext/handbook
 JAR="$(mktemp)"
 MESSAGE='composer install --no-dev'
 
+# The checkout belongs to the runner's user in CI, so only root may rename in it.
+as_root() { CK_APP_USER=root app "$1"; }
+
 cleanup() {
-  app "[ -d $EXT/vendor.e2e-aside ] && mv $EXT/vendor.e2e-aside $EXT/vendor; cv flush" >/dev/null 2>&1
+  as_root "[ -d $EXT/vendor.e2e-aside ] && mv $EXT/vendor.e2e-aside $EXT/vendor" >/dev/null 2>&1
+  app "cv flush" >/dev/null 2>&1
 }
 trap 'cleanup; rm -f "$JAR"' EXIT
 
 echo "handbook: degraded behaviour without vendor/"
 
-app "mv $EXT/vendor $EXT/vendor.e2e-aside && cv flush" >/dev/null 2>&1
+as_root "mv $EXT/vendor $EXT/vendor.e2e-aside" >/dev/null 2>&1
+app "cv flush" >/dev/null 2>&1
 check "vendor/ moved aside" "$(app "[ ! -e $EXT/vendor ]"; echo $?)"
 
 # One-time authx login link; the session cookie then carries the next request.
