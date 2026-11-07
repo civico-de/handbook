@@ -39,6 +39,8 @@ jobs:
 # END CIVIKITCHEN MANAGED caller
     # `playwright` runs tests/browser/: axe-core contrast checks of the
     # handbook screens in the classic theme and in Riverlea light and dark.
+    # Public repo: GitHub-hosted runners only, since fork PRs would run on a self-hosted one.
     with:
+      runs_on: ubuntu-latest
       playwright: true
       e2e: tests/e2e/missing-vendor.sh
