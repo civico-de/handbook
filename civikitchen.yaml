@@ -25,6 +25,11 @@ policy:
   license: AGPL-3.0-or-later
   npm_license: AGPL-3.0-or-later
   copyright: 'civico GmbH'
+  # Media kept in git itself instead of Git LFS.
+  lfs_exempt:
+    paths:
+      - tests/fixtures
+    reason: 'Tiny fixtures the path and asset tests read byte for byte'
   # Lowest CiviCRM minor info.xml may declare: the supported ESR.
   civicrm_floor: "6.16"
 
