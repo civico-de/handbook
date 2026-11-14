@@ -8,7 +8,8 @@ use CRM_Handbook_ExtensionUtil as E;
 
 /**
  * Finds the source directories: every enabled extension with a handbook/
- * directory, plus the configured extra directory as source "extra".
+ * directory, or the one its info.xml tag `handbook:dir=<name>` names, plus the
+ * configured extra directory as source "extra".
  */
 final class Sources {
 
@@ -26,36 +27,48 @@ final class Sources {
 
   public static function fromSystem(): self {
     $extensions = [];
+    $errors = [];
     $mapper = \CRM_Extension_System::singleton()->getMapper();
-    foreach ($mapper->getActiveModuleFiles() as $module) {
-      $key = is_array($module) ? $module['fullName'] ?? NULL : NULL;
-      if (is_string($key)) {
-        $extensions += self::extension($mapper, $key);
+    // Core caches the tags of all extensions, so this reads no info.xml.
+    $declared = ExtensionDir::declared($mapper->getAllTags());
+    // Core documents each entry as ['prefix' => …, 'fullName' => …, 'filePath' => …].
+    /** @var list<array{fullName: string}> $modules */
+    $modules = $mapper->getActiveModuleFiles();
+    foreach (array_column($modules, 'fullName') as $key) {
+      try {
+        $extensions += self::extension($mapper, $key, $declared[$key] ?? []);
+      }
+      catch (\InvalidArgumentException $e) {
+        $errors[] = $e->getMessage();
       }
     }
     $extra = \Civi::settings()->get('handbook_extra_dir');
-    return self::build($extensions, is_string($extra) ? trim($extra) : '');
+    return self::build($extensions, is_string($extra) ? trim($extra) : '', $errors);
   }
 
   /**
    * @param array<string, array{dir: string, label: string}> $extensions
    *   Extension handbook directories keyed by extension key.
+   * @param list<string> $errors
    */
-  public static function build(array $extensions, string $extra): self {
+  public static function build(array $extensions, string $extra, array $errors = []): self {
     $sources = new self();
     $sources->dirs = $extensions;
+    $sources->errors = $errors;
     ksort($sources->dirs);
     $sources->addExtra($extra);
     return $sources;
   }
 
   /**
+   * @param list<string> $declared
+   *
    * @return array<string, array{dir: string, label: string}>
    */
-  private static function extension(\CRM_Extension_Mapper $mapper, string $key): array {
+  private static function extension(\CRM_Extension_Mapper $mapper, string $key, array $declared): array {
     try {
-      $dir = realpath($mapper->keyToBasePath($key) . '/handbook');
-      if ($dir === FALSE || !is_dir($dir)) {
+      $dir = ExtensionDir::resolve($mapper->keyToBasePath($key), $key, $declared);
+      if ($dir === NULL) {
         return [];
       }
       // keyToInfo() parses info.xml, and this runs on every CiviCRM page.

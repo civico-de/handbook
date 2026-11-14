@@ -47,6 +47,9 @@ org.example.greeter/
       greeting-form.png
 ```
 
+A manual that already lives in another directory of the extension, such as
+`docs`, is named with the tag `<tag>handbook:dir=docs</tag>` in `info.xml`.
+
 A page can start with frontmatter. Every key is optional:
 
 ```yaml

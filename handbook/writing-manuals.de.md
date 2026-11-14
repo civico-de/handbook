@@ -24,6 +24,16 @@ org.example.greeter/
 
 Das Handbuch liest nur die Markdown-Dateien, die direkt in diesem Verzeichnis liegen. Dateien in Unterverzeichnissen sind keine Seiten, ein Unterverzeichnis ist also der Platz für Bilder. Anleitungen deaktivierter Erweiterungen erscheinen nicht.
 
+Liegt die Dokumentation Ihrer Erweiterung schon in einem anderen Verzeichnis, etwa `docs`, nennen Sie es mit einem Tag in der `info.xml`. Das Handbuch liest dann dieses Verzeichnis statt `handbook`, nach denselben Regeln:
+
+```xml
+<tags>
+  <tag>handbook:dir=docs</tag>
+</tags>
+```
+
+Das Verzeichnis muss innerhalb der Erweiterung liegen und darf nicht ihr Wurzelverzeichnis sein. Ein Verzeichnis, das es nicht gibt, oder ein zweiter solcher Tag erscheint als Fehler auf der Startseite des Handbuchs. Führen Sie nach einer Änderung des Tags `cv flush` aus.
+
 Ein Dateiname darf nur Buchstaben ohne Akzente oder Umlaute, Ziffern, Punkte, Bindestriche und Unterstriche enthalten und muss mit einem Buchstaben oder einer Ziffer beginnen. Ein Name wie `getting-started.de.md` ist keine eigene Seite, sondern eine Übersetzung. Mehr dazu unter [Sprachen](#sprachen).
 
 Jede Seite hat eine ID aus dem Schlüssel der Erweiterung und dem Dateinamen ohne Endung, etwa org.example.greeter/greetings. Ihre Adresse in CiviCRM ist `civicrm/handbook?p=org.example.greeter/greetings`.

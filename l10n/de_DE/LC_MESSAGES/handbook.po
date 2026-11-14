@@ -68,6 +68,14 @@ msgstr "Das zusätzliche Handbuch-Verzeichnis wird nicht gelesen: eine Erweiteru
 msgid "The extra handbook directory “%1” is not a readable directory."
 msgstr "Das zusätzliche Handbuch-Verzeichnis „%1“ ist kein lesbares Verzeichnis."
 
+#: Civi/Handbook/ExtensionDir.php
+msgid "The extension %1 declares more than one handbook directory: %2."
+msgstr "Die Erweiterung %1 gibt mehr als ein Handbuch-Verzeichnis an: %2."
+
+#: Civi/Handbook/ExtensionDir.php
+msgid "The extension %1 declares the handbook directory “%2”, which is not a directory inside the extension."
+msgstr "Die Erweiterung %1 gibt das Handbuch-Verzeichnis „%2“ an, das kein Verzeichnis innerhalb der Erweiterung ist."
+
 #: Civi/Handbook/Sources.php
 msgid "More manuals"
 msgstr "Weitere Anleitungen"

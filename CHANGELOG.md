@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- An extension can keep its manual in another directory than `handbook/`, named by the `info.xml`
+  tag `handbook:dir=<directory>`.
+
 ## [0.3.0] - 2026-11-14
 
 ### Changed

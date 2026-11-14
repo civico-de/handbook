@@ -25,6 +25,16 @@ org.example.greeter/
 
 The handbook reads only the Markdown files directly in this directory. Files in subdirectories are not pages, so a subdirectory is the place for images. Manuals of disabled extensions do not show.
 
+If your extension already keeps its documentation in another directory, such as `docs`, name it with a tag in `info.xml`. The handbook then reads that directory instead of `handbook`, by the same rules:
+
+```xml
+<tags>
+  <tag>handbook:dir=docs</tag>
+</tags>
+```
+
+The directory must lie inside the extension and cannot be its root. A directory that does not exist, or a second such tag, shows as an error on the start page of the handbook. Run `cv flush` after you change the tag.
+
 A file name may contain only unaccented letters, digits, dots, hyphens and underscores, and it must start with a letter or a digit. A name like `getting-started.de.md` is not a page of its own but a translation, described under [Languages](#languages).
 
 Every page has an id made of the extension key and the file name without the extension, such as org.example.greeter/greetings. Its address in CiviCRM is `civicrm/handbook?p=org.example.greeter/greetings`.
