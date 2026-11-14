@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Requires CiviCRM 6.16 or newer.
+
 ## [0.2.0] - 2026-10-30
 
 ### Added

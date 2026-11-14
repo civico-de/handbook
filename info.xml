@@ -21,7 +21,7 @@
   <version>0.2.0</version>
   <develStage>beta</develStage>
   <compatibility mode="semver">
-    <ver>6.15</ver>
+    <ver>6.16</ver>
   </compatibility>
   <php_compatibility mode="list">
     <ver>8.2</ver>
