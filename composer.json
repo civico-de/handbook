@@ -1,6 +1,5 @@
 {
     "name": "civico-de/handbook",
-    "description": "Renders Markdown user manuals shipped by extensions inside the CiviCRM UI, with search and context links.",
     "type": "civicrm-ext",
     "license": "AGPL-3.0-or-later",
     "authors": [
