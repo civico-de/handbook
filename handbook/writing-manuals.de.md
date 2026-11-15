@@ -111,6 +111,16 @@ Ein Bild muss im Verzeichnis der Anleitung liegen, auch nachdem symbolische Link
 
 Übersetzungen verwenden dieselben Bilder wie die Standardseite.
 
+## Videos
+
+Ein Vorschaubild, das auf eine Videodatei unter einer https-Adresse verlinkt, wird an Ort und Stelle abgespielt:
+
+```markdown
+[![Video: das Begrüßungsformular](images/greeting-video.png)](https://media.example.org/greeting.mp4)
+```
+
+Der Link darf nur das Bild enthalten, und seine Adresse muss auf `.mp4` oder `.webm` enden. Das Handbuch liefert selbst keine Videodateien aus, sie liegen also auf einem eigenen Server. Der Player lädt nichts, bevor die Leser:innen ihn starten, und der Alternativtext des Bildes benennt das Video; ohne ihn bleibt das Vorschaubild ein Link. Wo Markdown ohne das Handbuch angezeigt wird, etwa auf einer Code-Plattform, bleibt das Vorschaubild ein Link auf das Video.
+
 ## Links auf CiviCRM-Seiten
 
 Eine Seite kann von den CiviCRM-Seiten aus verlinkt werden, die sie beschreibt. Tragen Sie deren Pfade unter `routes` ein:

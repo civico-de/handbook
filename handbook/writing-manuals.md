@@ -112,6 +112,16 @@ An image must lie inside the manual's directory, also after following symbolic l
 
 Translations use the same images as the default page.
 
+## Videos
+
+A poster image that links to a video file at an https address plays in place:
+
+```markdown
+[![Video: the greeting form](images/greeting-video.png)](https://media.example.org/greeting.mp4)
+```
+
+The link must hold the image and nothing else, and its address must end in `.mp4` or `.webm`. The handbook does not serve video files itself, so they live on a server of their own. The player loads nothing before the reader starts it, and the image's alternative text names the video; without one the poster stays a link. Where Markdown is shown without the handbook, on a code forge for example, the poster stays a link to the video.
+
 ## Links from CiviCRM screens
 
 A page can be linked from the CiviCRM screens it describes. List their paths under `routes`:

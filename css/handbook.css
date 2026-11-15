@@ -191,7 +191,7 @@
 .crm-container .handbook-content li {
   display: list-item;
 }
-.handbook-content img {
+.handbook-content :is(img, video) {
   max-width: 100%;
   height: auto;
 }

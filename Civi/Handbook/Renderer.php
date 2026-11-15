@@ -19,7 +19,8 @@ use Civi\Handbook\Vendor\League\CommonMark\Renderer\HtmlRenderer;
 
 /**
  * Markdown to HTML: raw HTML stripped, unsafe links dropped, headings carry
- * slug ids, relative page and image links point into the handbook routes.
+ * slug ids, relative page and image links point into the handbook routes, and
+ * a poster image linked to an https video file plays in place.
  */
 final class Renderer {
 
@@ -58,6 +59,7 @@ final class Renderer {
     $environment->addExtension(new CommonMarkCoreExtension());
     $environment->addExtension(new GithubFlavoredMarkdownExtension());
     $environment->addExtension(new HeadingPermalinkExtension());
+    $environment->addRenderer(Video::class, new VideoRenderer());
     $this->parser = new MarkdownParser($environment);
     $this->renderer = new HtmlRenderer($environment);
     $this->url = $url
@@ -76,6 +78,7 @@ final class Renderer {
   public function render(string $source, string $markdown): array {
     $document = $this->parser->parse($markdown);
     $this->rewriteLinks($document, $source);
+    VideoEmbedder::embed($document);
     return [
       'html' => (string) $this->renderer->renderDocument($document),
       'headings' => self::headings($document),

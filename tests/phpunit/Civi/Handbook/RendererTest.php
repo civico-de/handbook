@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Civi\Handbook\Renderer
+ * @covers \Civi\Handbook\Video
+ * @covers \Civi\Handbook\VideoEmbedder
+ * @covers \Civi\Handbook\VideoRenderer
  */
 final class RendererTest extends TestCase {
 
@@ -53,6 +56,50 @@ final class RendererTest extends TestCase {
 
   public function testRelativeImageIsServedThroughAssetRoute(): void {
     $this->assertStringContainsString('src="/civicrm/handbook/asset?p=extra%2Fbild.png"', $this->alpha()['html']);
+  }
+
+  public function testALinkedPosterOfAnHttpsVideoPlaysInPlace(): void {
+    $html = $this->renderer()->render(
+      'extra',
+      "[![Tour & more](video/tour.png)](https://media.example.org/x/tour.mp4)\n",
+    )['html'];
+    $this->assertSame(
+      '<p><video controls preload="none" playsinline poster="/civicrm/handbook/asset?p=extra%2Fvideo%2Ftour.png"'
+      . ' src="https://media.example.org/x/tour.mp4" aria-label="Tour &amp; more">'
+      . '<a href="https://media.example.org/x/tour.mp4">Tour &amp; more</a></video></p>',
+      trim($html),
+    );
+  }
+
+  public function testAVideoInAHeadingKeepsItsLabelInTheOutline(): void {
+    $headings = $this->renderer()->render(
+      'extra',
+      "## Watch [![Demo](p.png)](https://media.example.org/demo.mp4)\n",
+    )['headings'];
+    $this->assertSame('Watch Demo', $headings[0]['text']);
+  }
+
+  /**
+   * @return array<string, array{string}>
+   */
+  public static function notVideos(): array {
+    return [
+      'plain http' => ["[![T](p.png)](http://example.org/t.mp4)\n"],
+      'not a video file' => ["[![T](p.png)](https://example.org/t.mp4.html)\n"],
+      'text beside the poster' => ["[![T](p.png) watch](https://example.org/t.mp4)\n"],
+      'a text link' => ["[watch](https://example.org/t.mp4)\n"],
+      'a host ending in .mp4' => ["[![T](p.png)](https://example.mp4)\n"],
+      'a poster without text' => ["[![](p.png)](https://example.org/t.mp4)\n"],
+    ];
+  }
+
+  /**
+   * @dataProvider notVideos
+   */
+  public function testOtherLinksStayLinks(string $markdown): void {
+    $html = $this->renderer()->render('extra', $markdown)['html'];
+    $this->assertStringNotContainsString('<video', $html);
+    $this->assertStringContainsString('<a href=', $html);
   }
 
   public function testTablesSitInAFocusableScrollBox(): void {

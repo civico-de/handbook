@@ -8,6 +8,7 @@
   tag `handbook:dir=<directory>`.
 - Manuals can show SVG images. Every image is served with a sandbox policy, so an SVG's scripts
   never run.
+- A poster image linked to an https video file (`.mp4`, `.webm`) plays in place.
 
 ## [0.3.0] - 2026-11-14
 
