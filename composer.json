@@ -24,6 +24,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Civi\\Handbook\\Markdown\\": "markdown/",
             "Civi\\": "Civi/"
         }
     },

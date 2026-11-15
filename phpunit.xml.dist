@@ -6,6 +6,7 @@
     <include>
       <directory suffix=".php">./Civi</directory>
       <directory suffix=".php">./CRM</directory>
+      <directory suffix=".php">./markdown</directory>
       <file>./handbook.php</file>
     </include>
   </coverage>

@@ -33,6 +33,8 @@
   </smarty_compatibility>
   <classloader>
     <psr0 prefix="CRM_" path="."/>
+    <!-- Outside Civi/ and CRM/, which scan-classes loads: these extend vendor types. -->
+    <psr4 prefix="Civi\Handbook\Markdown\" path="markdown"/>
     <psr4 prefix="Civi\" path="Civi"/>
   </classloader>
   <civix>

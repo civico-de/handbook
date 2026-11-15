@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Civi\Handbook;
+namespace Civi\Handbook\Markdown;
 
 use Civi\Handbook\Vendor\League\CommonMark\Node\Node;
 use Civi\Handbook\Vendor\League\CommonMark\Renderer\ChildNodeRendererInterface;

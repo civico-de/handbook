@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
+use Civi\Handbook\Markdown\Video;
 use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use Civi\Handbook\Vendor\League\CommonMark\Node\Block\Document;

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
+use Civi\Handbook\Markdown\Video;
+use Civi\Handbook\Markdown\VideoRenderer;
 use Civi\Handbook\Vendor\League\CommonMark\Environment\Environment;
 use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use Civi\Handbook\Vendor\League\CommonMark\Extension\CommonMark\Node\Block\Heading;
