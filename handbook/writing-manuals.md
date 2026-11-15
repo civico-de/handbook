@@ -106,7 +106,7 @@ Put images into a subdirectory of the manual and link them with a relative path:
 ![The greeting form](images/greeting-form.png)
 ```
 
-The handbook serves PNG, JPEG, GIF and WebP images. It does not serve SVG. A relative link to any other kind of file goes the same way, so it does not work either.
+The handbook serves PNG, JPEG, GIF, WebP and SVG images. It sends every image with a sandbox policy, so scripts inside an SVG never run. A relative link to any other kind of file goes the same way and gets the answer 400.
 
 An image must lie inside the manual's directory, also after following symbolic links. A path that leads outside gets the answer 400, and a missing file gets 404. Images with a full address, including ones that start with two slashes, load from their own server in the reader's browser.
 

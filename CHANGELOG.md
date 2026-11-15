@@ -6,6 +6,8 @@
 
 - An extension can keep its manual in another directory than `handbook/`, named by the `info.xml`
   tag `handbook:dir=<directory>`.
+- Manuals can show SVG images. Every image is served with a sandbox policy, so an SVG's scripts
+  never run.
 
 ## [0.3.0] - 2026-11-14
 

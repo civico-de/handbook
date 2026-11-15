@@ -218,26 +218,29 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
   }
 
   /**
-   * @return array<string, array{string, int}>
+   * @return array<string, array{string, int, string}>
    */
   public static function assets(): array {
     return [
-      'image' => ['extra/bild.png', 200],
-      'traversal' => ['extra/../outside.png', 400],
-      'missing' => ['extra/missing.png', 404],
+      'image' => ['extra/bild.png', 200, 'image/png'],
+      'svg' => ['extra/logo.svg', 200, 'image/svg+xml'],
+      'traversal' => ['extra/../outside.png', 400, ''],
+      'missing' => ['extra/missing.png', 404, ''],
     ];
   }
 
   /**
    * @dataProvider assets
    */
-  public function testAssetRouteAnswersWithStatus(string $p, int $status): void {
+  public function testAssetRouteAnswersWithStatus(string $p, int $status, string $type): void {
     $request = (new \GuzzleHttp\Psr7\ServerRequest('GET', '/civicrm/handbook/asset'))->withQueryParams(['p' => $p]);
     $response = \Civi\Handbook\AssetRoute::handle($request);
     $this->assertSame($status, $response->getStatusCode());
     if ($status === 200) {
-      $this->assertSame('image/png', $response->getHeaderLine('Content-Type'));
+      $this->assertSame($type, $response->getHeaderLine('Content-Type'));
       $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
+      $this->assertStringContainsString('sandbox', $response->getHeaderLine('Content-Security-Policy'));
+      $this->assertStringContainsString("default-src 'none'", $response->getHeaderLine('Content-Security-Policy'));
     }
   }
 

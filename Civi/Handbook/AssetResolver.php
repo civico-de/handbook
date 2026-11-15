@@ -7,6 +7,7 @@ namespace Civi\Handbook;
 /**
  * Maps `<source>/<relpath>` to an image file inside that source directory.
  * The real path must stay inside the directory; only image types are served.
+ * AssetRoute sandboxes the response, so an SVG's scripts never run.
  */
 final class AssetResolver {
 
@@ -16,6 +17,7 @@ final class AssetResolver {
     'jpeg' => 'image/jpeg',
     'gif' => 'image/gif',
     'webp' => 'image/webp',
+    'svg' => 'image/svg+xml',
   ];
 
   public function __construct(

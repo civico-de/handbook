@@ -23,6 +23,10 @@ final class AssetResolverTest extends TestCase {
     $this->assertStringEndsWith('/fixtures/extra/bild.png', $asset['file']);
   }
 
+  public function testServesSvg(): void {
+    $this->assertSame('image/svg+xml', $this->resolver()->resolve('extra/logo.svg')['type']);
+  }
+
   /**
    * @return array<string, array{string, int}>
    */
@@ -32,7 +36,6 @@ final class AssetResolverTest extends TestCase {
       'deep traversal' => ['extra/../../../../../../etc/passwd.png', 404],
       'not an image' => ['extra/alpha.md', 400],
       'no extension' => ['extra/../../../../../../etc/passwd', 400],
-      'svg is not served' => ['extra/x.svg', 400],
       'unknown source' => ['nope/bild.png', 404],
       'missing file' => ['extra/missing.png', 404],
       'no source separator' => ['bild.png', 400],

@@ -14,6 +14,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class AssetRoute {
 
+  public const CSP = "default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox";
+
   public static function handle(ServerRequestInterface $request): ResponseInterface {
     if (!Dependencies::available()) {
       return new Response(503, ['Content-Type' => 'text/plain'], Dependencies::message());
@@ -30,6 +32,8 @@ final class AssetRoute {
       [
         'Content-Type' => $asset['type'],
         'X-Content-Type-Options' => 'nosniff',
+        // An SVG opened on its own runs on CiviCRM's origin; the sandbox keeps its scripts out.
+        'Content-Security-Policy' => self::CSP,
         'Cache-Control' => 'private, max-age=3600',
       ],
       (string) file_get_contents($asset['file']),

@@ -105,7 +105,7 @@ Legen Sie Bilder in ein Unterverzeichnis der Anleitung und binden Sie sie mit ei
 ![The greeting form](images/greeting-form.png)
 ```
 
-Das Handbuch liefert Bilder im Format PNG, JPEG, GIF und WebP aus. SVG liefert es nicht aus. Ein relativer Link auf eine andere Art von Datei nimmt denselben Weg und funktioniert deshalb ebenfalls nicht.
+Das Handbuch liefert Bilder im Format PNG, JPEG, GIF, WebP und SVG aus. Es sendet jedes Bild mit einer Sandbox-Richtlinie, sodass Skripte in einer SVG-Datei nie laufen. Ein relativer Link auf eine andere Art von Datei nimmt denselben Weg und bekommt die Antwort 400.
 
 Ein Bild muss im Verzeichnis der Anleitung liegen, auch nachdem symbolische Links aufgelöst sind. Ein Pfad, der hinausführt, bekommt die Antwort 400, eine fehlende Datei 404. Bilder mit vollständiger Adresse, auch solche, die mit zwei Schrägstrichen beginnen, lädt der Browser der Leser:innen von ihrem eigenen Server.
 
