@@ -2,6 +2,8 @@
 
 # Handbook
 
+> **Status: beta.** The features are complete; details can still change between releases.
+
 Handbook is a CiviCRM extension that shows the user manuals of your extensions
 inside CiviCRM. Every enabled extension can ship its manual as Markdown files.
 Handbook collects them in one table of contents, renders them, searches them,

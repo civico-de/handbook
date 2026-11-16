@@ -6,6 +6,8 @@ title: Handbuch
 
 ![Handbuch: Markdown-Anleitungen gehen hinein, Inhaltsverzeichnis, Suche und Kontext-Links heraus](images/cover.png)
 
+> **Status: Beta.** Der Funktionsumfang steht; Einzelheiten können sich zwischen Releases noch ändern.
+
 Das Handbuch zeigt die Bedienungsanleitungen Ihrer Erweiterungen direkt in CiviCRM. Jede aktivierte Erweiterung kann ihre Anleitung als Markdown-Dateien mitliefern. Das Handbuch sammelt sie in einem Inhaltsverzeichnis, stellt sie dar, durchsucht sie und verlinkt jede Seite von den CiviCRM-Seiten aus, die sie beschreibt. Liefert eine Anleitung eine Übersetzung mit, sehen die Leser:innen jede Seite in ihrer eigenen Sprache.
 
 Wer in CiviCRM arbeitet, liest die Anleitungen dort, gleich neben den Seiten, die sie beschreiben. Entwickler:innen von Erweiterungen schreiben die Anleitungen in ihrem eigenen Repository, und dieselben Dateien können auch eine Dokumentations-Website speisen.

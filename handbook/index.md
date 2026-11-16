@@ -6,6 +6,8 @@ title: Handbook
 
 ![Handbook: Markdown manuals go in, a table of contents, search and context links come out](images/cover.png)
 
+> **Status: beta.** The features are complete; details can still change between releases.
+
 The handbook shows the user manuals of your extensions inside CiviCRM. Every enabled extension can ship its manual as a set of Markdown files. The handbook collects them in one table of contents, renders them, searches them, and links each page from the CiviCRM screens it describes. Readers see each page in their own language when the manual ships a translation.
 
 The people who work in CiviCRM read the manuals there, next to the screens they describe. Extension developers write the manuals in their own repository, and the same files can also feed a documentation website.
