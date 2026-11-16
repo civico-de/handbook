@@ -1,3 +1,5 @@
+![Handbook: Markdown manuals go in, a table of contents, search and context links come out](handbook/images/cover.png)
+
 # Handbook
 
 Handbook is a CiviCRM extension that shows the user manuals of your extensions
