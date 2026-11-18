@@ -7,10 +7,12 @@ namespace Civi\Handbook;
 use CRM_Handbook_ExtensionUtil as E;
 
 /**
- * The manual directory of an extension: handbook/, or the one its info.xml
- * tag `handbook:dir=<name>` names.
+ * The manual directory of an extension: docs/handbook/, or the one its
+ * info.xml tag `handbook:dir=<name>` names.
  */
 final class ExtensionDir {
+
+  public const DEFAULT = 'docs/handbook';
 
   public const TAG = 'handbook:dir=';
 
@@ -35,19 +37,19 @@ final class ExtensionDir {
   }
 
   /**
-   * The manual directory of an extension: the declared one, else handbook/.
+   * The manual directory of an extension: the declared one, else docs/handbook/.
    *
    * @param list<string> $declared
    *
    * @return string|null
-   *   NULL when nothing is declared and there is no handbook/.
+   *   NULL when nothing is declared and there is no docs/handbook/.
    *
    * @throws \InvalidArgumentException
    *   When the declaration does not name exactly one directory inside the extension.
    */
   public static function resolve(string $base, string $key, array $declared): ?string {
     if ($declared === []) {
-      $dir = realpath($base . '/handbook');
+      $dir = realpath($base . '/' . self::DEFAULT);
       return $dir !== FALSE && is_dir($dir) ? $dir : NULL;
     }
     if (count($declared) > 1) {

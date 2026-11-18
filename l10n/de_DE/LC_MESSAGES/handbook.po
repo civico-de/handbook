@@ -56,6 +56,10 @@ msgstr "%1: ungültiger Dateiname."
 msgid "%1: translation without the default page %2."
 msgstr "%1: Übersetzung ohne die Standardseite %2."
 
+#: Civi/Handbook/Variants.php
+msgid "%1: directory not readable."
+msgstr "%1: Verzeichnis nicht lesbar."
+
 #: Civi/Handbook/PageLoader.php
 msgid "%1: title and section must be text, order a whole number and routes a list of paths."
 msgstr "%1: title und section müssen Text, order eine ganze Zahl und routes eine Liste von Pfaden sein."

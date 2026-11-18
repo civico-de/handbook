@@ -10,26 +10,31 @@ This page is for developers who want to ship a manual with their extension. It c
 
 ## Add a manual
 
-Create a directory named `handbook` at the root of your extension. Put one Markdown file into it for every page of the manual:
+Create the directory `docs/handbook` in your extension. Put one Markdown file into it for every page of the manual:
 
 ```
 org.example.greeter/
-  handbook/
-    index.md
-    getting-started.md
-    getting-started.de.md
-    greetings.md
-    images/
-      greeting-form.png
+  docs/
+    handbook/
+      index.md
+      getting-started.md
+      getting-started.de.md
+      greetings.md
+      setup/
+        index.md
+        permissions.md
+      images/
+        greeting-form.png
+    architecture.md
 ```
 
-The handbook reads only the Markdown files directly in this directory. Files in subdirectories are not pages, so a subdirectory is the place for images. Manuals of disabled extensions do not show.
+The handbook reads the Markdown files in this directory and its subdirectories. A subdirectory with pages is a [section](#sections), and one without, like `images`, is the place for images. The rest of `docs`, such as `architecture.md`, is not part of the manual: that is the place for documentation aimed at developers. Files and directories whose name starts with a dot are skipped. Manuals of disabled extensions do not show.
 
-If your extension already keeps its documentation in another directory, such as `docs`, name it with a tag in `info.xml`. The handbook then reads that directory instead of `handbook`, by the same rules:
+If your extension keeps its manual in another directory, such as `manual`, name it with a tag in `info.xml`. The handbook then reads that directory instead of `docs/handbook`, by the same rules:
 
 ```xml
 <tags>
-  <tag>handbook:dir=docs</tag>
+  <tag>handbook:dir=manual</tag>
 </tags>
 ```
 
@@ -74,15 +79,19 @@ A file the handbook cannot read as a page is left out. The handbook index then l
 
 ## Sections
 
-Long manuals read better in sections. Give the pages of one topic the same `section`, and the table of contents lists them together under that name. The breadcrumb above each page shows its section too.
+Long manuals read better in sections. Put the pages of one topic into a subdirectory, and the table of contents lists them together. The breadcrumb above each page shows its section too.
 
-A section sits where its first page sorts, by order and then by title. Its pages keep that order among themselves. Pages without a section form a group without a name, placed the same way. Sections need no subdirectories and do not change page ids.
+The section is named after the title of the subdirectory's `index.md`, or after the subdirectory itself when it has none. That `index.md` is the first page of the section, and its `order` places the section. A page in a subdirectory has the directory in its id, such as `org.example.greeter/setup/permissions`.
+
+The frontmatter key `section` names a section without a subdirectory, and on a page in a subdirectory it overrides the directory's section. Pages with the same section name are listed together, wherever their files are.
+
+A section without an `index.md` sits where its first page sorts, by order and then by title. Its pages keep that order among themselves. Pages without a section form a group without a name, placed the same way.
 
 Numbering pages in steps of ten keeps sections apart. Orders 10 to 19 for a section named Setup and 20 to 29 for a section named Greetings give two sections in that order.
 
 ## Landing page and order
 
-A file named `index.md` is the landing page of your manual. It is the first entry of the manual in the table of contents, labelled "Overview", and the breadcrumb of every other page links to it. Its section is ignored.
+The file `index.md` at the top of the manual is its landing page. It is the first entry of the manual in the table of contents, labelled "Overview", and the breadcrumb of every other page links to it. Its section is ignored.
 
 The title of the landing page names the whole manual in the table of contents, the breadcrumb and search results. Without a landing page, the manual carries the label of the extension, or "More manuals" for the [extra directory](using.md#extra-directory).
 
@@ -90,7 +99,7 @@ Manuals are listed alphabetically by name. To move a manual ahead of the others,
 
 ## Linking pages
 
-To link another page of the same manual, use its file name as the link target, such as `greetings.md`. Add an anchor to jump to a heading on that page, such as `greetings.md#the-greeting-form`. Always name the default file, also from a translation. The handbook opens the page in the reader's language.
+To link another page of the same manual, use its path relative to the linking page as the link target, such as `greetings.md`, `setup/permissions.md` or, from a page in `setup`, `../greetings.md`. Add an anchor to jump to a heading on that page, such as `greetings.md#the-greeting-form`. Always name the default file, also from a translation. The handbook opens the page in the reader's language.
 
 Every heading gets an anchor made from its text in lower case, with hyphens for spaces and without punctuation. A heading "The greeting form" gets the anchor `#the-greeting-form`.
 

@@ -7,7 +7,7 @@ namespace Civi\Handbook;
 use CRM_Handbook_ExtensionUtil as E;
 
 /**
- * Finds the source directories: every enabled extension with a handbook/
+ * Finds the source directories: every enabled extension with a docs/handbook/
  * directory, or the one its info.xml tag `handbook:dir=<name>` names, plus the
  * configured extra directory as source "extra".
  */

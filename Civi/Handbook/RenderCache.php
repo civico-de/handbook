@@ -54,7 +54,7 @@ final class RenderCache {
       /** @var array{html: string, headings: list<array{level: int, text: string, slug: string, line: int}>} $cached */
       return $cached;
     }
-    $rendered = (new Renderer($this->url))->render($page->source(), $library->body($page));
+    $rendered = (new Renderer($this->url))->render($page->dir(), $library->body($page));
     if ($key !== NULL) {
       $this->cache?->set($key, $rendered);
     }

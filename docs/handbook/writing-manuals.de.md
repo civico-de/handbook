@@ -9,26 +9,31 @@ Diese Seite richtet sich an Entwickler:innen, die ihrer Erweiterung eine Anleitu
 
 ## Eine Anleitung anlegen
 
-Legen Sie im Wurzelverzeichnis Ihrer Erweiterung ein Verzeichnis namens `handbook` an. Darin liegt für jede Seite der Anleitung eine Markdown-Datei:
+Legen Sie in Ihrer Erweiterung das Verzeichnis `docs/handbook` an. Darin liegt für jede Seite der Anleitung eine Markdown-Datei:
 
 ```
 org.example.greeter/
-  handbook/
-    index.md
-    getting-started.md
-    getting-started.de.md
-    greetings.md
-    images/
-      greeting-form.png
+  docs/
+    handbook/
+      index.md
+      getting-started.md
+      getting-started.de.md
+      greetings.md
+      setup/
+        index.md
+        permissions.md
+      images/
+        greeting-form.png
+    architecture.md
 ```
 
-Das Handbuch liest nur die Markdown-Dateien, die direkt in diesem Verzeichnis liegen. Dateien in Unterverzeichnissen sind keine Seiten, ein Unterverzeichnis ist also der Platz für Bilder. Anleitungen deaktivierter Erweiterungen erscheinen nicht.
+Das Handbuch liest die Markdown-Dateien in diesem Verzeichnis und in seinen Unterverzeichnissen. Ein Unterverzeichnis mit Seiten ist ein [Thema](#themen), eines ohne, wie `images`, ist der Platz für Bilder. Der Rest von `docs`, etwa `architecture.md`, gehört nicht zur Anleitung: Dort steht die Dokumentation für Entwickler:innen. Dateien und Verzeichnisse, deren Name mit einem Punkt beginnt, werden übersprungen. Anleitungen deaktivierter Erweiterungen erscheinen nicht.
 
-Liegt die Dokumentation Ihrer Erweiterung schon in einem anderen Verzeichnis, etwa `docs`, nennen Sie es mit einem Tag in der `info.xml`. Das Handbuch liest dann dieses Verzeichnis statt `handbook`, nach denselben Regeln:
+Liegt die Anleitung Ihrer Erweiterung in einem anderen Verzeichnis, etwa `manual`, nennen Sie es mit einem Tag in der `info.xml`. Das Handbuch liest dann dieses Verzeichnis statt `docs/handbook`, nach denselben Regeln:
 
 ```xml
 <tags>
-  <tag>handbook:dir=docs</tag>
+  <tag>handbook:dir=manual</tag>
 </tags>
 ```
 
@@ -73,15 +78,19 @@ Eine Datei, die das Handbuch nicht als Seite lesen kann, bleibt weg. Die Startse
 
 ## Themen
 
-Lange Anleitungen lesen sich besser in Themen. Geben Sie den Seiten eines Themas denselben Wert für `section`, dann stehen sie im Inhaltsverzeichnis zusammen unter diesem Namen. Auch der Pfad über jeder Seite zeigt ihr Thema.
+Lange Anleitungen lesen sich besser in Themen. Legen Sie die Seiten eines Themas in ein Unterverzeichnis, dann stehen sie im Inhaltsverzeichnis zusammen. Auch der Pfad über jeder Seite zeigt ihr Thema.
 
-Ein Thema steht dort, wo seine erste Seite einsortiert ist, nach Zahl und dann nach Titel. Seine Seiten behalten diese Reihenfolge untereinander. Seiten ohne Thema bilden eine Gruppe ohne Namen, die genauso eingeordnet wird. Themen brauchen keine Unterverzeichnisse und ändern keine Seiten-IDs.
+Das Thema trägt den Titel der `index.md` im Unterverzeichnis, ohne sie den Namen des Unterverzeichnisses. Diese `index.md` ist die erste Seite des Themas, und ihr `order` bestimmt, wo das Thema steht. Eine Seite in einem Unterverzeichnis hat das Verzeichnis in ihrer ID, etwa `org.example.greeter/setup/permissions`.
+
+Der Frontmatter-Schlüssel `section` benennt ein Thema ohne Unterverzeichnis, und auf einer Seite in einem Unterverzeichnis ersetzt er dessen Thema. Seiten mit demselben Themennamen stehen zusammen, wo auch immer ihre Dateien liegen.
+
+Ein Thema ohne `index.md` steht dort, wo seine erste Seite einsortiert ist, nach Zahl und dann nach Titel. Seine Seiten behalten diese Reihenfolge untereinander. Seiten ohne Thema bilden eine Gruppe ohne Namen, die genauso eingeordnet wird.
 
 Wenn Sie die Seiten in Zehnerschritten nummerieren, bleiben die Themen getrennt. Die Zahlen 10 bis 19 für ein Thema namens Setup und 20 bis 29 für ein Thema namens Greetings ergeben zwei Themen in dieser Reihenfolge.
 
 ## Startseite und Reihenfolge
 
-Eine Datei namens `index.md` ist die Startseite Ihrer Anleitung. Sie ist der erste Eintrag der Anleitung im Inhaltsverzeichnis, mit der Beschriftung „Übersicht“, und der Pfad über jeder anderen Seite führt zu ihr. Ihr Thema zählt nicht.
+Die Datei `index.md` oben in der Anleitung ist ihre Startseite. Sie ist der erste Eintrag der Anleitung im Inhaltsverzeichnis, mit der Beschriftung „Übersicht“, und der Pfad über jeder anderen Seite führt zu ihr. Ihr Thema zählt nicht.
 
 Der Titel der Startseite benennt die ganze Anleitung im Inhaltsverzeichnis, im Pfad über der Seite und in den Suchergebnissen. Ohne Startseite trägt die Anleitung den Namen der Erweiterung, beim [zusätzlichen Verzeichnis](using.md#zusätzliches-verzeichnis) den Namen „Weitere Anleitungen“.
 
@@ -89,7 +98,7 @@ Die Anleitungen stehen alphabetisch nach Namen. Um eine Anleitung vor die andere
 
 ## Seiten verknüpfen
 
-Um auf eine andere Seite derselben Anleitung zu verlinken, nehmen Sie ihren Dateinamen als Linkziel, etwa `greetings.md`. Mit einem Anker springen Sie zu einer Überschrift auf dieser Seite, etwa `greetings.md#the-greeting-form`. Nennen Sie immer die Standarddatei, auch aus einer Übersetzung heraus. Das Handbuch öffnet die Seite in der Sprache der Leser:innen.
+Um auf eine andere Seite derselben Anleitung zu verlinken, nehmen Sie ihren Pfad relativ zur verlinkenden Seite als Linkziel, etwa `greetings.md`, `setup/permissions.md` oder, von einer Seite in `setup` aus, `../greetings.md`. Mit einem Anker springen Sie zu einer Überschrift auf dieser Seite, etwa `greetings.md#the-greeting-form`. Nennen Sie immer die Standarddatei, auch aus einer Übersetzung heraus. Das Handbuch öffnet die Seite in der Sprache der Leser:innen.
 
 Jede Überschrift bekommt einen Anker aus ihrem Text in Kleinbuchstaben, mit Bindestrichen statt Leerzeichen und ohne Satzzeichen. Die Überschrift „The greeting form“ bekommt den Anker `#the-greeting-form`.
 

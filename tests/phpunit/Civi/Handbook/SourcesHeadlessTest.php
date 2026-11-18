@@ -68,7 +68,7 @@ final class SourcesHeadlessTest extends HandbookTestCase {
   public function testDeclaredDirReplacesHandbookDir(): void {
     $base = (string) realpath(self::FIXTURES . '/declared');
     $this->assertSame($base . '/docs', ExtensionDir::resolve($base, 'org.example.a', ['docs']));
-    $this->assertSame($base . '/handbook', ExtensionDir::resolve($base, 'org.example.a', []));
+    $this->assertSame($base . '/docs/handbook', ExtensionDir::resolve($base, 'org.example.a', []));
   }
 
   public function testNoDeclarationAndNoHandbookDirIsNoSource(): void {

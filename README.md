@@ -1,4 +1,4 @@
-![Handbook: Markdown manuals go in, a table of contents, search and context links come out](handbook/images/cover.png)
+![Handbook: Markdown manuals go in, a table of contents, search and context links come out](docs/handbook/images/cover.png)
 
 # Handbook
 
@@ -38,21 +38,26 @@ manuals. Readers open the handbook from the menu Support › Handbook.
 
 ## Add a manual to your extension
 
-Create a directory named `handbook` at the root of your extension, with one
-Markdown file per page:
+Create the directory `docs/handbook` in your extension, with one Markdown file
+per page. A subdirectory with pages is a section of the manual:
 
 ```
 org.example.greeter/
-  handbook/
-    index.md
-    getting-started.md
-    getting-started.de.md
-    images/
-      greeting-form.png
+  docs/
+    handbook/
+      index.md
+      getting-started.md
+      getting-started.de.md
+      setup/
+        index.md
+        permissions.md
+      images/
+        greeting-form.png
+    architecture.md        (developer documentation, not in the handbook)
 ```
 
-A manual that already lives in another directory of the extension, such as
-`docs`, is named with the tag `<tag>handbook:dir=docs</tag>` in `info.xml`.
+A manual that lives in another directory of the extension, such as `manual`,
+is named with the tag `<tag>handbook:dir=manual</tag>` in `info.xml`.
 
 A page can start with frontmatter. Every key is optional:
 
@@ -67,7 +72,8 @@ routes:
 ```
 
 The title names the page, the order sorts it, and the section groups it with
-other pages in the table of contents. Each screen listed under routes shows a
+other pages in the table of contents; it overrides the section of the page's
+subdirectory. Each screen listed under routes shows a
 link to the page. `index.md` is the landing page of the manual. A file with a
 language code, such as `getting-started.de.md`, translates the page of the same
 name.
@@ -104,7 +110,7 @@ With a civikitchen checkout next to this repository,
 `../civikitchen/scaffold/ckup` does the `composer install` in the image and
 starts the stack on free host ports, and `../civikitchen/scaffold/ckx ck ci`
 runs a command in it. The extension's own
-`handbook/` directory is both its user manual and a test fixture, so changing a
+`docs/handbook/` directory is both its user manual and a test fixture, so changing a
 page title, section or order can break a test. `tests/fixtures/extra/` is a
 sample extra directory.
 

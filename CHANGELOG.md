@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** an extension's manual is read from `docs/handbook/` instead of `handbook/`. Move
+  the directory (`git mv handbook docs/handbook`) or name it with the `info.xml` tag
+  `handbook:dir=handbook`.
+
+### Added
+
+- A manual can have subdirectories. A subdirectory with pages is a section, named after the title
+  of its `index.md` or after the directory; that page comes first and its `order` places the
+  section. Page ids carry the path, and links resolve relative to the linking page.
+
 ## [0.4.0] - 2026-11-15
 
 ### Added

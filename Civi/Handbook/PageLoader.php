@@ -14,6 +14,8 @@ use CRM_Handbook_ExtensionUtil as E;
 final class PageLoader {
 
   /**
+   * @param string $dir
+   *   Id of the page's directory: the source, or source and subdirectory.
    * @param \Civi\Handbook\Page|null $default
    *   The default page a variant builds on: the variant's own frontmatter keys
    *   win, the others come from $default; its title follows the variant's heading.
@@ -21,8 +23,8 @@ final class PageLoader {
    * @throws \Civi\Handbook\HandbookException
    *   With a message naming the file when it cannot be a page.
    */
-  public static function load(string $source, string $file, ?Page $default = NULL): Page {
-    $name = $source . '/' . basename($file);
+  public static function load(string $dir, string $file, ?Page $default = NULL): Page {
+    $name = $dir . '/' . basename($file);
     $parsed = PageName::parse(basename($file));
     if ($parsed === NULL) {
       throw HandbookException::badRequest(E::ts('%1: invalid file name.', [1 => $name]));
@@ -33,7 +35,7 @@ final class PageLoader {
     $meta['title'] ??= self::firstH1($body) ?? $default->title ?? $parsed[0];
     $meta = PageMeta::validate($name, $meta);
     return new Page(
-      $source . '/' . $parsed[0],
+      $dir . '/' . $parsed[0],
       $file,
       $default === NULL ? $meta : PageMeta::inherit($meta, $own, $default),
     );

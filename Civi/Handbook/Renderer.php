@@ -75,11 +75,14 @@ final class Renderer {
   }
 
   /**
+   * @param string $dir
+   *   Id of the page's directory (Page::dir()); relative links resolve against it.
+   *
    * @return array{html: string, headings: list<array{level: int, text: string, slug: string, line: int}>}
    */
-  public function render(string $source, string $markdown): array {
+  public function render(string $dir, string $markdown): array {
     $document = $this->parser->parse($markdown);
-    $this->rewriteLinks($document, $source);
+    $this->rewriteLinks($document, $dir);
     VideoEmbedder::embed($document);
     return [
       'html' => (string) $this->renderer->renderDocument($document),
@@ -107,13 +110,13 @@ final class Renderer {
     return $headings;
   }
 
-  private function rewriteLinks(Document $document, string $source): void {
+  private function rewriteLinks(Document $document, string $dir): void {
     foreach ($document->iterator() as $node) {
       if (!$node instanceof Image && !$node instanceof Link) {
         continue;
       }
       $node->setUrl(
-        $node instanceof Image ? $this->imageUrl($source, $node->getUrl()) : $this->linkUrl($source, $node->getUrl()),
+        $node instanceof Image ? $this->imageUrl($dir, $node->getUrl()) : $this->linkUrl($dir, $node->getUrl()),
       );
     }
   }
@@ -127,7 +130,7 @@ final class Renderer {
     );
   }
 
-  private function linkUrl(string $source, string $url): string {
+  private function linkUrl(string $dir, string $url): string {
     if (!self::isRelative($url)) {
       return $url;
     }
@@ -137,17 +140,34 @@ final class Renderer {
     if (str_ends_with($path, '.md')) {
       // A link to a language variant names the page: events.de.md is events.
       $slug = PageName::slug(basename($path));
-      return ($this->url)('civicrm/handbook', ['p' => $source . '/' . $slug], $fragment);
+      return ($this->url)('civicrm/handbook', ['p' => self::resolve($dir, dirname($path) . '/' . $slug)], $fragment);
     }
-    return $this->imageUrl($source, $url);
+    return $this->imageUrl($dir, $url);
   }
 
-  private function imageUrl(string $source, string $url): string {
+  private function imageUrl(string $dir, string $url): string {
     if (!self::isRelative($url)) {
       return $url;
     }
-    $path = preg_replace('#^(\./)+#', '', $url) ?? $url;
-    return ($this->url)('civicrm/handbook/asset', ['p' => $source . '/' . $path], NULL);
+    return ($this->url)('civicrm/handbook/asset', ['p' => self::resolve($dir, $url)], NULL);
+  }
+
+  /**
+   * `<source>/<path>` of a path relative to the directory id $dir, with `.`
+   * and `..` folded. A `..` above the source stays, so the target is not found.
+   */
+  public static function resolve(string $dir, string $path): string {
+    [$source, $base] = array_pad(explode('/', $dir, 2), 2, '');
+    $segments = [];
+    foreach (explode('/', $base . '/' . $path) as $segment) {
+      if ($segment === '..' && $segments !== [] && end($segments) !== '..') {
+        array_pop($segments);
+      }
+      elseif ($segment !== '' && $segment !== '.') {
+        $segments[] = $segment;
+      }
+    }
+    return $source . '/' . implode('/', $segments);
   }
 
 }

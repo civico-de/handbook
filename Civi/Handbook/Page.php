@@ -6,8 +6,9 @@ namespace Civi\Handbook;
 
 /**
  * One manual page: a Markdown file of a source directory, the language variant
- * for the reader's locale if there is one. The id is `<source>/<slug>`, the
- * slug being the filename without locale suffix and `.md`.
+ * for the reader's locale if there is one. The id is `<source>/<path>/<slug>`,
+ * the path being its subdirectory (if any), the slug the filename without
+ * locale suffix and `.md`.
  */
 final class Page {
 
@@ -44,10 +45,36 @@ final class Page {
   }
 
   /**
-   * handbook/index.md: the source's landing page, whose `order` orders the source.
+   * The id of the directory the page sits in: `<source>` or `<source>/<path>`.
+   */
+  public function dir(): string {
+    return substr($this->id, 0, (int) strrpos($this->id, '/'));
+  }
+
+  /**
+   * index.md at the top of the source: its landing page, whose `order` orders the source.
    */
   public function isLanding(): bool {
-    return str_ends_with($this->id, '/' . self::LANDING);
+    return $this->id === $this->source() . '/' . self::LANDING;
+  }
+
+  /**
+   * index.md of a subdirectory: the first page of the directory's section.
+   */
+  public function isSectionIndex(): bool {
+    return !$this->isLanding() && str_ends_with($this->id, '/' . self::LANDING);
+  }
+
+  /**
+   * The same page in the section $section.
+   */
+  public function withSection(string $section): self {
+    return new self($this->id, $this->file, [
+      'title' => $this->title,
+      'order' => $this->order,
+      'section' => $section,
+      'routes' => $this->routes,
+    ]);
   }
 
 }

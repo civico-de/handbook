@@ -18,7 +18,8 @@ final class Ordering {
 
   /**
    * Sorts a source's pages: the landing page first, then the pages grouped by
-   * `section`, each group (unnamed included) placed where its first page sorts.
+   * `section`. A group with a section index starts with it and sorts where it
+   * does; any other group (unnamed included) sorts where its first page does.
    *
    * @param list<\Civi\Handbook\Page> $pages
    *
@@ -36,6 +37,11 @@ final class Ordering {
       // Prefixed so a numeric section name stays a string key.
       $groups['s' . ($page->section ?? '')][] = $page;
     }
+    $groups = array_map(static function (array $group): array {
+      usort($group, static fn (Page $a, Page $b): int => $b->isSectionIndex() <=> $a->isSectionIndex());
+      return $group;
+    }, $groups);
+    uasort($groups, static fn (array $a, array $b): int => self::pages($a[0], $b[0]));
     return array_merge($landing, ...array_values($groups));
   }
 

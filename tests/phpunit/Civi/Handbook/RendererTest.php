@@ -46,6 +46,22 @@ final class RendererTest extends TestCase {
     );
   }
 
+  public function testLinksFromASubdirectoryResolveAgainstIt(): void {
+    $html = $this->renderer()->render('ext/setup', implode(' ', [
+      '[a](rechte.md)',
+      '[b](../top.md#x)',
+      '[c](./tief/mehr.de.md)',
+      '[d](../../raus.md)',
+      '![e](../images/bild.png)',
+    ]))['html'];
+    $this->assertStringContainsString('href="/civicrm/handbook?p=ext%2Fsetup%2Frechte"', $html);
+    $this->assertStringContainsString('href="/civicrm/handbook?p=ext%2Ftop#x"', $html);
+    $this->assertStringContainsString('href="/civicrm/handbook?p=ext%2Fsetup%2Ftief%2Fmehr"', $html);
+    // Above the source the path stays, so the page is not found.
+    $this->assertStringContainsString('href="/civicrm/handbook?p=ext%2F..%2Fraus"', $html);
+    $this->assertStringContainsString('src="/civicrm/handbook/asset?p=ext%2Fimages%2Fbild.png"', $html);
+  }
+
   public function testAbsoluteCiviAndAnchorLinksStayUntouched(): void {
     $html = $this->alpha()['html'];
     $this->assertStringContainsString('href="https://example.org/x"', $html);
