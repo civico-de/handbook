@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Civi\Handbook\Renderer
+ * @covers \Civi\Handbook\PagePath
  * @covers \Civi\Handbook\Markdown\Video
  * @covers \Civi\Handbook\VideoEmbedder
  * @covers \Civi\Handbook\Markdown\VideoRenderer

@@ -10,6 +10,8 @@ namespace Civi\Handbook;
  *
  * @group headless
  * @covers \Civi\Handbook\Variants
+ * @covers \Civi\Handbook\MarkdownTree
+ * @covers \Civi\Handbook\DirectorySection
  * @covers \Civi\Handbook\Ordering
  * @covers \Civi\Handbook\Page
  */

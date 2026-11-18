@@ -140,7 +140,11 @@ final class Renderer {
     if (str_ends_with($path, '.md')) {
       // A link to a language variant names the page: events.de.md is events.
       $slug = PageName::slug(basename($path));
-      return ($this->url)('civicrm/handbook', ['p' => self::resolve($dir, dirname($path) . '/' . $slug)], $fragment);
+      return ($this->url)(
+        'civicrm/handbook',
+        ['p' => PagePath::resolve($dir, dirname($path) . '/' . $slug)],
+        $fragment,
+      );
     }
     return $this->imageUrl($dir, $url);
   }
@@ -149,25 +153,7 @@ final class Renderer {
     if (!self::isRelative($url)) {
       return $url;
     }
-    return ($this->url)('civicrm/handbook/asset', ['p' => self::resolve($dir, $url)], NULL);
-  }
-
-  /**
-   * `<source>/<path>` of a path relative to the directory id $dir, with `.`
-   * and `..` folded. A `..` above the source stays, so the target is not found.
-   */
-  public static function resolve(string $dir, string $path): string {
-    [$source, $base] = array_pad(explode('/', $dir, 2), 2, '');
-    $segments = [];
-    foreach (explode('/', $base . '/' . $path) as $segment) {
-      if ($segment === '..' && $segments !== [] && end($segments) !== '..') {
-        array_pop($segments);
-      }
-      elseif ($segment !== '' && $segment !== '.') {
-        $segments[] = $segment;
-      }
-    }
-    return $source . '/' . implode('/', $segments);
+    return ($this->url)('civicrm/handbook/asset', ['p' => PagePath::resolve($dir, $url)], NULL);
   }
 
 }

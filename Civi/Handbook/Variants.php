@@ -28,10 +28,13 @@ final class Variants {
    * @return list<\Civi\Handbook\Page>
    */
   public function scan(string $source, string $dir): array {
+    $tree = new MarkdownTree();
+    $relatives = $tree->files($source, $dir);
+    array_push($this->errors, ...$tree->errors);
     $files = [];
-    foreach ($this->markdown($source, $dir) as $relative) {
+    foreach ($relatives as $relative) {
       $id = $source . (dirname($relative) === '.' ? '' : '/' . dirname($relative));
-      $parsed = self::isPath(dirname($relative)) ? PageName::parse(basename($relative)) : NULL;
+      $parsed = MarkdownTree::isPath(dirname($relative)) ? PageName::parse(basename($relative)) : NULL;
       if ($parsed === NULL) {
         $this->errors[] = E::ts('%1: invalid file name.', [1 => $source . '/' . $relative]);
         continue;
@@ -40,81 +43,17 @@ final class Variants {
     }
     $group = [];
     foreach ($files as $id => $slugs) {
-      $pages = [];
-      foreach ($slugs as $slug => $variants) {
-        $pages[] = $this->pick((string) $id, (string) $slug, $variants);
+      $pages = array_values(array_filter(array_map(
+        fn (string|int $slug, array $variants): ?Page => $this->pick((string) $id, (string) $slug, $variants),
+        array_keys($slugs),
+        $slugs,
+      )));
+      if ((string) $id !== $source) {
+        $pages = DirectorySection::apply($pages);
       }
-      array_push($group, ...self::sectioned((string) $id !== $source, array_values(array_filter($pages))));
+      array_push($group, ...$pages);
     }
     return Ordering::source($group);
-  }
-
-  /**
-   * Markdown files below $dir as paths relative to it, without hidden entries
-   * and without following directory links. An unreadable subdirectory is reported.
-   *
-   * @return list<string>
-   */
-  private function markdown(string $source, string $dir): array {
-    if (!is_readable($dir)) {
-      $this->errors[] = E::ts('%1: directory not readable.', [1 => $source]);
-      return [];
-    }
-    $found = [];
-    $entries = new \RecursiveIteratorIterator(new \RecursiveCallbackFilterIterator(
-      new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-      function (\SplFileInfo $f) use ($source, $dir): bool {
-        if (str_starts_with($f->getFilename(), '.')) {
-          return FALSE;
-        }
-        if ($f->isDir() && !$f->isReadable()) {
-          $this->errors[] = E::ts('%1: directory not readable.', [
-            1 => $source . '/' . substr($f->getPathname(), strlen($dir) + 1),
-          ]);
-          return FALSE;
-        }
-        return TRUE;
-      },
-    ));
-    foreach ($entries as $entry) {
-      /** @var \SplFileInfo $entry */
-      if ($entry->isFile() && str_ends_with($entry->getFilename(), '.md')) {
-        $found[] = substr($entry->getPathname(), strlen($dir) + 1);
-      }
-    }
-    sort($found);
-    return $found;
-  }
-
-  /**
-   * A subdirectory path whose every segment could be a slug.
-   */
-  private static function isPath(string $path): bool {
-    return $path === '.' || array_filter(
-      explode('/', $path),
-      static fn (string $segment): bool => PageName::parse($segment . '.md') !== [$segment, NULL],
-    ) === [];
-  }
-
-  /**
-   * Pages of a subdirectory without their own `section` take the directory's:
-   * its index page's section or title, else the directory name.
-   *
-   * @param list<\Civi\Handbook\Page> $pages
-   *
-   * @return list<\Civi\Handbook\Page>
-   */
-  private static function sectioned(bool $isSubdir, array $pages): array {
-    if (!$isSubdir || $pages === []) {
-      return $pages;
-    }
-    $section = basename($pages[0]->dir());
-    foreach ($pages as $page) {
-      if ($page->isSectionIndex()) {
-        $section = $page->section ?? $page->title;
-      }
-    }
-    return array_map(static fn (Page $p): Page => $p->section === NULL ? $p->withSection($section) : $p, $pages);
   }
 
   /**
