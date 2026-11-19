@@ -45,6 +45,7 @@
         </ul>
       </div>
     {/if}
+    <p class="handbook-whats-new-link"><a href="{crmURL p='civicrm/handbook/whats-new'}">{ts domain="handbook"}What's new in the extensions{/ts}</a></p>
     <nav class="handbook-cards" aria-label="{ts domain="handbook"}Contents{/ts}">
       {foreach from=$handbookToc item=group}
         <section class="handbook-card" aria-labelledby="handbook-card-{$group.source|escape}">

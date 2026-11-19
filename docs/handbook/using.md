@@ -42,6 +42,12 @@ Search reads one line of the page's source at a time. A phrase that the author b
 
 ![Search field](images/search.png)
 
+## What's new
+
+The start page links "What's new in the extensions". That screen shows, for every extension with a changelog, the changes of its newest release, newest first, and links to its full list of changes.
+
+After an extension is updated, CiviCRM's system status shows the note "Handbook: extensions updated" for two weeks after the handbook first notices the new version. It names the extensions and links to "What's new". The note shows once per site, not per user, and the first look after installing the handbook only records the versions.
+
 ## Links on other screens
 
 When a manual belongs to a CiviCRM screen, a link such as "Handbook: Sending greetings" appears at the top of that screen. [Writing manuals](writing-manuals.md#links-from-civicrm-screens) explains how to set this up.

@@ -13,6 +13,12 @@
     <access_arguments>access handbook</access_arguments>
   </item>
   <item>
+    <path>civicrm/handbook/whats-new</path>
+    <page_callback>CRM_Handbook_Page_WhatsNew</page_callback>
+    <title>What's new</title>
+    <access_arguments>access handbook</access_arguments>
+  </item>
+  <item>
     <path>civicrm/handbook/asset</path>
     <page_callback>Civi\Handbook\AssetRoute::handle</page_callback>
     <title>Handbook image</title>

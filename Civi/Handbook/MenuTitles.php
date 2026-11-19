@@ -30,6 +30,7 @@ final class MenuTitles extends AutoSubscriber {
     return [
       'civicrm/handbook' => E::ts('Handbook'),
       'civicrm/handbook/search' => E::ts('Search the handbook'),
+      'civicrm/handbook/whats-new' => E::ts("What's new"),
       'civicrm/handbook/asset' => E::ts('Handbook image'),
       'civicrm/admin/setting/handbook' => E::ts('Handbook settings'),
     ];

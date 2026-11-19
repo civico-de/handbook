@@ -196,3 +196,35 @@ msgstr "Keine Treffer für „%1“."
 #: Civi/Handbook/Library.php
 msgid "Changes"
 msgstr "Änderungen"
+
+#: CRM/Handbook/Page/WhatsNew.php Civi/Handbook/MenuTitles.php
+msgid "What's new"
+msgstr "Neuigkeiten"
+
+#: templates/CRM/Handbook/Page/Handbook.tpl
+msgid "What's new in the extensions"
+msgstr "Neuigkeiten in den Erweiterungen"
+
+#: templates/CRM/Handbook/Page/WhatsNew.tpl
+msgid "All changes in %1"
+msgstr "Alle Änderungen in %1"
+
+#: templates/CRM/Handbook/Page/WhatsNew.tpl
+msgid "No extension in the handbook has released changes yet."
+msgstr "Noch keine Erweiterung im Handbuch hat Änderungen veröffentlicht."
+
+#: Civi/Handbook/StatusCheck.php
+msgid "Updated recently: %1. <a href=\"%2\">See what changed</a>."
+msgstr "Kürzlich aktualisiert: %1. <a href=\"%2\">Änderungen ansehen</a>."
+
+#: Civi/Handbook/StatusCheck.php
+msgid "Handbook: extensions updated"
+msgstr "Handbuch: Erweiterungen aktualisiert"
+
+#: settings/handbook.setting.php
+msgid "Extension versions seen by the handbook"
+msgstr "Vom Handbuch gesehene Versionen der Erweiterungen"
+
+#: settings/handbook.setting.php
+msgid "Kept by the handbook to notice updated extensions; not meant to be edited."
+msgstr "Führt das Handbuch, um aktualisierte Erweiterungen zu bemerken; nicht zum Bearbeiten gedacht."

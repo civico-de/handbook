@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- "What's new" (`civicrm/handbook/whats-new`), linked from the start page, shows the newest release
+  of every extension with a changelog, newest first.
+- After an extension update, the system status names the updated extensions for two weeks and
+  links to "What's new". The first check after installing records the versions without a note.
+
 ## [0.6.0] - 2026-11-19
 
 ### Added

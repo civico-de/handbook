@@ -41,6 +41,12 @@ Die Suche liest den Quelltext einer Seite Zeile für Zeile. Einen Ausdruck, den 
 
 ![Suchfeld](images/search.png)
 
+## Neuigkeiten
+
+Die Startseite verlinkt „Neuigkeiten in den Erweiterungen“. Diese Seite zeigt für jede Erweiterung mit Änderungsliste die Änderungen ihrer neuesten Version, die neueste zuerst, und verlinkt ihre vollständige Änderungsliste.
+
+Nach dem Update einer Erweiterung zeigt der Systemstatus von CiviCRM den Hinweis „Handbuch: Erweiterungen aktualisiert“, zwei Wochen ab dem Tag, an dem das Handbuch die neue Version bemerkt. Er nennt die Erweiterungen und verlinkt „Neuigkeiten“. Der Hinweis gilt für die ganze Website, nicht für einzelne Benutzer, und der erste Blick nach der Installation des Handbuchs merkt sich nur die Versionen.
+
 ## Links auf anderen Seiten
 
 Gehört eine Anleitung zu einer CiviCRM-Seite, erscheint oben auf dieser Seite ein Link wie „Handbuch: Grüße versenden“. Wie Sie das einrichten, steht in [Anleitungen schreiben](writing-manuals.md#links-auf-civicrm-seiten).

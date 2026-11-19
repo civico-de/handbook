@@ -69,7 +69,7 @@ parameters:
 	# <requires> means its checkout was not found beside this repo — mount
 	# it (sibling_repo in CI); it is not an ignoreErrors case.
 	ignoreErrors:
-		# The two screens are Smarty pages because every heading anchor must
+		# The handbook screens are Smarty pages because every heading anchor must
 		# be linkable (?p=…#section); an Afform page claims the URL fragment
 		# for its Angular router. Data endpoints stay services, the image
 		# route is a PSR-7 callback.
@@ -80,4 +80,8 @@ parameters:
 		-
 			identifier: phpat.testNoLegacyUiBases
 			path: CRM/Handbook/Page/Search.php
+			count: 1
+		-
+			identifier: phpat.testNoLegacyUiBases
+			path: CRM/Handbook/Page/WhatsNew.php
 			count: 1

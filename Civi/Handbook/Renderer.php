@@ -38,15 +38,17 @@ final class Renderer {
   /**
    * @param (\Closure(string, array<string, string>, string|null): string)|null $url
    *   Builds a Civi URL from path, query and fragment.
+   * @param string $idPrefix
+   *   Prepended to heading ids, so several documents on one screen keep them unique.
    */
-  public function __construct(?\Closure $url = NULL) {
+  public function __construct(?\Closure $url = NULL, string $idPrefix = '') {
     $environment = new Environment([
       'html_input' => 'strip',
       'allow_unsafe_links' => FALSE,
       'heading_permalink' => [
         'insert' => 'none',
         'apply_id_to_heading' => TRUE,
-        'id_prefix' => '',
+        'id_prefix' => $idPrefix,
         'fragment_prefix' => '',
       ],
       // A focusable scroll box, so wide tables scroll on narrow screens and by keyboard.

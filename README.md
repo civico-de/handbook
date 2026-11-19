@@ -7,7 +7,9 @@
 Handbook is a CiviCRM extension that shows the user manuals of your extensions
 inside CiviCRM. Every enabled extension can ship its manual as Markdown files.
 Handbook collects them in one table of contents, renders them, searches them,
-and links each page from the CiviCRM screens it describes.
+and links each page from the CiviCRM screens it describes. An extension's
+`CHANGELOG.md` becomes the last page of its manual, and "What's new" shows the
+newest release of each.
 
 The user manual is at <https://civico-de.github.io/handbook/>. Licensed under
 AGPL-3.0-or-later, see [LICENSE.txt](LICENSE.txt). Report bugs in the
