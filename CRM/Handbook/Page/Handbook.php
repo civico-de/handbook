@@ -6,6 +6,7 @@ use Civi\Handbook\Dependencies;
 use Civi\Handbook\HandbookException;
 use Civi\Handbook\Library;
 use Civi\Handbook\PageNav;
+use Civi\Handbook\PageSections;
 use Civi\Handbook\RenderCache;
 use Civi\Handbook\View;
 use CRM_Handbook_ExtensionUtil as E;
@@ -42,13 +43,7 @@ class CRM_Handbook_Page_Handbook extends CRM_Core_Page {
       $this->assign('handbookHtml', $rendered['html']);
       $this->assign('handbookBreadcrumb', $nav->breadcrumb($page));
       $this->assign('handbookPager', $nav->pager($page));
-      $this->assign(
-        'handbookSections',
-        array_values(array_filter(
-          $rendered['headings'],
-          static fn (array $h): bool => $h['level'] >= 2 && $h['level'] <= 3,
-        )),
-      );
+      $this->assign('handbookSections', PageSections::of($page, $rendered['headings']));
     }
     parent::run();
   }

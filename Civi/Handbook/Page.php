@@ -71,6 +71,13 @@ final class Page {
   }
 
   /**
+   * The page an extension's CHANGELOG.md becomes, not a manual page of that slug.
+   */
+  public function isChangelog(): bool {
+    return str_ends_with($this->id, '/' . self::CHANGELOG) && basename($this->file) === 'CHANGELOG.md';
+  }
+
+  /**
    * The same page in the section $section.
    */
   public function withSection(string $section): self {

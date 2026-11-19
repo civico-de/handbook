@@ -98,7 +98,7 @@ Die Anleitungen stehen alphabetisch nach Namen. Um eine Anleitung vor die andere
 
 ## Seite mit den Änderungen
 
-Eine Erweiterung mit einer `CHANGELOG.md` in ihrem Hauptverzeichnis bekommt sie als letzte Seite ihrer Anleitung, mit dem Titel „Änderungen“. Die Datei erscheint unverändert, in jeder Sprache, und relative Links darin gehen von der obersten Ebene der Anleitung aus. Eine eigene Seite `changes.md` der Anleitung tritt an ihre Stelle. Das zusätzliche Verzeichnis hat keine solche Seite.
+Eine Erweiterung mit einer `CHANGELOG.md` in ihrem Hauptverzeichnis bekommt sie als letzte Seite ihrer Anleitung, mit dem Titel „Änderungen“. Die Datei erscheint unverändert, in jeder Sprache, und relative Links darin gehen von der obersten Ebene der Anleitung aus. Ein leerer Abschnitt „Unreleased“ fällt weg, und „Auf dieser Seite“ listet nur die zehn neuesten Versionen. Eine eigene Seite `changes.md` der Anleitung tritt an ihre Stelle. Das zusätzliche Verzeichnis hat keine solche Seite.
 
 ## Seiten verknüpfen
 

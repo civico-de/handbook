@@ -99,7 +99,7 @@ Manuals are listed alphabetically by name. To move a manual ahead of the others,
 
 ## Changes page
 
-An extension with a `CHANGELOG.md` in its root directory gets it as the last page of its manual, titled "Changes". The file is shown as it is, in every language, and relative links in it resolve from the top of the manual. A page `changes.md` of the manual's own takes its place. The extra directory has no changes page.
+An extension with a `CHANGELOG.md` in its root directory gets it as the last page of its manual, titled "Changes". The file is shown as it is, in every language, and relative links in it resolve from the top of the manual. An empty Unreleased section is left out, and "On this page" lists only the ten newest versions. A page `changes.md` of the manual's own takes its place. The extra directory has no changes page.
 
 ## Linking pages
 

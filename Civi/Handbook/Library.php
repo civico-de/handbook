@@ -122,7 +122,7 @@ final class Library {
   }
 
   /**
-   * The Markdown of a page without its frontmatter.
+   * The Markdown of a page without its frontmatter; a changelog without an empty Unreleased section.
    */
   public function body(Page $page): string {
     $content = is_file($page->file) && is_readable($page->file) ? file_get_contents($page->file) : FALSE;
@@ -133,7 +133,8 @@ final class Library {
       $this->errors = [];
       throw HandbookException::notFound("Cannot read {$page->file}");
     }
-    return Frontmatter::split($content)[1];
+    $body = Frontmatter::split($content)[1];
+    return $page->isChangelog() ? (string) preg_replace('/^## \[Unreleased\]\s*(?=^## |\z)/mi', '', $body) : $body;
   }
 
   /**
