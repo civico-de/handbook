@@ -96,6 +96,10 @@ Der Titel der Startseite benennt die ganze Anleitung im Inhaltsverzeichnis, im P
 
 Die Anleitungen stehen alphabetisch nach Namen. Um eine Anleitung vor die anderen zu setzen, geben Sie ihrer Startseite einen Wert für `order`. Anleitungen mit einer Zahl stehen zuerst, die kleinste vorn, und die übrigen folgen alphabetisch.
 
+## Seite mit den Änderungen
+
+Eine Erweiterung mit einer `CHANGELOG.md` in ihrem Hauptverzeichnis bekommt sie als letzte Seite ihrer Anleitung, mit dem Titel „Änderungen“. Die Datei erscheint unverändert, in jeder Sprache, und relative Links darin gehen von der obersten Ebene der Anleitung aus. Eine eigene Seite `changes.md` der Anleitung tritt an ihre Stelle. Das zusätzliche Verzeichnis hat keine solche Seite.
+
 ## Seiten verknüpfen
 
 Um auf eine andere Seite derselben Anleitung zu verlinken, nehmen Sie ihren Pfad relativ zur verlinkenden Seite als Linkziel, etwa `greetings.md`, `setup/permissions.md` oder, von einer Seite in `setup` aus, `../greetings.md`. Mit einem Anker springen Sie zu einer Überschrift auf dieser Seite, etwa `greetings.md#the-greeting-form`. Nennen Sie immer die Standarddatei, auch aus einer Übersetzung heraus. Das Handbuch öffnet die Seite in der Sprache der Leser:innen.

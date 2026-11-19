@@ -16,6 +16,7 @@ const SCREENS = [
   { name: "search", route: "civicrm/handbook/search?term=Handbook", scope: ".handbook" },
   { name: "search results", route: "civicrm/handbook/search?term=Fixturewort", scope: ".handbook" },
   { name: "fixture page", route: "civicrm/handbook?p=extra/alpha", scope: ".handbook" },
+  { name: "changelog", route: "civicrm/handbook?p=handbook/changes", scope: ".handbook" },
   // tests/fixtures/extra/alpha.md links the dashboard: only the context link there is ours.
   { name: "context link", route: "civicrm/dashboard", scope: ".handbook-context" },
 ];

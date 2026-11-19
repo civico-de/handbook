@@ -9,14 +9,15 @@ use CRM_Handbook_ExtensionUtil as E;
 /**
  * Finds the source directories: every enabled extension with a docs/handbook/
  * directory, or the one its info.xml tag `handbook:dir=<name>` names, plus the
- * configured extra directory as source "extra".
+ * configured extra directory as source "extra". An extension's CHANGELOG.md
+ * is recorded with its source.
  */
 final class Sources {
 
   public const EXTRA = 'extra';
 
   /**
-   * @var array<string, array{dir: string, label: string}>
+   * @var array<string, array{dir: string, label: string, changelog?: string}>
    */
   public array $dirs = [];
 
@@ -47,7 +48,7 @@ final class Sources {
   }
 
   /**
-   * @param array<string, array{dir: string, label: string}> $extensions
+   * @param array<string, array{dir: string, label: string, changelog?: string}> $extensions
    *   Extension handbook directories keyed by extension key.
    * @param list<string> $errors
    */
@@ -63,21 +64,27 @@ final class Sources {
   /**
    * @param list<string> $declared
    *
-   * @return array<string, array{dir: string, label: string}>
+   * @return array<string, array{dir: string, label: string, changelog?: string}>
    */
   private static function extension(\CRM_Extension_Mapper $mapper, string $key, array $declared): array {
     try {
-      $dir = ExtensionDir::resolve($mapper->keyToBasePath($key), $key, $declared);
+      $base = $mapper->keyToBasePath($key);
+      $dir = ExtensionDir::resolve($base, $key, $declared);
       if ($dir === NULL) {
         return [];
       }
       // keyToInfo() parses info.xml, and this runs on every CiviCRM page.
       $label = $mapper->keyToInfo($key)->label;
+      $changelog = realpath($base . '/CHANGELOG.md');
     }
     catch (\CRM_Extension_Exception $e) {
       return [];
     }
-    return [$key => ['dir' => $dir, 'label' => is_string($label) ? $label : $key]];
+    $source = ['dir' => $dir, 'label' => is_string($label) ? $label : $key];
+    if ($changelog !== FALSE && is_file($changelog)) {
+      $source['changelog'] = $changelog;
+    }
+    return [$key => $source];
   }
 
   private function addExtra(string $extra): void {

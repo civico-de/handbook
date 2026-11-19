@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- An extension's `CHANGELOG.md` shows as the last page of its manual, "Changes".
+
 ## [0.5.0] - 2026-11-18
 
 ### Changed

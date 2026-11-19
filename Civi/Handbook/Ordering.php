@@ -59,7 +59,7 @@ final class Ordering {
    * landing title or source label ignoring case, then source key, and flattens them.
    *
    * @param array<string, list<\Civi\Handbook\Page>> $groups
-   * @param array<string, array{dir: string, label: string}> $sources
+   * @param array<string, array{dir: string, label: string, changelog?: string}> $sources
    *
    * @return list<\Civi\Handbook\Page>
    */
@@ -77,7 +77,7 @@ final class Ordering {
    *
    * @param list<\Civi\Handbook\Page> $pages
    *   Pages of any sources.
-   * @param array<string, array{dir: string, label: string}> $sources
+   * @param array<string, array{dir: string, label: string, changelog?: string}> $sources
    */
   public static function sourceName(array $pages, array $sources, string $source): string {
     $own = array_values(array_filter($pages, static fn (Page $p): bool => $p->source() === $source));

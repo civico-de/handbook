@@ -78,6 +78,9 @@ link to the page. `index.md` is the landing page of the manual. A file with a
 language code, such as `getting-started.de.md`, translates the page of the same
 name.
 
+A `CHANGELOG.md` in the extension's root becomes the last page of its
+manual, "Changes".
+
 Run `cv flush` after adding or renaming a file. The pages then appear in the
 handbook.
 

@@ -156,7 +156,10 @@ final class IntegrationHeadlessTest extends HandbookTestCase {
       '#rel="prev" href="[^"]*handbook%2Fusing"><span class="handbook-pager-dir">Previous page</span> Using the handbook</a>#',
       $html,
     );
-    $this->assertMatchesRegularExpression('#rel="next" href="[^"]*extra%2Falpha">#', $html);
+    $this->assertMatchesRegularExpression(
+      '#rel="next" href="[^"]*handbook%2Fchanges"><span class="handbook-pager-dir">Next page</span> Changes</a>#',
+      $html,
+    );
     $this->assertSame(
       1,
       substr_count($html, '<details class="handbook-group" open>'),

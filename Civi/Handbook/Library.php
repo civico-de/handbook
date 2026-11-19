@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Civi\Handbook;
 
+use CRM_Handbook_ExtensionUtil as E;
+
 /**
  * All manual pages of all sources as a reader of one locale sees them, with
  * the file list cached per locale until the next system flush.
@@ -21,7 +23,7 @@ final class Library {
   private array $errors = [];
 
   /**
-   * @param array<string, array{dir: string, label: string}> $sources
+   * @param array<string, array{dir: string, label: string, changelog?: string}> $sources
    *   Readable source directories keyed by source name.
    * @param list<string> $sourceErrors
    *   Problems with configured sources, shown on the index.
@@ -55,7 +57,7 @@ final class Library {
   }
 
   /**
-   * @return array<string, array{dir: string, label: string}>
+   * @return array<string, array{dir: string, label: string, changelog?: string}>
    */
   public function sources(): array {
     return $this->sources;
@@ -91,7 +93,8 @@ final class Library {
     $variants = new Variants($this->locale);
     $groups = [];
     foreach ($this->sources as $source => $info) {
-      $groups[$source] = $variants->scan($source, $info['dir']);
+      $pages = $variants->scan($source, $info['dir']);
+      $groups[$source] = [...$pages, ...self::changelog($source, $info, $pages)];
     }
     $pages = Ordering::sources($groups, $this->sources);
     $this->errors = $variants->errors;
@@ -133,6 +136,22 @@ final class Library {
     return Frontmatter::split($content)[1];
   }
 
+  /**
+   * The source's CHANGELOG.md as its last page, unless the manual has its own page of that slug.
+   *
+   * @param array{dir: string, label: string, changelog?: string} $info
+   * @param list<\Civi\Handbook\Page> $pages
+   *
+   * @return list<\Civi\Handbook\Page>
+   */
+  private static function changelog(string $source, array $info, array $pages): array {
+    $id = $source . '/' . Page::CHANGELOG;
+    if (!isset($info['changelog']) || in_array($id, array_map(static fn (Page $p): string => $p->id, $pages), TRUE)) {
+      return [];
+    }
+    return [new Page($id, $info['changelog'], ['title' => E::ts('Changes')])];
+  }
+
   private function cacheKey(): string {
     return self::pagesKey(
       $this->sources,
@@ -148,7 +167,7 @@ final class Library {
    * Cache key of the page list for one locale. It includes Page's property
    * names, so a changed Page class never unserializes a stale shape.
    *
-   * @param array<string, array{dir: string, label: string}> $sources
+   * @param array<string, array{dir: string, label: string, changelog?: string}> $sources
    * @param list<string> $pageProperties
    */
   public static function pagesKey(array $sources, string $locale, array $pageProperties): string {

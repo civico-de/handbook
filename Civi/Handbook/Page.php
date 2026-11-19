@@ -14,6 +14,11 @@ final class Page {
 
   public const LANDING = 'index';
 
+  /**
+   * Slug of the page an extension's CHANGELOG.md becomes.
+   */
+  public const CHANGELOG = 'changes';
+
   public readonly string $title;
 
   public readonly ?int $order;

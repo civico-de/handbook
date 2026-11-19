@@ -97,6 +97,10 @@ The title of the landing page names the whole manual in the table of contents, t
 
 Manuals are listed alphabetically by name. To move a manual ahead of the others, give its landing page an `order`. Manuals with an order come first, lowest first, and the others follow alphabetically.
 
+## Changes page
+
+An extension with a `CHANGELOG.md` in its root directory gets it as the last page of its manual, titled "Changes". The file is shown as it is, in every language, and relative links in it resolve from the top of the manual. A page `changes.md` of the manual's own takes its place. The extra directory has no changes page.
+
 ## Linking pages
 
 To link another page of the same manual, use its path relative to the linking page as the link target, such as `greetings.md`, `setup/permissions.md` or, from a page in `setup`, `../greetings.md`. Add an anchor to jump to a heading on that page, such as `greetings.md#the-greeting-form`. Always name the default file, also from a translation. The handbook opens the page in the reader's language.

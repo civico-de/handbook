@@ -27,6 +27,7 @@ final class LibraryHeadlessTest extends HandbookTestCase {
         'handbook/index',
         'handbook/using',
         'handbook/writing-manuals',
+        'handbook/changes',
         'extra/alpha',
         'extra/ohne-titel',
         'extra/zeta',

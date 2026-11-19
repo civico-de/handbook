@@ -192,3 +192,7 @@ msgstr[1] "und %count weitere Abschnitte"
 #: templates/CRM/Handbook/Page/Search.tpl
 msgid "No results for “%1”."
 msgstr "Keine Treffer für „%1“."
+
+#: Civi/Handbook/Library.php
+msgid "Changes"
+msgstr "Änderungen"
