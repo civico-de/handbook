@@ -2,9 +2,12 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-19
+
 ### Added
 
-- An extension's `CHANGELOG.md` shows as the last page of its manual, "Changes".
+- An extension's `CHANGELOG.md` shows as the last page of its manual, "Changes". An empty Unreleased
+  section is left out, and "On this page" lists only the ten newest versions.
 
 ## [0.5.0] - 2026-11-18
 
@@ -90,7 +93,8 @@
 - Without its Composer `vendor/` tree the extension reports a System Status error and shows a
   notice on the handbook screens instead of failing.
 
-[Unreleased]: https://github.com/civico-de/handbook/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/civico-de/handbook/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/civico-de/handbook/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/civico-de/handbook/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/civico-de/handbook/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/civico-de/handbook/compare/v0.2.0...v0.3.0
